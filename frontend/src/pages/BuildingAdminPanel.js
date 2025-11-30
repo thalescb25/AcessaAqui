@@ -45,7 +45,17 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
 
   useEffect(() => {
     loadData();
+    loadStats();
   }, []);
+
+  const loadStats = async () => {
+    try {
+      const response = await axios.get(`${API}/admin/deliveries/stats`);
+      setStats(response.data);
+    } catch (error) {
+      console.error('Erro ao carregar estatísticas');
+    }
+  };
 
   const loadData = async () => {
     try {
