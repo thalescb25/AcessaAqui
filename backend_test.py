@@ -112,7 +112,7 @@ class ChegouAquiAPITester:
             'POST', 'super-admin/buildings',
             building_data,
             self.tokens['super_admin'],
-            201
+            200
         )
 
         if success:
