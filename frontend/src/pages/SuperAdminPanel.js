@@ -97,6 +97,44 @@ const SuperAdminPanel = ({ user, onLogout }) => {
     }
   };
 
+  const handleEditBuilding = async () => {
+    try {
+      await axios.put(`${API}/super-admin/buildings/${selectedBuilding.id}`, editBuilding);
+      toast.success('Prédio atualizado com sucesso!');
+      setShowEditDialog(false);
+      setSelectedBuilding(null);
+      loadData();
+    } catch (error) {
+      toast.error('Erro ao atualizar prédio');
+    }
+  };
+
+  const handleDeleteBuilding = async () => {
+    try {
+      await axios.delete(`${API}/super-admin/buildings/${selectedBuilding.id}`);
+      toast.success('Prédio deletado com sucesso!');
+      setShowDeleteDialog(false);
+      setSelectedBuilding(null);
+      loadData();
+    } catch (error) {
+      toast.error('Erro ao deletar prédio');
+    }
+  };
+
+  const openEditDialog = (building) => {
+    setSelectedBuilding(building);
+    setEditBuilding({
+      name: building.name,
+      plan: building.plan,
+    });
+    setShowEditDialog(true);
+  };
+
+  const openDeleteDialog = (building) => {
+    setSelectedBuilding(building);
+    setShowDeleteDialog(true);
+  };
+
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
