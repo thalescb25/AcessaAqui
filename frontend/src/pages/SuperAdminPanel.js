@@ -6,10 +6,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
-import { Building, LogOut, Plus, TrendingUp, Users, Package } from 'lucide-react';
+import { Building, LogOut, Plus, TrendingUp, Users, Package, Edit, Trash2 } from 'lucide-react';
 
 const SuperAdminPanel = ({ user, onLogout }) => {
   const [buildings, setBuildings] = useState([]);
