@@ -37,9 +37,19 @@ const DoormanPanel = ({ user, onLogout }) => {
     }
   };
 
-  const loadHistory = async () => {
+  const [historyDays, setHistoryDays] = useState(1);
+
+  const loadHistory = async (days = 1) => {
     try {
-      const response = await axios.get(`${API}/doorman/deliveries/today`);
+      setHistoryDays(days);
+      let response;
+      
+      if (days === 1) {
+        response = await axios.get(`${API}/doorman/deliveries/today`);
+      } else {
+        response = await axios.get(`${API}/doorman/deliveries?days=${days}`);
+      }
+      
       setTodayDeliveries(response.data);
       setShowHistory(true);
     } catch (error) {
