@@ -121,8 +121,25 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
       if (response.data.success) {
         toast.success(`${response.data.imported} telefone(s) importado(s)!`);
         if (response.data.errors && response.data.errors.length > 0) {
-          console.log('Erros na importação:', response.data.errors);
-          toast.warning(`${response.data.errors.length} erro(s) encontrado(s). Verifique o console.`);
+          // Mostrar erros de forma clara
+          const errorMessages = response.data.errors.map((err, idx) => `${idx + 1}. ${err}`).join('\n');
+          toast.error(
+            <div className="space-y-2">
+              <p className="font-semibold">{response.data.errors.length} erro(s) encontrado(s):</p>
+              <div className="text-xs max-h-32 overflow-y-auto">
+                {response.data.errors.slice(0, 5).map((err, idx) => (
+                  <p key={idx} className="text-red-600">• {err}</p>
+                ))}
+                {response.data.errors.length > 5 && (
+                  <p className="text-slate-500 mt-1">... e mais {response.data.errors.length - 5}</p>
+                )}
+              </div>
+              <p className="text-xs text-slate-600 mt-2">
+                Verifique: formato CSV correto, apartamentos existentes, telefones no formato (XX) XXXXX-XXXX
+              </p>
+            </div>,
+            { duration: 8000 }
+          );
         }
         loadData();
         loadAllPhones();
