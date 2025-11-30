@@ -363,16 +363,27 @@ const SuperAdminPanel = ({ user, onLogout }) => {
                     <DialogDescription>Preencha os dados do prédio e do administrador</DialogDescription>
                   </DialogHeader>
                   <div className="space-y-4">
+                    <div>
+                      <Label>Nome do Prédio</Label>
+                      <Input
+                        value={newBuilding.name}
+                        onChange={(e) => setNewBuilding({ ...newBuilding, name: e.target.value })}
+                        placeholder="Edifício Example"
+                        data-testid="new-building-name"
+                      />
+                    </div>
+
+                    <div>
+                      <Label>Endereço Completo</Label>
+                      <Input
+                        value={newBuilding.address}
+                        onChange={(e) => setNewBuilding({ ...newBuilding, address: e.target.value })}
+                        placeholder="Rua Example, 123 - Bairro - Cidade/UF"
+                        data-testid="new-building-address"
+                      />
+                    </div>
+
                     <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <Label>Nome do Prédio</Label>
-                        <Input
-                          value={newBuilding.name}
-                          onChange={(e) => setNewBuilding({ ...newBuilding, name: e.target.value })}
-                          placeholder="Edifício Example"
-                          data-testid="new-building-name"
-                        />
-                      </div>
                       <div>
                         <Label>Número de Apartamentos</Label>
                         <Input
@@ -382,20 +393,21 @@ const SuperAdminPanel = ({ user, onLogout }) => {
                           data-testid="new-building-apartments"
                         />
                       </div>
-                    </div>
-
-                    <div>
-                      <Label>Plano</Label>
-                      <select
-                        className="w-full h-10 px-3 border border-slate-300 rounded-md"
-                        value={newBuilding.plan}
-                        onChange={(e) => setNewBuilding({ ...newBuilding, plan: e.target.value })}
-                        data-testid="new-building-plan"
-                      >
-                        <option value="free">Free (100 mensagens/mês)</option>
-                        <option value="basic">Basic (500 mensagens/mês)</option>
-                        <option value="premium">Premium (2000 mensagens/mês)</option>
-                      </select>
+                      <div>
+                        <Label>Plano</Label>
+                        <select
+                          className="w-full h-10 px-3 border border-slate-300 rounded-md"
+                          value={newBuilding.plan}
+                          onChange={(e) => setNewBuilding({ ...newBuilding, plan: e.target.value })}
+                          data-testid="new-building-plan"
+                        >
+                          {plans && Object.entries(plans).map(([key, plan]) => (
+                            <option key={key} value={key}>
+                              {plan.name} - R$ {plan.price}/mês ({plan.unlimited_messages ? 'Ilimitado' : `${plan.message_quota} msgs`}, {plan.max_apartments >= 999999 ? '300+' : plan.max_apartments} apts)
+                            </option>
+                          ))}
+                        </select>
+                      </div>
                     </div>
 
                     <div className="pt-4 border-t">
