@@ -526,6 +526,35 @@ async def get_building_deliveries(current_user: dict = Depends(get_current_user)
     
     return [Delivery(**d) for d in deliveries]
 
+@api_router.get("/admin/all-phones")
+async def get_all_phones(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "building_admin":
+        raise HTTPException(status_code=403, detail="Acesso negado")
+    
+    # Buscar todos os apartamentos do prédio
+    apartments = await db.apartments.find(
+        {"building_id": current_user["building_id"]},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    # Criar um mapa de apartamentos
+    apt_map = {apt["id"]: apt["number"] for apt in apartments}
+    
+    # Buscar todos os telefones
+    all_phones = []
+    for apt_id, apt_number in apt_map.items():
+        phones = await db.resident_phones.find({"apartment_id": apt_id}, {"_id": 0}).to_list(1000)
+        for phone in phones:
+            all_phones.append({
+                **phone,
+                "apartment_number": apt_number
+            })
+    
+    # Ordenar por número do apartamento
+    all_phones.sort(key=lambda x: int(x["apartment_number"]) if x["apartment_number"].isdigit() else 0)
+    
+    return all_phones
+
 # ==================== DOORMAN ENDPOINTS ====================
 
 @api_router.post("/doorman/delivery", response_model=Delivery)
