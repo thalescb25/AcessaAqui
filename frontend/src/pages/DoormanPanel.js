@@ -298,8 +298,7 @@ const DoormanPanel = ({ user, onLogout }) => {
               <div>
                 <h3 className="font-semibold text-emerald-900 mb-1">Registrar Encomenda</h3>
                 <p className="text-sm text-emerald-700">
-                  Clique no botão do apartamento para registrar a chegada de uma encomenda.
-                  Uma notificação WhatsApp será enviada automaticamente para todos os moradores cadastrados.
+                  Clique no botão do apartamento para registrar a chegada de uma encomenda. Uma notificação WhatsApp será enviada automaticamente para todos os moradores cadastrados neste apartamento.
                 </p>
               </div>
             </div>
