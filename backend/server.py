@@ -369,10 +369,50 @@ async def update_building(building_id: str, update: BuildingUpdate, current_user
     if current_user["role"] != "super_admin":
         raise HTTPException(status_code=403, detail="Acesso negado")
     
+    # Buscar prédio atual
+    current_building = await db.buildings.find_one({"id": building_id}, {"_id": 0})
+    if not current_building:
+        raise HTTPException(status_code=404, detail="Prédio não encontrado")
+    
     update_data = {k: v for k, v in update.model_dump().items() if v is not None}
     
+    # Atualizar quotas se plano mudou
     if "plan" in update_data:
-        update_data["message_quota"] = PLAN_QUOTAS.get(update_data["plan"], 100)
+        plan_info = PLANS.get(update_data["plan"])
+        if not plan_info:
+            raise HTTPException(status_code=400, detail="Plano inválido")
+        update_data["message_quota"] = plan_info["message_quota"]
+        update_data["max_apartments"] = plan_info["max_apartments"]
+        
+        # Validar se num_apartments atual não excede novo limite
+        num_apts = update_data.get("num_apartments", current_building.get("num_apartments", 0))
+        if num_apts > plan_info["max_apartments"]:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Número de apartamentos ({num_apts}) excede o limite do plano {plan_info['name']} ({plan_info['max_apartments']} apts)"
+            )
+    
+    # Validar mudança de num_apartments
+    if "num_apartments" in update_data:
+        plan = update_data.get("plan", current_building.get("plan"))
+        plan_info = PLANS.get(plan)
+        if update_data["num_apartments"] > plan_info["max_apartments"]:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Número de apartamentos excede o limite do plano {plan_info['name']} ({plan_info['max_apartments']} apts)"
+            )
+        
+        # Se aumentando apartamentos, criar novos
+        current_apts = current_building.get("num_apartments", 0)
+        if update_data["num_apartments"] > current_apts:
+            for i in range(current_apts + 1, update_data["num_apartments"] + 1):
+                apt_data = {
+                    "id": str(uuid.uuid4()),
+                    "number": str(i),
+                    "building_id": building_id,
+                    "created_at": datetime.now(timezone.utc).isoformat()
+                }
+                await db.apartments.insert_one(apt_data)
     
     await db.buildings.update_one({"id": building_id}, {"$set": update_data})
     
