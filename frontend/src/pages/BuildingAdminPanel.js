@@ -753,14 +753,34 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
           <TabsContent value="message" className="space-y-4">
             <Card>
               <CardHeader>
-                <CardTitle>Mensagem Personalizada</CardTitle>
+                <CardTitle>Configurações do Prédio</CardTitle>
                 <CardDescription>
-                  Customize a mensagem WhatsApp. Use [numero] para inserir o número do apartamento.
+                  Configure endereço e mensagem personalizada
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4">
+              <CardContent className="space-y-6">
                 <div>
-                  <Label>Mensagem WhatsApp</Label>
+                  <Label>Endereço Completo do Prédio</Label>
+                  <Input
+                    value={buildingAddress}
+                    onChange={(e) => setBuildingAddress(e.target.value)}
+                    placeholder="Rua Example, 123 - Bairro - Cidade/UF"
+                    className="mt-2"
+                    data-testid="building-address-input"
+                  />
+                  <Button onClick={handleUpdateAddress} className="mt-2" size="sm" variant="outline">
+                    <CheckCircle className="w-4 h-4 mr-2" />
+                    Atualizar Endereço
+                  </Button>
+                </div>
+
+                <Separator />
+
+                <div>
+                  <Label>Mensagem WhatsApp Personalizada</Label>
+                  <p className="text-xs text-slate-500 mt-1 mb-2">
+                    Use [numero] para inserir o número do apartamento automaticamente
+                  </p>
                   <Textarea
                     value={customMessage}
                     onChange={(e) => setCustomMessage(e.target.value)}
