@@ -455,7 +455,7 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-600">Entregas Total</p>
+                  <p className="text-sm text-slate-600">Notificações Enviadas</p>
                   <p className="text-2xl font-bold text-slate-900">{deliveries.length}</p>
                 </div>
                 <History className="w-8 h-8 text-emerald-600" />
