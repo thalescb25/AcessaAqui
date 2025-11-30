@@ -908,10 +908,13 @@ async def register_delivery(delivery: DeliveryCreate, current_user: dict = Depen
     if not apartment or apartment["building_id"] != current_user["building_id"]:
         raise HTTPException(status_code=404, detail="Apartamento não encontrado")
     
-    # Verificar quota
+    # Verificar quota (exceto para planos ilimitados)
     building = await db.buildings.find_one({"id": current_user["building_id"]}, {"_id": 0})
-    if building["messages_used"] >= building["message_quota"]:
-        raise HTTPException(status_code=403, detail="Cota de mensagens excedida")
+    plan_info = PLANS.get(building.get("plan", "basic"))
+    
+    if not plan_info.get("unlimited_messages", False):
+        if building["messages_used"] >= building["message_quota"]:
+            raise HTTPException(status_code=403, detail="Cota de mensagens excedida")
     
     # Buscar telefones
     phones = await db.resident_phones.find({"apartment_id": delivery.apartment_id}, {"_id": 0}).to_list(1000)
