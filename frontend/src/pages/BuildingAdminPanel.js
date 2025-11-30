@@ -1,0 +1,519 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { API } from '../App';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import { toast } from 'sonner';
+import { Building, Users, Phone, MessageSquare, History, LogOut, Plus, Trash2, Copy, CheckCircle } from 'lucide-react';
+
+const BuildingAdminPanel = ({ user, onLogout }) => {
+  const [building, setBuilding] = useState(null);
+  const [apartments, setApartments] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [deliveries, setDeliveries] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedApartment, setSelectedApartment] = useState(null);
+  const [phones, setPhones] = useState([]);
+  const [customMessage, setCustomMessage] = useState('');
+  const [copied, setCopied] = useState(false);
+
+  // Dialogs
+  const [showAddUserDialog, setShowAddUserDialog] = useState(false);
+  const [showAddPhoneDialog, setShowAddPhoneDialog] = useState(false);
+
+  // Form states
+  const [newUser, setNewUser] = useState({ name: '', email: '', password: '', role: 'doorman' });
+  const [newPhone, setNewPhone] = useState({ whatsapp: '', name: '' });
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      const [buildingRes, apartmentsRes, usersRes, deliveriesRes] = await Promise.all([
+        axios.get(`${API}/admin/building`),
+        axios.get(`${API}/admin/apartments`),
+        axios.get(`${API}/admin/users`),
+        axios.get(`${API}/admin/deliveries`),
+      ]);
+
+      setBuilding(buildingRes.data);
+      setCustomMessage(buildingRes.data.custom_message || '');
+      setApartments(apartmentsRes.data);
+      setUsers(usersRes.data);
+      setDeliveries(deliveriesRes.data);
+    } catch (error) {
+      toast.error('Erro ao carregar dados');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const loadPhones = async (apartmentId) => {
+    try {
+      const response = await axios.get(`${API}/admin/apartments/${apartmentId}/phones`);
+      setPhones(response.data);
+    } catch (error) {
+      toast.error('Erro ao carregar telefones');
+    }
+  };
+
+  const handleAddUser = async () => {
+    try {
+      await axios.post(`${API}/admin/users`, newUser);
+      toast.success('Usuário criado com sucesso!');
+      setShowAddUserDialog(false);
+      setNewUser({ name: '', email: '', password: '', role: 'doorman' });
+      loadData();
+    } catch (error) {
+      toast.error(error.response?.data?.detail || 'Erro ao criar usuário');
+    }
+  };
+
+  const handleAddPhone = async () => {
+    if (!selectedApartment) return;
+
+    try {
+      await axios.post(`${API}/admin/apartments/${selectedApartment.id}/phones`, {
+        apartment_id: selectedApartment.id,
+        ...newPhone,
+      });
+      toast.success('Telefone adicionado!');
+      setShowAddPhoneDialog(false);
+      setNewPhone({ whatsapp: '', name: '' });
+      loadPhones(selectedApartment.id);
+    } catch (error) {
+      toast.error('Erro ao adicionar telefone');
+    }
+  };
+
+  const handleDeletePhone = async (phoneId) => {
+    try {
+      await axios.delete(`${API}/admin/phones/${phoneId}`);
+      toast.success('Telefone removido!');
+      loadPhones(selectedApartment.id);
+    } catch (error) {
+      toast.error('Erro ao remover telefone');
+    }
+  };
+
+  const handleUpdateMessage = async () => {
+    try {
+      await axios.put(`${API}/admin/building/message?message=${encodeURIComponent(customMessage)}`);
+      toast.success('Mensagem atualizada!');
+      loadData();
+    } catch (error) {
+      toast.error('Erro ao atualizar mensagem');
+    }
+  };
+
+  const copyRegistrationLink = () => {
+    const link = `${window.location.origin}/registrar?codigo=${building.registration_code}`;
+    navigator.clipboard.writeText(link);
+    setCopied(true);
+    toast.success('Link copiado!');
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-slate-50">
+      {/* Header */}
+      <div className="bg-white border-b shadow-sm">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900" style={{ fontFamily: 'Work Sans, sans-serif' }}>
+                Painel Administrativo
+              </h1>
+              <p className="text-sm text-slate-600">{building?.name}</p>
+            </div>
+            <Button
+              variant="outline"
+              onClick={onLogout}
+              className="text-red-600 hover:text-red-700 hover:bg-red-50"
+              data-testid="admin-logout-button"
+            >
+              <LogOut className="w-5 h-5 mr-2" />
+              Sair
+            </Button>
+          </div>
+        </div>
+      </div>
+
+      <div className="container mx-auto px-4 py-6">
+        {/* Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600">Plano</p>
+                  <p className="text-2xl font-bold text-slate-900 capitalize">{building?.plan}</p>
+                </div>
+                <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100">
+                  {building?.active ? 'Ativo' : 'Inativo'}
+                </Badge>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600">Mensagens</p>
+                  <p className="text-2xl font-bold text-slate-900">
+                    {building?.messages_used} / {building?.message_quota}
+                  </p>
+                </div>
+                <MessageSquare className="w-8 h-8 text-emerald-600" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600">Apartamentos</p>
+                  <p className="text-2xl font-bold text-slate-900">{apartments.length}</p>
+                </div>
+                <Building className="w-8 h-8 text-emerald-600" />
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm text-slate-600">Entregas Total</p>
+                  <p className="text-2xl font-bold text-slate-900">{deliveries.length}</p>
+                </div>
+                <History className="w-8 h-8 text-emerald-600" />
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Tabs */}
+        <Tabs defaultValue="apartments" className="space-y-4">
+          <TabsList className="grid w-full grid-cols-4 lg:w-auto">
+            <TabsTrigger value="apartments">Apartamentos</TabsTrigger>
+            <TabsTrigger value="users">Usuários</TabsTrigger>
+            <TabsTrigger value="message">Mensagem</TabsTrigger>
+            <TabsTrigger value="history">Histórico</TabsTrigger>
+          </TabsList>
+
+          {/* Apartamentos */}
+          <TabsContent value="apartments" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Gerenciar Telefones dos Moradores</CardTitle>
+                <CardDescription>Adicione ou remova telefones WhatsApp dos apartamentos</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {apartments.map((apt) => (
+                    <Card key={apt.id} className="border-l-4 border-l-emerald-600">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="font-semibold text-lg">Apartamento {apt.number}</p>
+                          </div>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={async () => {
+                              setSelectedApartment(apt);
+                              await loadPhones(apt.id);
+                            }}
+                            data-testid={`manage-phones-apt-${apt.number}`}
+                          >
+                            <Phone className="w-4 h-4 mr-2" />
+                            Gerenciar Telefones
+                          </Button>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Usuários */}
+          <TabsContent value="users" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <CardTitle>Usuários</CardTitle>
+                    <CardDescription>Gerenciar porteiros e administradores</CardDescription>
+                  </div>
+                  <Dialog open={showAddUserDialog} onOpenChange={setShowAddUserDialog}>
+                    <DialogTrigger asChild>
+                      <Button data-testid="add-user-button">
+                        <Plus className="w-4 h-4 mr-2" />
+                        Adicionar Usuário
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Novo Usuário</DialogTitle>
+                        <DialogDescription>Adicione um porteiro ou administrador</DialogDescription>
+                      </DialogHeader>
+                      <div className="space-y-4">
+                        <div>
+                          <Label>Nome</Label>
+                          <Input
+                            value={newUser.name}
+                            onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                            placeholder="Nome completo"
+                            data-testid="new-user-name"
+                          />
+                        </div>
+                        <div>
+                          <Label>Email</Label>
+                          <Input
+                            type="email"
+                            value={newUser.email}
+                            onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                            placeholder="email@exemplo.com"
+                            data-testid="new-user-email"
+                          />
+                        </div>
+                        <div>
+                          <Label>Senha</Label>
+                          <Input
+                            type="password"
+                            value={newUser.password}
+                            onChange={(e) => setNewUser({ ...newUser, password: e.target.value })}
+                            placeholder="••••••••"
+                            data-testid="new-user-password"
+                          />
+                        </div>
+                        <div>
+                          <Label>Função</Label>
+                          <select
+                            className="w-full h-10 px-3 border border-slate-300 rounded-md"
+                            value={newUser.role}
+                            onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
+                            data-testid="new-user-role"
+                          >
+                            <option value="doorman">Porteiro</option>
+                            <option value="building_admin">Administrador</option>
+                          </select>
+                        </div>
+                        <Button onClick={handleAddUser} className="w-full" data-testid="save-user-button">
+                          Salvar
+                        </Button>
+                      </div>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  {users.map((u) => (
+                    <Card key={u.id} className="border-l-4 border-l-blue-600">
+                      <CardContent className="p-4">
+                        <div className="flex items-center justify-between">
+                          <div>
+                            <p className="font-semibold">{u.name}</p>
+                            <p className="text-sm text-slate-600">{u.email}</p>
+                          </div>
+                          <Badge variant="outline" className="capitalize">
+                            {u.role === 'doorman' ? 'Porteiro' : 'Admin'}
+                          </Badge>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Mensagem */}
+          <TabsContent value="message" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Mensagem Personalizada</CardTitle>
+                <CardDescription>
+                  Customize a mensagem WhatsApp. Use [numero] para inserir o número do apartamento.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label>Mensagem WhatsApp</Label>
+                  <Textarea
+                    value={customMessage}
+                    onChange={(e) => setCustomMessage(e.target.value)}
+                    placeholder="ChegouAqui: Uma encomenda para o apartamento [numero] está pronta para retirada na portaria."
+                    rows={4}
+                    className="mt-2"
+                    data-testid="custom-message-input"
+                  />
+                </div>
+                <Button onClick={handleUpdateMessage} data-testid="save-message-button">
+                  <CheckCircle className="w-4 h-4 mr-2" />
+                  Salvar Mensagem
+                </Button>
+
+                <Separator className="my-6" />
+
+                <div>
+                  <Label className="text-base font-semibold">Link de Cadastro para Moradores</Label>
+                  <p className="text-sm text-slate-600 mb-3">Compartilhe este link para que os moradores cadastrem seus WhatsApp:</p>
+                  <div className="flex gap-2">
+                    <Input
+                      value={`${window.location.origin}/registrar?codigo=${building?.registration_code}`}
+                      readOnly
+                      className="font-mono text-sm"
+                      data-testid="registration-link"
+                    />
+                    <Button onClick={copyRegistrationLink} variant="outline" data-testid="copy-link-button">
+                      {copied ? <CheckCircle className="w-5 h-5 text-emerald-600" /> : <Copy className="w-5 h-5" />}
+                    </Button>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-2">
+                    Código do prédio: <span className="font-mono font-semibold">{building?.registration_code}</span>
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          {/* Histórico */}
+          <TabsContent value="history" className="space-y-4">
+            <Card>
+              <CardHeader>
+                <CardTitle>Histórico de Entregas</CardTitle>
+                <CardDescription>Todas as notificações enviadas</CardDescription>
+              </CardHeader>
+              <CardContent>
+                {deliveries.length === 0 ? (
+                  <div className="text-center py-12">
+                    <History className="w-16 h-16 text-slate-300 mx-auto mb-4" />
+                    <p className="text-slate-600">Nenhuma entrega registrada ainda</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {deliveries.map((delivery) => (
+                      <Card key={delivery.id} className="border-l-4 border-l-emerald-600">
+                        <CardContent className="p-4">
+                          <div className="flex items-center justify-between">
+                            <div>
+                              <p className="font-semibold">Apartamento {delivery.apartment_number}</p>
+                              <p className="text-sm text-slate-600">
+                                {new Date(delivery.timestamp).toLocaleString('pt-BR')}
+                              </p>
+                              <p className="text-xs text-slate-500 mt-1">Porteiro: {delivery.doorman_name}</p>
+                              <p className="text-xs text-slate-500">
+                                Telefones notificados: {delivery.phones_notified.length}
+                              </p>
+                            </div>
+                            <Badge variant={delivery.status === 'success' ? 'default' : 'destructive'}>
+                              {delivery.status === 'success' ? 'Enviado' : 'Falhou'}
+                            </Badge>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+      </div>
+
+      {/* Dialog de Telefones */}
+      {selectedApartment && (
+        <Dialog open={!!selectedApartment} onOpenChange={() => setSelectedApartment(null)}>
+          <DialogContent className="max-w-2xl">
+            <DialogHeader>
+              <DialogTitle>Apartamento {selectedApartment.number} - Telefones</DialogTitle>
+              <DialogDescription>Gerenciar números WhatsApp dos moradores</DialogDescription>
+            </DialogHeader>
+
+            <div className="space-y-4">
+              {/* Lista de telefones */}
+              <div className="space-y-2 max-h-60 overflow-y-auto">
+                {phones.length === 0 ? (
+                  <p className="text-sm text-slate-600 text-center py-4">Nenhum telefone cadastrado</p>
+                ) : (
+                  phones.map((phone) => (
+                    <div key={phone.id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+                      <div>
+                        <p className="font-medium">{phone.whatsapp}</p>
+                        {phone.name && <p className="text-sm text-slate-600">{phone.name}</p>}
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleDeletePhone(phone.id)}
+                        className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        data-testid={`delete-phone-${phone.id}`}
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  ))
+                )}
+              </div>
+
+              <Separator />
+
+              {/* Adicionar telefone */}
+              <div className="space-y-3">
+                <h4 className="font-semibold">Adicionar Novo Telefone</h4>
+                <div>
+                  <Label>WhatsApp (com DDD)</Label>
+                  <Input
+                    value={newPhone.whatsapp}
+                    onChange={(e) => setNewPhone({ ...newPhone, whatsapp: e.target.value })}
+                    placeholder="(11) 99999-9999"
+                    data-testid="new-phone-whatsapp"
+                  />
+                </div>
+                <div>
+                  <Label>Nome (opcional)</Label>
+                  <Input
+                    value={newPhone.name}
+                    onChange={(e) => setNewPhone({ ...newPhone, name: e.target.value })}
+                    placeholder="Nome do morador"
+                    data-testid="new-phone-name"
+                  />
+                </div>
+                <Button onClick={handleAddPhone} className="w-full" data-testid="add-phone-button">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Adicionar Telefone
+                </Button>
+              </div>
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </div>
+  );
+};
+
+export default BuildingAdminPanel;
