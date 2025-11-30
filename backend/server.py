@@ -206,19 +206,22 @@ PLANS = {
         "name": "Basic",
         "message_quota": 500,
         "max_apartments": 50,
-        "price": 49.00
+        "price": 49.00,
+        "unlimited_messages": False
     },
     "standard": {
         "name": "Standard",
         "message_quota": 1500,
-        "max_apartments": 150,
-        "price": 99.00
+        "max_apartments": 100,
+        "price": 99.00,
+        "unlimited_messages": False
     },
     "premium": {
         "name": "Premium",
-        "message_quota": 5000,
-        "max_apartments": 500,
-        "price": 199.00
+        "message_quota": 999999,  # Ilimitado
+        "max_apartments": 999999,  # Ilimitado (300+)
+        "price": 199.00,
+        "unlimited_messages": True
     }
 }
 
