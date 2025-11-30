@@ -10,7 +10,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, 
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
-import { Building, LogOut, Plus, TrendingUp, Users, Package, Edit, Trash2 } from 'lucide-react';
+import { Building, LogOut, Plus, TrendingUp, Users, Package, Edit, Trash2, Copy } from 'lucide-react';
 
 const SuperAdminPanel = ({ user, onLogout }) => {
   const [buildings, setBuildings] = useState([]);
