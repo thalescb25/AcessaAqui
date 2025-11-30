@@ -765,7 +765,7 @@ async def get_financial_dashboard(current_user: dict = Depends(get_current_user)
         "monthly_revenue": monthly_revenue,
         "total_subscribers": len(buildings),
         "plan_distribution": plan_distribution,
-        "monthly_deliveries": monthly_deliveries,
+        "monthly_subscribers": monthly_subscribers,
         "total_messages_sent": total_messages,
         "active_buildings": len([b for b in buildings if b.get("active", False)])
     }
