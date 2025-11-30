@@ -67,6 +67,15 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
     }
   };
 
+  const loadAllPhones = async () => {
+    try {
+      const response = await axios.get(`${API}/admin/all-phones`);
+      setAllPhones(response.data);
+    } catch (error) {
+      toast.error('Erro ao carregar telefones');
+    }
+  };
+
   const handleAddUser = async () => {
     try {
       await axios.post(`${API}/admin/users`, newUser);
