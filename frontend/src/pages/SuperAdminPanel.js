@@ -16,6 +16,9 @@ const SuperAdminPanel = ({ user, onLogout }) => {
   const [stats, setStats] = useState({});
   const [loading, setLoading] = useState(true);
   const [showAddDialog, setShowAddDialog] = useState(false);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+  const [selectedBuilding, setSelectedBuilding] = useState(null);
 
   const [newBuilding, setNewBuilding] = useState({
     name: '',
@@ -24,6 +27,11 @@ const SuperAdminPanel = ({ user, onLogout }) => {
     admin_password: '',
     num_apartments: 10,
     plan: 'free',
+  });
+
+  const [editBuilding, setEditBuilding] = useState({
+    name: '',
+    plan: '',
   });
 
   useEffect(() => {
