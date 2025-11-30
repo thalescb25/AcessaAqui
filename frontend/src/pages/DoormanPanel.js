@@ -138,17 +138,47 @@ const DoormanPanel = ({ user, onLogout }) => {
     return (
       <div className="min-h-screen bg-slate-50">
         <div className="bg-white border-b shadow-sm">
-          <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-            <Button
-              variant="ghost"
-              onClick={handleBackToPanel}
-              className="text-slate-600"
-            >
-              <ArrowLeft className="w-5 h-5 mr-2" />
-              Voltar
-            </Button>
-            <h1 className="text-xl font-semibold text-slate-900">Entregas de Hoje</h1>
-            <div className="w-20"></div>
+          <div className="container mx-auto px-4 py-4">
+            <div className="flex items-center justify-between mb-3">
+              <Button
+                variant="ghost"
+                onClick={handleBackToPanel}
+                className="text-slate-600"
+              >
+                <ArrowLeft className="w-5 h-5 mr-2" />
+                Voltar
+              </Button>
+              <h1 className="text-xl font-semibold text-slate-900">Histórico de Entregas</h1>
+              <div className="w-20"></div>
+            </div>
+            
+            {/* Filtro de período */}
+            <div className="flex gap-2 justify-center">
+              <Button
+                size="sm"
+                variant={historyDays === 1 ? 'default' : 'outline'}
+                onClick={() => loadHistory(1)}
+                data-testid="history-today"
+              >
+                Hoje
+              </Button>
+              <Button
+                size="sm"
+                variant={historyDays === 7 ? 'default' : 'outline'}
+                onClick={() => loadHistory(7)}
+                data-testid="history-7days"
+              >
+                7 dias
+              </Button>
+              <Button
+                size="sm"
+                variant={historyDays === 30 ? 'default' : 'outline'}
+                onClick={() => loadHistory(30)}
+                data-testid="history-30days"
+              >
+                30 dias
+              </Button>
+            </div>
           </div>
         </div>
 
@@ -157,28 +187,46 @@ const DoormanPanel = ({ user, onLogout }) => {
             <Card>
               <CardContent className="text-center py-12">
                 <Package className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                <p className="text-slate-600">Nenhuma entrega registrada hoje</p>
+                <p className="text-slate-600">Nenhuma entrega registrada no período</p>
               </CardContent>
             </Card>
           ) : (
             <div className="space-y-3">
+              <div className="bg-emerald-50 p-3 rounded-lg mb-4">
+                <p className="text-sm font-semibold text-emerald-900">
+                  Total: {todayDeliveries.length} entrega(s) nos últimos {historyDays === 1 ? 'hoje' : `${historyDays} dias`}
+                </p>
+              </div>
+              
               {todayDeliveries.map((delivery) => (
                 <Card key={delivery.id} className="border-l-4 border-l-emerald-600">
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
-                      <div>
-                        <p className="font-semibold text-lg">Apartamento {delivery.apartment_number}</p>
-                        <p className="text-sm text-slate-600">
-                          {new Date(delivery.timestamp).toLocaleTimeString('pt-BR', {
-                            hour: '2-digit',
-                            minute: '2-digit',
-                          })}
-                        </p>
-                        <p className="text-xs text-slate-500 mt-1">Por: {delivery.doorman_name}</p>
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <p className="font-semibold text-lg">Apartamento {delivery.apartment_number}</p>
+                          <Badge variant={delivery.status === 'success' ? 'default' : 'destructive'}>
+                            {delivery.status === 'success' ? 'Enviado' : 'Falhou'}
+                          </Badge>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 mt-2 text-sm">
+                          <div>
+                            <p className="text-xs text-slate-500">Data/Hora</p>
+                            <p className="font-medium">
+                              {new Date(delivery.timestamp).toLocaleString('pt-BR', {
+                                day: '2-digit',
+                                month: '2-digit',
+                                hour: '2-digit',
+                                minute: '2-digit',
+                              })}
+                            </p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-slate-500">Telefones</p>
+                            <p className="font-medium">{delivery.phones_notified.length} notificado(s)</p>
+                          </div>
+                        </div>
                       </div>
-                      <Badge variant={delivery.status === 'success' ? 'default' : 'destructive'}>
-                        {delivery.status === 'success' ? 'Enviado' : 'Falhou'}
-                      </Badge>
                     </div>
                   </CardContent>
                 </Card>
