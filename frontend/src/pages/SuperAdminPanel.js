@@ -379,6 +379,25 @@ const SuperAdminPanel = ({ user, onLogout }) => {
                               <option value="basic">Basic</option>
                               <option value="premium">Premium</option>
                             </select>
+                            <div className="flex gap-2 mt-2">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => openEditDialog(building)}
+                                data-testid={`edit-building-${building.id}`}
+                              >
+                                <Edit className="w-4 h-4" />
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                                onClick={() => openDeleteDialog(building)}
+                                data-testid={`delete-building-${building.id}`}
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </Button>
+                            </div>
                           </div>
                         </div>
                       </div>
