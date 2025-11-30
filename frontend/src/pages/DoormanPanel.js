@@ -16,6 +16,7 @@ const DoormanPanel = ({ user, onLogout }) => {
   const [sending, setSending] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [todayDeliveries, setTodayDeliveries] = useState([]);
+  const [historyDays, setHistoryDays] = useState(1);
 
   useEffect(() => {
     loadData();
@@ -36,8 +37,6 @@ const DoormanPanel = ({ user, onLogout }) => {
       setLoading(false);
     }
   };
-
-  const [historyDays, setHistoryDays] = useState(1);
 
   const loadHistory = async (days = 1) => {
     try {
