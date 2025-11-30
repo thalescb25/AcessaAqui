@@ -252,11 +252,18 @@ const DoormanPanel = ({ user, onLogout }) => {
       <div className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-slate-900" style={{ fontFamily: 'Work Sans, sans-serif' }}>
-                {building?.name}
-              </h1>
-              <p className="text-sm text-slate-600">Bem-vindo, {user?.name}</p>
+            <div className="flex items-center gap-4">
+              <img 
+                src="/logo-chegouaqui.png" 
+                alt="ChegouAqui" 
+                className="h-12 w-auto"
+              />
+              <div className="border-l-2 border-slate-200 pl-4">
+                <h1 className="text-xl font-bold text-slate-900">
+                  {building?.name}
+                </h1>
+                <p className="text-sm text-slate-600">Bem-vindo, {user?.name}</p>
+              </div>
             </div>
             <div className="flex items-center gap-3">
               <Button
