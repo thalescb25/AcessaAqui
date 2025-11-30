@@ -447,6 +447,8 @@ Validar código de prédio (sem autenticação)
 | GET /admin/apartments/{id}/phones | ❌ | ✅ | ✅ | ❌ |
 | DELETE /admin/phones/{id} | ❌ | ✅ | ❌ | ❌ |
 | GET /admin/deliveries | ❌ | ✅ | ❌ | ❌ |
+| GET /admin/all-phones | ❌ | ✅ | ❌ | ❌ |
+| DELETE /super-admin/buildings/{id} | ✅ | ❌ | ❌ | ❌ |
 | POST /doorman/delivery | ❌ | ❌ | ✅ | ❌ |
 | GET /doorman/deliveries/today | ❌ | ❌ | ✅ | ❌ |
 | POST /public/register | ✅ | ✅ | ✅ | ✅ |
