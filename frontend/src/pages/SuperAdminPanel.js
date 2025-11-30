@@ -560,17 +560,39 @@ const SuperAdminPanel = ({ user, onLogout }) => {
               />
             </div>
             <div>
-              <Label>Plano</Label>
-              <select
-                className="w-full h-10 px-3 border border-slate-300 rounded-md"
-                value={editBuilding.plan}
-                onChange={(e) => setEditBuilding({ ...editBuilding, plan: e.target.value })}
-                data-testid="edit-building-plan"
-              >
-                <option value="free">Free (100 mensagens/mês)</option>
-                <option value="basic">Basic (500 mensagens/mês)</option>
-                <option value="premium">Premium (2000 mensagens/mês)</option>
-              </select>
+              <Label>Endereço Completo</Label>
+              <Input
+                value={editBuilding.address}
+                onChange={(e) => setEditBuilding({ ...editBuilding, address: e.target.value })}
+                placeholder="Rua Example, 123 - Bairro - Cidade/UF"
+                data-testid="edit-building-address"
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <Label>Número de Apartamentos</Label>
+                <Input
+                  type="number"
+                  value={editBuilding.num_apartments}
+                  onChange={(e) => setEditBuilding({ ...editBuilding, num_apartments: parseInt(e.target.value) })}
+                  data-testid="edit-building-apartments"
+                />
+              </div>
+              <div>
+                <Label>Plano</Label>
+                <select
+                  className="w-full h-10 px-3 border border-slate-300 rounded-md"
+                  value={editBuilding.plan}
+                  onChange={(e) => setEditBuilding({ ...editBuilding, plan: e.target.value })}
+                  data-testid="edit-building-plan"
+                >
+                  {plans && Object.entries(plans).map(([key, plan]) => (
+                    <option key={key} value={key}>
+                      {plan.name} - R$ {plan.price}/mês
+                    </option>
+                  ))}
+                </select>
+              </div>
             </div>
             <Button onClick={handleEditBuilding} className="w-full bg-emerald-600 hover:bg-emerald-700" data-testid="save-edit-building">
               Salvar Alterações
