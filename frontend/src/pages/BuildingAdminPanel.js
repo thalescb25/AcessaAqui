@@ -69,6 +69,7 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
 
       setBuilding(buildingRes.data);
       setCustomMessage(buildingRes.data.custom_message || '');
+      setBuildingAddress(buildingRes.data.address || '');
       setApartments(apartmentsRes.data);
       setUsers(usersRes.data);
       setDeliveries(deliveriesRes.data);
