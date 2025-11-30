@@ -375,6 +375,16 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
     }
   };
 
+  const handleUpdateAddress = async () => {
+    try {
+      await axios.put(`${API}/admin/building/address?address=${encodeURIComponent(buildingAddress)}`);
+      toast.success('Endereço atualizado!');
+      loadData();
+    } catch (error) {
+      toast.error('Erro ao atualizar endereço');
+    }
+  };
+
   const copyRegistrationLink = () => {
     const link = `${window.location.origin}/registrar?codigo=${building.registration_code}`;
     navigator.clipboard.writeText(link);
