@@ -109,7 +109,10 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
     try {
       await axios.delete(`${API}/admin/phones/${phoneId}`);
       toast.success('Telefone removido!');
-      loadPhones(selectedApartment.id);
+      if (selectedApartment) {
+        loadPhones(selectedApartment.id);
+      }
+      loadAllPhones(); // Atualizar lista consolidada também
     } catch (error) {
       toast.error('Erro ao remover telefone');
     }
