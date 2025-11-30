@@ -150,11 +150,18 @@ const SuperAdminPanel = ({ user, onLogout }) => {
       <div className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-3xl font-bold" style={{ fontFamily: 'Work Sans, sans-serif' }}>
-                Super Admin - ChegouAqui
-              </h1>
-              <p className="text-emerald-100 mt-1">Gerenciamento de Todos os Prédios</p>
+            <div className="flex items-center gap-4">
+              <img 
+                src="/logo-chegouaqui.png" 
+                alt="ChegouAqui" 
+                className="h-14 w-auto bg-white rounded-lg p-1"
+              />
+              <div>
+                <h1 className="text-2xl font-bold">
+                  Super Admin - ChegouAqui
+                </h1>
+                <p className="text-emerald-100 mt-1">Gerenciamento de Todos os Prédios</p>
+              </div>
             </div>
             <Button
               variant="secondary"
