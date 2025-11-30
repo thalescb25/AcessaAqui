@@ -302,18 +302,60 @@ const DoormanPanel = ({ user, onLogout }) => {
 
       {/* Grid de Apartamentos */}
       <div className="container mx-auto px-4 pb-8">
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-8 gap-3">
-          {apartments.map((apartment) => (
-            <Button
-              key={apartment.id}
-              onClick={() => handleApartmentClick(apartment)}
-              disabled={sending}
-              className="h-20 text-2xl font-bold bg-white hover:bg-emerald-600 hover:text-white text-slate-900 border-2 border-slate-200 shadow-md hover:shadow-xl hover:scale-105 transition-all duration-200"
-              data-testid={`apartment-button-${apartment.number}`}
-            >
-              {apartment.number}
-            </Button>
-          ))}
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
+          {apartments.map((apartment) => {
+            const hasPhones = apartment.phones && apartment.phones.length > 0;
+            
+            return (
+              <button
+                key={apartment.id}
+                onClick={() => handleApartmentClick(apartment)}
+                disabled={sending}
+                className={`
+                  relative p-3 rounded-lg border-2 shadow-md transition-all duration-200
+                  ${hasPhones 
+                    ? 'bg-white border-emerald-200 hover:bg-emerald-600 hover:border-emerald-600 hover:text-white hover:scale-105 hover:shadow-xl' 
+                    : 'bg-slate-100 border-slate-300 text-slate-400 cursor-not-allowed opacity-60'
+                  }
+                  ${sending ? 'opacity-50' : ''}
+                `}
+                data-testid={`apartment-button-${apartment.number}`}
+              >
+                <div className="text-center">
+                  <div className={`text-3xl font-bold mb-1 ${hasPhones ? 'text-slate-900' : 'text-slate-400'}`}>
+                    {apartment.number}
+                  </div>
+                  {hasPhones ? (
+                    <div className="text-[10px] leading-tight space-y-0.5">
+                      {apartment.phones.slice(0, 2).map((phone, idx) => (
+                        <div key={idx} className="truncate">
+                          {phone.name ? (
+                            <span className="font-medium">{phone.name}</span>
+                          ) : (
+                            <span className="font-mono text-[9px]">{phone.whatsapp}</span>
+                          )}
+                        </div>
+                      ))}
+                      {apartment.phones.length > 2 && (
+                        <div className="text-[9px] text-slate-500">
+                          +{apartment.phones.length - 2} mais
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="text-[10px] text-slate-400 italic">
+                      Sem cadastro
+                    </div>
+                  )}
+                </div>
+                {!hasPhones && (
+                  <div className="absolute top-1 right-1">
+                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                  </div>
+                )}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>
