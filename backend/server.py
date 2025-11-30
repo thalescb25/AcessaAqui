@@ -549,6 +549,34 @@ async def get_apartments(current_user: dict = Depends(get_current_user)):
     
     return [Apartment(**a) for a in apartments]
 
+@api_router.get("/admin/apartments-with-phones")
+async def get_apartments_with_phones(current_user: dict = Depends(get_current_user)):
+    if current_user["role"] not in ["building_admin", "doorman"]:
+        raise HTTPException(status_code=403, detail="Acesso negado")
+    
+    apartments = await db.apartments.find(
+        {"building_id": current_user["building_id"]},
+        {"_id": 0}
+    ).to_list(1000)
+    
+    # Buscar telefones para cada apartamento
+    apartments_with_phones = []
+    for apt in apartments:
+        phones = await db.resident_phones.find(
+            {"apartment_id": apt["id"]},
+            {"_id": 0}
+        ).to_list(100)
+        
+        apartments_with_phones.append({
+            **apt,
+            "phones": phones
+        })
+    
+    # Ordenar por número
+    apartments_with_phones.sort(key=lambda x: int(x["number"]) if x["number"].isdigit() else 0)
+    
+    return apartments_with_phones
+
 @api_router.post("/admin/apartments/{apartment_id}/phones", response_model=ResidentPhone)
 async def add_resident_phone(apartment_id: str, phone: ResidentPhoneCreate, current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "building_admin":
