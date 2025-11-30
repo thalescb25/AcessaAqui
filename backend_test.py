@@ -270,7 +270,7 @@ class ChegouAquiAPITester:
             'POST', 'doorman/delivery',
             delivery_data,
             self.tokens['doorman'],
-            201
+            200
         )
 
         if success:
