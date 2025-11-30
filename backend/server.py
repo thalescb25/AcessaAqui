@@ -739,21 +739,21 @@ async def get_financial_dashboard(current_user: dict = Depends(get_current_user)
         plan = building.get("plan", "basic")
         plan_distribution[plan] = plan_distribution.get(plan, 0) + 1
     
-    # Buscar entregas por mês (últimos 6 meses)
+    # Buscar novos assinantes por mês (últimos 6 meses)
     from datetime import datetime, timedelta
-    monthly_deliveries = []
+    monthly_subscribers = []
     for i in range(5, -1, -1):
         month_start = (datetime.now(timezone.utc) - timedelta(days=30*i)).replace(day=1)
         month_end = (month_start + timedelta(days=32)).replace(day=1)
         
-        count = await db.deliveries.count_documents({
-            "timestamp": {
+        count = await db.buildings.count_documents({
+            "created_at": {
                 "$gte": month_start.isoformat(),
                 "$lt": month_end.isoformat()
             }
         })
         
-        monthly_deliveries.append({
+        monthly_subscribers.append({
             "month": month_start.strftime("%b/%y"),
             "count": count
         })
