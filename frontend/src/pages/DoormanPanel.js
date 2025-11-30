@@ -52,7 +52,8 @@ const DoormanPanel = ({ user, onLogout }) => {
       setTodayDeliveries(response.data);
       setShowHistory(true);
     } catch (error) {
-      toast.error('Erro ao carregar histórico');
+      console.error('Erro ao carregar histórico:', error);
+      toast.error(error.response?.data?.detail || 'Erro ao carregar histórico');
     }
   };
 
