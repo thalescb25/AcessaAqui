@@ -297,28 +297,17 @@ const SuperAdminPanel = ({ user, onLogout }) => {
           </Card>
         )}
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        {/* Stats Simplificados */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <Card className="border-l-4 border-l-emerald-600">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-600">Total de Prédios</p>
+                  <p className="text-sm text-slate-600">Prédios Cadastrados</p>
                   <p className="text-3xl font-bold text-slate-900">{stats.total_buildings || 0}</p>
+                  <p className="text-xs text-slate-500 mt-1">{stats.active_buildings || 0} ativos</p>
                 </div>
                 <Building className="w-10 h-10 text-emerald-600" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-l-4 border-l-blue-600">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-slate-600">Prédios Ativos</p>
-                  <p className="text-3xl font-bold text-slate-900">{stats.active_buildings || 0}</p>
-                </div>
-                <TrendingUp className="w-10 h-10 text-blue-600" />
               </div>
             </CardContent>
           </Card>
@@ -327,22 +316,11 @@ const SuperAdminPanel = ({ user, onLogout }) => {
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm text-slate-600">Entregas Total</p>
-                  <p className="text-3xl font-bold text-slate-900">{stats.total_deliveries || 0}</p>
+                  <p className="text-sm text-slate-600">Notificações Hoje</p>
+                  <p className="text-3xl font-bold text-slate-900">{stats.today_deliveries || 0}</p>
+                  <p className="text-xs text-slate-500 mt-1">{stats.total_deliveries || 0} no total</p>
                 </div>
                 <Package className="w-10 h-10 text-purple-600" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-l-4 border-l-orange-600">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-slate-600">Hoje</p>
-                  <p className="text-3xl font-bold text-slate-900">{stats.today_deliveries || 0}</p>
-                </div>
-                <Users className="w-10 h-10 text-orange-600" />
               </div>
             </CardContent>
           </Card>
