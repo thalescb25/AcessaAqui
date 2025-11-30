@@ -343,6 +343,37 @@ async def update_building(building_id: str, update: BuildingUpdate, current_user
     building = await db.buildings.find_one({"id": building_id}, {"_id": 0})
     return Building(**building)
 
+@api_router.delete("/super-admin/buildings/{building_id}")
+async def delete_building(building_id: str, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "super_admin":
+        raise HTTPException(status_code=403, detail="Acesso negado")
+    
+    # Deletar todos os dados relacionados ao prédio
+    await db.buildings.delete_one({"id": building_id})
+    await db.users.delete_many({"building_id": building_id})
+    
+    # Buscar todos os apartamentos do prédio
+    apartments = await db.apartments.find({"building_id": building_id}, {"_id": 0}).to_list(1000)
+    apartment_ids = [apt["id"] for apt in apartments]
+    
+    # Deletar telefones dos apartamentos
+    if apartment_ids:
+        await db.resident_phones.delete_many({"apartment_id": {"$in": apartment_ids}})
+    
+    # Deletar apartamentos
+    await db.apartments.delete_many({"building_id": building_id})
+    
+    # Deletar entregas e logs
+    deliveries = await db.deliveries.find({"building_id": building_id}, {"_id": 0}).to_list(1000)
+    delivery_ids = [d["id"] for d in deliveries]
+    
+    if delivery_ids:
+        await db.whatsapp_logs.delete_many({"delivery_id": {"$in": delivery_ids}})
+    
+    await db.deliveries.delete_many({"building_id": building_id})
+    
+    return {"message": "Prédio deletado com sucesso"}
+
 @api_router.get("/super-admin/stats")
 async def get_global_stats(current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "super_admin":
