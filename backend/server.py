@@ -253,25 +253,39 @@ async def refresh_plans_cache():
 
 async def send_whatsapp_message(phone: str, message: str) -> tuple[bool, Optional[str]]:
     """
-    Simula envio de WhatsApp via Twilio (sandbox para MVP)
+    Envia mensagem WhatsApp via Twilio (PRODUÇÃO ATIVADA)
     Retorna (success, error_message)
     """
     try:
-        # Em produção, usar Twilio API:
-        # from twilio.rest import Client
-        # client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
-        # message = client.messages.create(
-        #     from_=TWILIO_WHATSAPP_NUMBER,
-        #     body=message,
-        #     to=f'whatsapp:{phone}'
-        # )
+        # Verificar se temos credenciais reais do Twilio
+        if TWILIO_ACCOUNT_SID == "demo_sid" or TWILIO_AUTH_TOKEN == "demo_token":
+            # Modo simulado (fallback)
+            logging.info(f"[WHATSAPP SIMULADO] Para: {phone} | Mensagem: {message}")
+            return (True, None)
         
-        # Para MVP: simular sucesso
-        logging.info(f"[WHATSAPP SIMULADO] Para: {phone} | Mensagem: {message}")
+        # PRODUÇÃO: Usar Twilio API real
+        from twilio.rest import Client
+        client = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+        
+        # Formatar número de telefone
+        formatted_phone = phone
+        if not phone.startswith('+'):
+            # Assumir Brasil (+55) se não tiver código do país
+            formatted_phone = f"+55{phone.replace('(', '').replace(')', '').replace(' ', '').replace('-', '')}"
+        
+        twilio_message = client.messages.create(
+            from_=TWILIO_WHATSAPP_NUMBER,
+            body=message,
+            to=f'whatsapp:{formatted_phone}'
+        )
+        
+        logging.info(f"[WHATSAPP ENVIADO] Para: {formatted_phone} | SID: {twilio_message.sid}")
         return (True, None)
+        
     except Exception as e:
-        logging.error(f"Erro ao enviar WhatsApp: {str(e)}")
-        return (False, str(e))
+        error_msg = str(e)
+        logging.error(f"Erro ao enviar WhatsApp para {phone}: {error_msg}")
+        return (False, error_msg)
 
 # ==================== STARTUP ====================
 
