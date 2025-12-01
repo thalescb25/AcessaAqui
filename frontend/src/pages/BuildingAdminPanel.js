@@ -609,9 +609,7 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
           <div class="page">
             <!-- Header -->
             <div class="header">
-              <div class="logo-container">
-                <img src="https://customer-assets.emergentagent.com/job_5c7bcef9-c9d5-4ba7-9010-4e415f73f052/artifacts/045tlgpf_Gemini_Generated_Image_siyn74siyn74siyn_branco%20%20v2.png" class="logo" alt="ChegouAqui" />
-              </div>
+              <img src="https://customer-assets.emergentagent.com/job_5c7bcef9-c9d5-4ba7-9010-4e415f73f052/artifacts/045tlgpf_Gemini_Generated_Image_siyn74siyn74siyn_branco%20%20v2.png" class="logo" alt="ChegouAqui" />
               <h1>ChegouAqui</h1>
               <p class="tagline">Notificação Inteligente de Encomendas</p>
             </div>
