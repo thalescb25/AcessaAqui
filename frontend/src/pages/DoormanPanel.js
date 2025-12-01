@@ -289,6 +289,16 @@ const DoormanPanel = ({ user, onLogout }) => {
               </Button>
               <Button
                 variant="ghost"
+                onClick={() => window.location.href = 'mailto:neuraone.ai@gmail.com?subject=Contato ChegouAqui'}
+                style={{ color: colors.yellow }}
+                className="hover:bg-white/10"
+                data-testid="doorman-contact-button"
+              >
+                <MessageCircle className="w-5 h-5 mr-2" />
+                Fale Conosco
+              </Button>
+              <Button
+                variant="ghost"
                 onClick={onLogout}
                 style={{ color: colors.grayMetal }}
                 className="hover:bg-white/10"
