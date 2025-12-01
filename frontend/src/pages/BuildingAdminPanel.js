@@ -80,6 +80,13 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
       setBuilding(buildingRes.data);
       setCustomMessage(buildingRes.data.custom_message || '');
       setBuildingAddress(buildingRes.data.address || '');
+      
+      // Carregar dados do síndico
+      setSindicoName(buildingRes.data.sindico_name || '');
+      setSindicoApartment(buildingRes.data.sindico_apartment || '');
+      setSindicoPhone(buildingRes.data.sindico_phone || '');
+      setSindicoEmail(buildingRes.data.sindico_email || '');
+      
       setApartments(apartmentsRes.data);
       setUsers(usersRes.data);
       setDeliveries(deliveriesRes.data);
