@@ -260,6 +260,18 @@ async def refresh_plans_cache():
     global PLANS_CACHE
     PLANS_CACHE = await get_plans_from_db()
 
+def is_trial_expired(building: dict) -> bool:
+    """Verifica se o período de trial expirou"""
+    if building.get("plan") != "trial":
+        return False
+    
+    trial_ends_at = building.get("trial_ends_at")
+    if not trial_ends_at:
+        return False
+    
+    trial_end = datetime.fromisoformat(trial_ends_at.replace('Z', '+00:00'))
+    return datetime.now(timezone.utc) > trial_end
+
 async def send_whatsapp_message(phone: str, message: str) -> tuple[bool, Optional[str]]:
     """
     Envia mensagem WhatsApp via Twilio (PRODUÇÃO ATIVADA)
