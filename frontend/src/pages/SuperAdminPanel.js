@@ -209,28 +209,31 @@ const SuperAdminPanel = ({ user, onLogout }) => {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen" style={{ backgroundColor: '#F5F5F5' }}>
       {/* Header */}
-      <div className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-lg">
+      <div style={{ backgroundColor: '#2A2A2A', color: '#FFFFFF' }} className="shadow-lg">
         <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <img 
-                src="/logo-chegouaqui.png" 
-                alt="ChegouAqui" 
-                className="h-20 w-auto bg-white rounded-lg p-2"
-              />
-              <div>
-                <h1 className="text-2xl font-bold">
-                  Super Admin - ChegouAqui
+              <div className="bg-white rounded-lg p-2">
+                <img 
+                  src="/logo-chegouaqui.png" 
+                  alt="ChegouAqui" 
+                  className="h-20 w-auto"
+                />
+              </div>
+              <div className="border-l-2 pl-4" style={{ borderColor: '#FFD839' }}>
+                <h1 className="text-3xl font-bold">
+                  Super Admin
                 </h1>
-                <p className="text-emerald-100 mt-1">Gerenciamento de Todos os Prédios</p>
+                <p style={{ color: '#9A9A9A' }} className="mt-1">Gerenciamento de Todos os Prédios</p>
               </div>
             </div>
             <Button
-              variant="secondary"
+              variant="ghost"
               onClick={onLogout}
-              className="bg-white text-emerald-600 hover:bg-slate-100"
+              style={{ color: '#9A9A9A' }}
+              className="hover:bg-white/10"
               data-testid="superadmin-logout-button"
             >
               <LogOut className="w-5 h-5 mr-2" />
