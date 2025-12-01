@@ -365,6 +365,12 @@ async def create_building(building: BuildingCreate, current_user: dict = Depends
     building_id = str(uuid.uuid4())
     registration_code = generate_registration_code()
     
+    # Calcular trial_ends_at se for plano trial
+    trial_ends_at = None
+    if building.plan == "trial" and plan_info.get("trial_days"):
+        trial_end_date = datetime.now(timezone.utc) + timedelta(days=plan_info["trial_days"])
+        trial_ends_at = trial_end_date.isoformat()
+    
     building_data = {
         "id": building_id,
         "name": building.name,
@@ -377,7 +383,8 @@ async def create_building(building: BuildingCreate, current_user: dict = Depends
         "messages_used": 0,
         "active": True,
         "custom_message": None,
-        "created_at": datetime.now(timezone.utc).isoformat()
+        "created_at": datetime.now(timezone.utc).isoformat(),
+        "trial_ends_at": trial_ends_at
     }
     await db.buildings.insert_one(building_data)
     
