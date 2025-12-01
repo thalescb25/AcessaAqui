@@ -942,7 +942,7 @@ async def import_phones_csv(
                 imported += 1
                 
             except Exception as e:
-                errors.append(f"Erro na linha {row}: {str(e)}")
+                errors.append(f"Linha {row_num}: Erro ao processar - {str(e)}")
         
         return {
             "success": True,
