@@ -6,7 +6,8 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from 'sonner';
-import { Package, CheckCircle, Home } from 'lucide-react';
+import { Phone, CheckCircle, Bell } from 'lucide-react';
+import { colors } from '../theme';
 
 const PublicRegistration = () => {
   const [registrationCode, setRegistrationCode] = useState('');
@@ -18,7 +19,6 @@ const PublicRegistration = () => {
   const [buildingName, setBuildingName] = useState('');
 
   useEffect(() => {
-    // Pegar código da URL se existir
     const params = new URLSearchParams(window.location.search);
     const codigo = params.get('codigo');
     if (codigo) {
@@ -32,7 +32,7 @@ const PublicRegistration = () => {
       const response = await axios.get(`${API}/public/building/${code}`);
       setBuildingName(response.data.name);
     } catch (error) {
-      // Não exibir erro aqui, apenas ao submeter
+      // Não exibir erro aqui
     }
   };
 
@@ -60,40 +60,65 @@ const PublicRegistration = () => {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 px-4">
-        <Card className="max-w-md w-full shadow-2xl border-0">
-          <CardHeader className="text-center pb-6">
-            <div className="mx-auto mb-4 w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center">
-              <CheckCircle className="w-12 h-12 text-emerald-600" />
+      <div 
+        className="min-h-screen flex items-center justify-center px-4"
+        style={{ backgroundColor: colors.lightGray }}
+      >
+        <Card 
+          className="max-w-md w-full shadow-2xl"
+          style={{ borderWidth: '3px', borderColor: colors.yellow }}
+        >
+          <CardHeader className="text-center pb-6" style={{ backgroundColor: colors.white }}>
+            <div 
+              className="mx-auto mb-4 w-24 h-24 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: colors.yellow }}
+            >
+              <CheckCircle className="w-16 h-16" style={{ color: colors.black }} />
             </div>
-            <CardTitle className="text-3xl font-bold text-emerald-600">Cadastro Concluído!</CardTitle>
-            <CardDescription className="text-lg mt-2">
-              Seu WhatsApp foi cadastrado com sucesso
+            <CardTitle 
+              className="text-3xl font-bold"
+              style={{ color: colors.black }}
+            >
+              Cadastro Concluído!
+            </CardTitle>
+            <CardDescription className="text-lg mt-2" style={{ color: colors.grayMetal }}>
+              Você receberá avisos via WhatsApp
             </CardDescription>
           </CardHeader>
-          <CardContent className="text-center space-y-4">
-            <div className="bg-slate-50 rounded-xl p-6">
-              <p className="text-sm text-slate-600 mb-1">Prédio</p>
-              <p className="text-xl font-bold text-slate-900">{buildingName}</p>
-              <p className="text-sm text-slate-600 mt-3 mb-1">Apartamento</p>
-              <p className="text-3xl font-bold text-slate-900">{apartmentNumber}</p>
+          <CardContent className="text-center space-y-4" style={{ backgroundColor: colors.white }}>
+            <div 
+              className="rounded-xl p-6"
+              style={{ backgroundColor: colors.lightGray }}
+            >
+              <p className="text-sm mb-1" style={{ color: colors.grayMetal }}>Prédio</p>
+              <p className="text-xl font-bold" style={{ color: colors.black }}>{buildingName}</p>
+              <p className="text-sm mt-3 mb-1" style={{ color: colors.grayMetal }}>Apartamento</p>
+              <p className="text-3xl font-bold" style={{ color: colors.black }}>{apartmentNumber}</p>
+              <p className="text-sm mt-3 mb-1" style={{ color: colors.grayMetal }}>WhatsApp</p>
+              <p className="text-lg font-bold" style={{ color: colors.black }}>{whatsapp}</p>
             </div>
 
-            <div className="bg-emerald-50 rounded-xl p-4">
-              <p className="text-sm text-emerald-800">
-                Você receberá notificações WhatsApp sempre que uma encomenda chegar para seu apartamento!
+            <div 
+              className="rounded-xl p-5"
+              style={{ backgroundColor: colors.yellow }}
+            >
+              <Bell className="w-8 h-8 mx-auto mb-3" style={{ color: colors.black }} />
+              <p className="font-semibold" style={{ color: colors.black }}>
+                🎉 Tudo pronto!
+              </p>
+              <p className="text-sm mt-2" style={{ color: colors.darkGray }}>
+                Sempre que uma encomenda chegar, você receberá uma notificação automática no WhatsApp cadastrado.
               </p>
             </div>
 
-            <Button
-              onClick={() => (window.location.href = '/login')}
-              variant="outline"
-              className="w-full"
-              data-testid="go-to-login-button"
+            <div 
+              className="rounded-xl p-4 border-2"
+              style={{ borderColor: colors.techTeal, backgroundColor: 'rgba(0, 226, 198, 0.05)' }}
             >
-              <Home className="w-5 h-5 mr-2" />
-              Ir para Login
-            </Button>
+              <p className="text-xs" style={{ color: colors.grayMetal }}>
+                💡 <strong>Dica:</strong> Mantenha suas notificações do WhatsApp ativadas para não perder nenhum aviso!
+              </p>
+            </div>
           </CardContent>
         </Card>
       </div>
@@ -101,115 +126,171 @@ const PublicRegistration = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 px-4">
+    <div 
+      className="min-h-screen flex items-center justify-center px-4"
+      style={{ backgroundColor: colors.lightGray }}
+    >
       <div className="w-full max-w-md">
+        {/* Logo e Título */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center mb-4">
+          <div className="inline-flex items-center justify-center mb-4 bg-white p-4 rounded-2xl shadow-lg">
             <img 
               src="/logo-chegouaqui.png" 
-              alt="ChegouAqui Logo" 
-              className="h-24 w-auto"
+              alt="ChegouAqui" 
+              className="h-32 w-auto"
             />
           </div>
-          <p className="text-slate-600 text-lg">Cadastre seu WhatsApp</p>
+          <h1 
+            className="text-3xl font-bold mb-2"
+            style={{ color: colors.black }}
+          >
+            Cadastro de Morador
+          </h1>
+          {buildingName && (
+            <p 
+              className="text-xl font-semibold"
+              style={{ color: colors.yellow }}
+            >
+              {buildingName}
+            </p>
+          )}
+          <p className="mt-2" style={{ color: colors.grayMetal }}>
+            Receba avisos automáticos de encomendas
+          </p>
         </div>
 
-        <Card className="shadow-xl border-0">
-          <CardHeader className="space-y-1 pb-6">
-            <CardTitle className="text-2xl font-semibold">Cadastro de Morador</CardTitle>
-            <CardDescription>
-              Receba notificações quando suas encomendas chegarem
+        {/* Card de Cadastro */}
+        <Card 
+          className="shadow-2xl"
+          style={{ borderWidth: '3px', borderColor: colors.yellow }}
+        >
+          <CardHeader style={{ backgroundColor: colors.white }}>
+            <CardTitle style={{ color: colors.black }}>Cadastre seu WhatsApp</CardTitle>
+            <CardDescription style={{ color: colors.grayMetal }}>
+              Preencha os dados abaixo para começar a receber notificações
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent style={{ backgroundColor: colors.white }}>
             <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Código do Prédio */}
               <div className="space-y-2">
-                <Label htmlFor="code">Código do Prédio</Label>
+                <Label htmlFor="code" style={{ color: colors.black }}>Código do Prédio</Label>
                 <Input
                   id="code"
+                  type="text"
+                  placeholder="Ex: ABC123"
                   value={registrationCode}
                   onChange={(e) => {
                     const code = e.target.value.toUpperCase();
                     setRegistrationCode(code);
-                    if (code.length >= 8) verifyCode(code);
+                    if (code.length >= 6) verifyCode(code);
                   }}
-                  placeholder="Ex: ABC123XY"
                   required
-                  className="h-11 uppercase"
-                  data-testid="registration-code-input"
+                  maxLength={10}
+                  className="text-center text-lg font-mono"
+                  style={{ borderColor: colors.grayMetal }}
                 />
-                {buildingName && (
-                  <p className="text-sm text-emerald-600 flex items-center gap-1">
-                    <CheckCircle className="w-4 h-4" />
-                    {buildingName}
-                  </p>
-                )}
               </div>
 
+              {/* Número do Apartamento */}
               <div className="space-y-2">
-                <Label htmlFor="apartment">Número do Apartamento</Label>
+                <Label htmlFor="apartment" style={{ color: colors.black }}>Apartamento</Label>
                 <Input
                   id="apartment"
+                  type="text"
+                  placeholder="Ex: 101, 201, A1"
                   value={apartmentNumber}
                   onChange={(e) => setApartmentNumber(e.target.value)}
-                  placeholder="Ex: 101"
                   required
-                  className="h-11"
-                  data-testid="apartment-number-input"
+                  className="text-center text-lg font-semibold"
+                  style={{ borderColor: colors.grayMetal }}
                 />
               </div>
 
+              {/* Nome (Opcional) */}
               <div className="space-y-2">
-                <Label htmlFor="whatsapp">WhatsApp (com DDD)</Label>
-                <Input
-                  id="whatsapp"
-                  value={whatsapp}
-                  onChange={(e) => setWhatsapp(e.target.value)}
-                  placeholder="(11) 99999-9999"
-                  required
-                  className="h-11"
-                  data-testid="whatsapp-input"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="name">Seu Nome (opcional)</Label>
+                <Label htmlFor="name" style={{ color: colors.black }}>
+                  Seu Nome <span className="text-sm" style={{ color: colors.grayMetal }}>(opcional)</span>
+                </Label>
                 <Input
                   id="name"
+                  type="text"
+                  placeholder="Ex: João Silva"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Seu nome"
-                  className="h-11"
-                  data-testid="name-input"
+                  style={{ borderColor: colors.grayMetal }}
                 />
               </div>
 
+              {/* WhatsApp */}
+              <div className="space-y-2">
+                <Label htmlFor="whatsapp" style={{ color: colors.black }}>WhatsApp</Label>
+                <div className="relative">
+                  <Phone 
+                    className="absolute left-3 top-3 h-5 w-5" 
+                    style={{ color: colors.grayMetal }}
+                  />
+                  <Input
+                    id="whatsapp"
+                    type="tel"
+                    placeholder="(11) 99999-9999"
+                    value={whatsapp}
+                    onChange={(e) => setWhatsapp(e.target.value)}
+                    required
+                    className="pl-10"
+                    style={{ borderColor: colors.grayMetal }}
+                  />
+                </div>
+                <p className="text-xs" style={{ color: colors.grayMetal }}>
+                  Digite com DDD. Ex: (11) 99999-9999
+                </p>
+              </div>
+
+              {/* Botão de Cadastrar */}
               <Button
                 type="submit"
-                className="w-full h-11 bg-emerald-600 hover:bg-emerald-700 text-white font-medium"
+                className="w-full text-lg font-bold py-6"
                 disabled={loading}
-                data-testid="submit-registration-button"
+                style={{
+                  backgroundColor: colors.yellow,
+                  color: colors.black,
+                }}
               >
                 {loading ? (
-                  <div className="flex items-center justify-center">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                  <div className="flex items-center gap-2">
+                    <div 
+                      className="animate-spin rounded-full h-5 w-5 border-2 border-t-transparent"
+                      style={{ borderColor: colors.black }}
+                    />
+                    Cadastrando...
                   </div>
                 ) : (
-                  'Cadastrar WhatsApp'
+                  <div className="flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5" />
+                    Cadastrar WhatsApp
+                  </div>
                 )}
               </Button>
             </form>
 
-            <div className="mt-6 pt-6 border-t border-slate-200">
-              <p className="text-sm text-center text-slate-600">
-                Funcionário do prédio?{' '}
-                <a href="/login" className="text-emerald-600 hover:text-emerald-700 font-medium">
-                  Fazer login
-                </a>
+            {/* Info adicional */}
+            <div 
+              className="mt-6 p-4 rounded-lg text-xs"
+              style={{ backgroundColor: colors.lightGray }}
+            >
+              <p style={{ color: colors.grayMetal }}>
+                🔒 <strong>Seus dados estão seguros.</strong> Usamos seu WhatsApp apenas para enviar avisos de encomendas.
               </p>
             </div>
           </CardContent>
         </Card>
+
+        {/* Footer */}
+        <div className="text-center mt-8">
+          <p className="text-sm" style={{ color: colors.grayMetal }}>
+            © 2025 ChegouAqui. Sistema de notificação de encomendas.
+          </p>
+        </div>
       </div>
     </div>
   );
