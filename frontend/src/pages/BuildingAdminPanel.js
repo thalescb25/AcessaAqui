@@ -47,6 +47,12 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
   const [newUser, setNewUser] = useState({ name: '', email: '', password: '', role: 'doorman' });
   const [newPhone, setNewPhone] = useState({ whatsapp: '', name: '' });
   const [editApartmentNumber, setEditApartmentNumber] = useState('');
+  
+  // Síndico data
+  const [sindicoName, setSindicoName] = useState('');
+  const [sindicoApartment, setSindicoApartment] = useState('');
+  const [sindicoPhone, setSindicoPhone] = useState('');
+  const [sindicoEmail, setSindicoEmail] = useState('');
 
   useEffect(() => {
     loadData();
