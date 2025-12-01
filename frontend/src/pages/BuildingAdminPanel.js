@@ -1305,7 +1305,7 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
                   </div>
                   
                   <Button 
-                    onClick={() => toast.success('Dados do síndico salvos!')} 
+                    onClick={handleUpdateSindico} 
                     className="mt-4"
                     variant="outline"
                   >
