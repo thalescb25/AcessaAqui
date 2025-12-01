@@ -251,14 +251,51 @@ const PublicRegistration = () => {
                 </p>
               </div>
 
+              {/* Checkbox de Termos e Condições */}
+              <div 
+                className="flex items-start gap-3 p-4 rounded-lg border-2"
+                style={{ 
+                  borderColor: acceptTerms ? colors.yellow : colors.grayMetal,
+                  backgroundColor: acceptTerms ? 'rgba(255, 216, 57, 0.05)' : colors.lightGray
+                }}
+              >
+                <input
+                  type="checkbox"
+                  id="acceptTerms"
+                  checked={acceptTerms}
+                  onChange={(e) => setAcceptTerms(e.target.checked)}
+                  className="mt-1 w-5 h-5 cursor-pointer"
+                  style={{ accentColor: colors.yellow }}
+                />
+                <Label 
+                  htmlFor="acceptTerms" 
+                  className="text-sm cursor-pointer leading-relaxed"
+                  style={{ color: colors.black }}
+                >
+                  Li e aceito os{' '}
+                  <a 
+                    href="/termos-e-condicoes.html" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="font-semibold underline"
+                    style={{ color: colors.yellow }}
+                  >
+                    Termos e Condições de Uso
+                  </a>
+                  {' '}da plataforma ChegouAqui
+                </Label>
+              </div>
+
               {/* Botão de Cadastrar */}
               <Button
                 type="submit"
                 className="w-full text-lg font-bold py-6"
-                disabled={loading}
+                disabled={loading || !acceptTerms}
                 style={{
-                  backgroundColor: colors.yellow,
-                  color: colors.black,
+                  backgroundColor: acceptTerms ? colors.yellow : colors.grayMetal,
+                  color: acceptTerms ? colors.black : colors.white,
+                  cursor: acceptTerms ? 'pointer' : 'not-allowed',
+                  opacity: acceptTerms ? 1 : 0.6
                 }}
               >
                 {loading ? (
@@ -277,16 +314,6 @@ const PublicRegistration = () => {
                 )}
               </Button>
             </form>
-
-            {/* Info adicional */}
-            <div 
-              className="mt-6 p-4 rounded-lg text-xs"
-              style={{ backgroundColor: colors.lightGray }}
-            >
-              <p style={{ color: colors.grayMetal }}>
-                🔒 <strong>Seus dados estão seguros.</strong> Usamos seu WhatsApp apenas para enviar avisos de encomendas.
-              </p>
-            </div>
           </CardContent>
         </Card>
 
