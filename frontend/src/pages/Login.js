@@ -9,6 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { toast } from 'sonner';
 import { Bell, Lock, Mail, LogIn } from 'lucide-react';
 import { colors } from '../theme';
+import ContactButton from '../components/ContactButton';
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
