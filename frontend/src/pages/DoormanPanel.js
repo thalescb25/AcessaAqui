@@ -358,12 +358,22 @@ const DoormanPanel = ({ user, onLogout }) => {
                   >
                     {apt.number}
                   </p>
-                  <p 
-                    className="text-xs"
-                    style={{ color: colors.grayMetal }}
-                  >
-                    {hasPhones ? `${apt.phones.length} cadastrado(s)` : 'Sem cadastro'}
-                  </p>
+                  {hasPhones ? (
+                    <div className="text-xs space-y-0.5" style={{ color: colors.grayMetal }}>
+                      {apt.phones.slice(0, 2).map((phone, idx) => (
+                        <p key={idx} className="truncate px-1">
+                          {phone.name || phone.whatsapp}
+                        </p>
+                      ))}
+                      {apt.phones.length > 2 && (
+                        <p className="font-semibold">+{apt.phones.length - 2} mais</p>
+                      )}
+                    </div>
+                  ) : (
+                    <p className="text-xs" style={{ color: colors.grayMetal }}>
+                      Sem cadastro
+                    </p>
+                  )}
                 </div>
               </button>
             );
