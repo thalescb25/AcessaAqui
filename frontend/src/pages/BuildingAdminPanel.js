@@ -441,7 +441,7 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
             }
             
             .logo {
-              height: 220px;
+              height: 280px;
               width: auto;
               margin-bottom: 20px;
             }
