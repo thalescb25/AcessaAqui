@@ -586,6 +586,31 @@ async def update_building_address(address: str, current_user: dict = Depends(get
     
     return {"message": "Endereço atualizado com sucesso"}
 
+class SindicoUpdate(BaseModel):
+    sindico_name: Optional[str] = None
+    sindico_apartment: Optional[str] = None
+    sindico_phone: Optional[str] = None
+    sindico_email: Optional[str] = None
+
+@api_router.put("/admin/building/sindico")
+async def update_sindico_data(sindico: SindicoUpdate, current_user: dict = Depends(get_current_user)):
+    if current_user["role"] != "building_admin":
+        raise HTTPException(status_code=403, detail="Acesso negado")
+    
+    update_data = {
+        "sindico_name": sindico.sindico_name,
+        "sindico_apartment": sindico.sindico_apartment,
+        "sindico_phone": sindico.sindico_phone,
+        "sindico_email": sindico.sindico_email
+    }
+    
+    await db.buildings.update_one(
+        {"id": current_user["building_id"]},
+        {"$set": update_data}
+    )
+    
+    return {"message": "Dados do síndico atualizados com sucesso"}
+
 @api_router.post("/admin/users", response_model=User)
 async def create_doorman(user: UserCreate, current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "building_admin":
