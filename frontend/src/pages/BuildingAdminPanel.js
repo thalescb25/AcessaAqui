@@ -1139,6 +1139,39 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
           </DialogContent>
         </Dialog>
       )}
+
+      {/* Dialog de Edição de Apartamento */}
+      <Dialog open={showEditApartmentDialog} onOpenChange={setShowEditApartmentDialog}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Editar Número do Apartamento</DialogTitle>
+            <DialogDescription>
+              Altere a numeração para adaptar ao seu prédio (ex: 101, 201, A1, etc.)
+            </DialogDescription>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div>
+              <Label>Número do Apartamento</Label>
+              <Input
+                value={editApartmentNumber}
+                onChange={(e) => setEditApartmentNumber(e.target.value)}
+                placeholder="Ex: 101, 201, A1"
+                data-testid="edit-apartment-number"
+              />
+              <p className="text-xs text-slate-500 mt-1">
+                Use qualquer formato: números, letras, ou combinações
+              </p>
+            </div>
+            <Button 
+              onClick={handleSaveApartmentNumber} 
+              className="w-full"
+              data-testid="save-apartment-number"
+            >
+              Salvar Alteração
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
