@@ -229,16 +229,28 @@ const SuperAdminPanel = ({ user, onLogout }) => {
                 <p style={{ color: '#9A9A9A' }} className="mt-1">Gerenciamento de Todos os Prédios</p>
               </div>
             </div>
-            <Button
-              variant="ghost"
-              onClick={onLogout}
-              style={{ color: '#9A9A9A' }}
-              className="hover:bg-white/10"
-              data-testid="superadmin-logout-button"
-            >
-              <LogOut className="w-5 h-5 mr-2" />
-              Sair
-            </Button>
+            <div className="flex items-center gap-2">
+              <Button
+                variant="ghost"
+                onClick={() => window.location.href = 'mailto:neuraone.ai@gmail.com?subject=Contato ChegouAqui'}
+                style={{ color: '#FFD839' }}
+                className="hover:bg-white/10"
+                data-testid="superadmin-contact-button"
+              >
+                <MessageCircle className="w-5 h-5 mr-2" />
+                Fale Conosco
+              </Button>
+              <Button
+                variant="ghost"
+                onClick={onLogout}
+                style={{ color: '#9A9A9A' }}
+                className="hover:bg-white/10"
+                data-testid="superadmin-logout-button"
+              >
+                <LogOut className="w-5 h-5 mr-2" />
+                Sair
+              </Button>
+            </div>
           </div>
         </div>
       </div>
