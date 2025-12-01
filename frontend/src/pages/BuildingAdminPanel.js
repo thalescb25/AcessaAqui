@@ -1004,7 +1004,7 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
                         data-testid="print-qr-button"
                       >
                         <Printer className="w-4 h-4 mr-2" />
-                        Imprimir para Elevador
+                        Imprimir folheto de cadastro
                       </Button>
                     </div>
                     
