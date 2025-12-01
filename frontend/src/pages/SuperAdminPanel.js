@@ -362,6 +362,67 @@ const SuperAdminPanel = ({ user, onLogout }) => {
           </Card>
         )}
 
+        {/* Gerenciamento de Planos */}
+        {plans && (
+          <Card className="mb-6 border-2 border-purple-200">
+            <CardHeader className="bg-gradient-to-r from-purple-50 to-indigo-50">
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle className="text-purple-900">Gerenciamento de Planos</CardTitle>
+                  <CardDescription>Configure os planos de assinatura disponíveis</CardDescription>
+                </div>
+                <Button 
+                  onClick={handleOpenEditPlans}
+                  className="bg-purple-600 hover:bg-purple-700"
+                  data-testid="edit-plans-button"
+                >
+                  <Edit className="w-4 h-4 mr-2" />
+                  Editar Planos
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {['basic', 'standard', 'premium'].map(planKey => {
+                  const plan = plans[planKey];
+                  if (!plan) return null;
+                  
+                  const colors = {
+                    basic: 'border-blue-300 bg-blue-50',
+                    standard: 'border-purple-300 bg-purple-50',
+                    premium: 'border-amber-300 bg-amber-50'
+                  };
+                  
+                  return (
+                    <Card key={planKey} className={`border-2 ${colors[planKey]}`}>
+                      <CardHeader>
+                        <CardTitle className="text-lg">{plan.name}</CardTitle>
+                        <div className="text-3xl font-bold text-slate-900">
+                          R$ {plan.price.toFixed(2)}<span className="text-sm text-slate-600">/mês</span>
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <ul className="space-y-2 text-sm">
+                          <li className="flex items-center gap-2">
+                            <Badge variant="outline">
+                              {plan.unlimited_messages ? '∞ mensagens' : `${plan.message_quota} mensagens`}
+                            </Badge>
+                          </li>
+                          <li className="flex items-center gap-2">
+                            <Badge variant="outline">
+                              {plan.max_apartments >= 999999 ? '300+ apartamentos' : `${plan.max_apartments} apartamentos`}
+                            </Badge>
+                          </li>
+                        </ul>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
         {/* Stats Simplificados */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
           <Card className="border-l-4 border-l-emerald-600">
