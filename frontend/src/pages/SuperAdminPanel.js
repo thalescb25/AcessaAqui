@@ -246,16 +246,16 @@ const SuperAdminPanel = ({ user, onLogout }) => {
       <div className="container mx-auto px-4 py-6">
         {/* Dashboard Financeiro */}
         {financialData && (
-          <Card className="mb-6 border-2 border-emerald-200">
+          <Card className="mb-6 border-2 border-yellow-300">
             <CardHeader className="bg-gradient-to-r from-emerald-50 to-teal-50">
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle className="text-emerald-900">Dashboard Financeiro</CardTitle>
+                  <CardTitle className="text-black">Dashboard Financeiro</CardTitle>
                   <CardDescription>Controle de receitas e assinantes</CardDescription>
                 </div>
                 <Button 
                   onClick={handleExportFinancialData}
-                  className="bg-emerald-600 hover:bg-emerald-700"
+                  className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold"
                   data-testid="export-financial-data"
                 >
                   <TrendingUp className="w-4 h-4 mr-2" />
@@ -475,7 +475,7 @@ const SuperAdminPanel = ({ user, onLogout }) => {
               </div>
               <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
                 <DialogTrigger asChild>
-                  <Button className="bg-emerald-600 hover:bg-emerald-700" data-testid="add-building-button">
+                  <Button className="bg-yellow-400 hover:bg-yellow-500 text-black font-bold" data-testid="add-building-button">
                     <Plus className="w-4 h-4 mr-2" />
                     Novo Prédio
                   </Button>
@@ -568,7 +568,7 @@ const SuperAdminPanel = ({ user, onLogout }) => {
                       </div>
                     </div>
 
-                    <Button onClick={handleAddBuilding} className="w-full bg-emerald-600 hover:bg-emerald-700" data-testid="save-building-button">
+                    <Button onClick={handleAddBuilding} className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold" data-testid="save-building-button">
                       Criar Prédio
                     </Button>
                   </div>
@@ -723,7 +723,7 @@ const SuperAdminPanel = ({ user, onLogout }) => {
                 </select>
               </div>
             </div>
-            <Button onClick={handleEditBuilding} className="w-full bg-emerald-600 hover:bg-emerald-700" data-testid="save-edit-building">
+            <Button onClick={handleEditBuilding} className="w-full bg-yellow-400 hover:bg-yellow-500 text-black font-bold" data-testid="save-edit-building">
               Salvar Alterações
             </Button>
           </div>
