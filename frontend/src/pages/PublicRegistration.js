@@ -18,6 +18,7 @@ const PublicRegistration = () => {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [buildingName, setBuildingName] = useState('');
+  const [acceptTerms, setAcceptTerms] = useState(false);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
