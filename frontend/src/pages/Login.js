@@ -175,19 +175,6 @@ const Login = ({ onLogin }) => {
                 </a>
               </p>
             </div>
-
-            {/* Credenciais de Teste */}
-            <div 
-              className="mt-6 p-4 rounded-lg text-xs"
-              style={{ backgroundColor: colors.lightGray }}
-            >
-              <p className="font-semibold mb-2" style={{ color: colors.black }}>
-                Credenciais de teste:
-              </p>
-              <p style={{ color: colors.grayMetal }}>
-                <strong>Super Admin padrão:</strong> admin@chegouaqui.com / admin123
-              </p>
-            </div>
           </CardContent>
         </Card>
 
