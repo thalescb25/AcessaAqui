@@ -438,7 +438,7 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
               <img 
                 src="/logo-chegouaqui.png" 
                 alt="ChegouAqui" 
-                className="h-12 w-auto"
+                className="h-16 w-auto"
               />
               <div className="border-l-2 border-slate-200 pl-4">
                 <h1 className="text-xl font-bold text-slate-900">
