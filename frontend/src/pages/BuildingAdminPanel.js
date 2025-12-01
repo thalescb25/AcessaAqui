@@ -650,6 +650,15 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
                             <div className="flex-1">
                               <div className="flex items-center gap-3">
                                 <p className="font-semibold text-lg">Apartamento {apt.number}</p>
+                                <Button
+                                  variant="ghost"
+                                  size="sm"
+                                  onClick={() => handleOpenEditApartment(apt)}
+                                  className="h-7 px-2"
+                                  data-testid={`edit-apt-${apt.number}`}
+                                >
+                                  <Edit className="w-3 h-3" />
+                                </Button>
                                 {hasPhones ? (
                                   <Badge variant="default" className="bg-emerald-100 text-emerald-700">
                                     {apt.phones.length} telefone(s)
