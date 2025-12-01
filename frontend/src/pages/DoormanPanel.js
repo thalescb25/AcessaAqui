@@ -325,7 +325,7 @@ const DoormanPanel = ({ user, onLogout }) => {
           </CardHeader>
         </Card>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3 md:gap-4">
           {apartments.map((apt) => {
             const hasPhones = apt.phones && apt.phones.length > 0;
             
@@ -334,7 +334,7 @@ const DoormanPanel = ({ user, onLogout }) => {
                 key={apt.id}
                 onClick={() => handleApartmentClick(apt)}
                 disabled={sending}
-                className="group relative p-6 rounded-lg transition-all duration-200 border-2"
+                className="group relative p-4 md:p-6 rounded-lg transition-all duration-200 border-2 min-h-[100px] md:min-h-[120px] active:scale-95 touch-manipulation"
                 style={{
                   backgroundColor: hasPhones ? colors.white : colors.lightGray,
                   borderColor: hasPhones ? colors.yellow : colors.grayMetal,
