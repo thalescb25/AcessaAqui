@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { API } from '../App';
 import { Button } from '@/components/ui/button';
@@ -11,7 +11,8 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
-import { Building, Users, Phone, MessageSquare, History, LogOut, Plus, Trash2, Copy, CheckCircle, Edit } from 'lucide-react';
+import { Building, Users, Phone, MessageSquare, History, LogOut, Plus, Trash2, Copy, CheckCircle, Edit, Printer, Download } from 'lucide-react';
+import { QRCodeSVG } from 'qrcode.react';
 
 const BuildingAdminPanel = ({ user, onLogout }) => {
   const [building, setBuilding] = useState(null);
