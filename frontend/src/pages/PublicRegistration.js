@@ -141,7 +141,7 @@ const PublicRegistration = () => {
             <img 
               src="/logo-chegouaqui.png" 
               alt="ChegouAqui" 
-              className="h-40 w-auto"
+              className="h-64 w-auto"
             />
           </div>
           <h1 
