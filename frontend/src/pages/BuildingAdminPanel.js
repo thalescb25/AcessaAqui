@@ -716,7 +716,7 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-yellow-600"></div>
       </div>
     );
   }
@@ -786,7 +786,7 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
                     {building?.messages_used} / {building?.message_quota}
                   </p>
                 </div>
-                <MessageSquare className="w-8 h-8 text-emerald-600" />
+                <MessageSquare className="w-8 h-8 text-yellow-600" />
               </div>
             </CardContent>
           </Card>
@@ -798,7 +798,7 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
                   <p className="text-sm text-slate-600">Apartamentos</p>
                   <p className="text-2xl font-bold text-slate-900">{apartments.length}</p>
                 </div>
-                <Building className="w-8 h-8 text-emerald-600" />
+                <Building className="w-8 h-8 text-yellow-600" />
               </div>
             </CardContent>
           </Card>
@@ -810,7 +810,7 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
                   <p className="text-sm text-slate-600">Notificações Enviadas</p>
                   <p className="text-2xl font-bold text-slate-900">{deliveries.length}</p>
                 </div>
-                <History className="w-8 h-8 text-emerald-600" />
+                <History className="w-8 h-8 text-yellow-600" />
               </div>
             </CardContent>
           </Card>
@@ -918,7 +918,7 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
                       variant="default"
                       size="sm"
                       onClick={() => document.getElementById('file-upload').click()}
-                      className="bg-emerald-600 hover:bg-emerald-700"
+                      className="bg-yellow-400 text-black font-bold hover:bg-yellow-500"
                       data-testid="upload-csv-button"
                     >
                       <Plus className="w-4 h-4 mr-2" />
@@ -1191,14 +1191,14 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
                             data-testid="registration-link"
                           />
                           <Button onClick={copyRegistrationLink} variant="outline" data-testid="copy-link-button">
-                            {copied ? <CheckCircle className="w-5 h-5 text-emerald-600" /> : <Copy className="w-5 h-5" />}
+                            {copied ? <CheckCircle className="w-5 h-5 text-yellow-600" /> : <Copy className="w-5 h-5" />}
                           </Button>
                         </div>
                       </div>
                       
                       <div className="mt-4 bg-emerald-50 p-4 rounded-lg">
                         <p className="text-sm font-semibold text-emerald-900 mb-2">Código do Prédio</p>
-                        <p className="text-2xl font-mono font-bold text-emerald-600">{building?.registration_code}</p>
+                        <p className="text-2xl font-mono font-bold text-yellow-600">{building?.registration_code}</p>
                         <p className="text-xs text-emerald-700 mt-2">
                           Os moradores podem usar este código para se cadastrar manualmente
                         </p>
@@ -1246,7 +1246,7 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
                       onClick={exportToExcel}
                       variant="default"
                       size="sm"
-                      className="bg-emerald-600 hover:bg-emerald-700"
+                      className="bg-yellow-400 text-black font-bold hover:bg-yellow-500"
                       data-testid="export-excel-button"
                     >
                       <History className="w-4 h-4 mr-2" />
