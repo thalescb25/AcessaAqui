@@ -6,7 +6,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
-import { Package, CheckCircle, LogOut, History, Home, ArrowLeft } from 'lucide-react';
+import { Bell, CheckCircle, LogOut, History, Home, ArrowLeft, Package } from 'lucide-react';
+import { colors } from '../theme';
 
 const DoormanPanel = ({ user, onLogout }) => {
   const [apartments, setApartments] = useState([]);
@@ -15,7 +16,7 @@ const DoormanPanel = ({ user, onLogout }) => {
   const [selectedApartment, setSelectedApartment] = useState(null);
   const [sending, setSending] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-  const [todayDeliveries, setTodayDeliveries] = useState([]);
+  const [todayNotifications, setTodayNotifications] = useState([]);
   const [historyDays, setHistoryDays] = useState(1);
 
   useEffect(() => {
@@ -49,7 +50,7 @@ const DoormanPanel = ({ user, onLogout }) => {
         response = await axios.get(`${API}/doorman/deliveries?days=${days}`);
       }
       
-      setTodayDeliveries(response.data);
+      setTodayNotifications(response.data);
       setShowHistory(true);
     } catch (error) {
       toast.error(error.response?.data?.detail || 'Erro ao carregar histórico');
@@ -57,9 +58,8 @@ const DoormanPanel = ({ user, onLogout }) => {
   };
 
   const handleApartmentClick = async (apartment) => {
-    // Verificar se tem telefones cadastrados
     if (!apartment.phones || apartment.phones.length === 0) {
-      toast.error(`Apartamento ${apartment.number} não tem telefones cadastrados. Nenhuma notificação será enviada.`, {
+      toast.error(`Apartamento ${apartment.number} não tem telefones cadastrados.`, {
         duration: 5000
       });
       return;
@@ -74,9 +74,9 @@ const DoormanPanel = ({ user, onLogout }) => {
       });
 
       if (response.data.status === 'success') {
-        toast.success(`Notificação enviada para o apartamento ${apartment.number}!`);
+        toast.success(`✅ Aviso enviado para o apartamento ${apartment.number}!`);
       } else {
-        toast.error('Falha ao enviar notificação');
+        toast.error('Falha ao enviar aviso');
       }
     } catch (error) {
       if (error.response?.status === 403 && error.response?.data?.detail?.includes('Cota')) {
@@ -84,7 +84,7 @@ const DoormanPanel = ({ user, onLogout }) => {
       } else if (error.response?.status === 400 && error.response?.data?.detail?.includes('telefone')) {
         toast.error('Nenhum telefone cadastrado para este apartamento');
       } else {
-        toast.error('Erro ao registrar entrega');
+        toast.error('Erro ao enviar aviso');
       }
       setSelectedApartment(null);
     } finally {
@@ -100,186 +100,199 @@ const DoormanPanel = ({ user, onLogout }) => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
+      <div className="flex items-center justify-center min-h-screen" style={{ backgroundColor: colors.lightGray }}>
+        <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-transparent" style={{ borderColor: colors.yellow }}></div>
       </div>
     );
   }
 
-  // Tela de confirmação
-  if (selectedApartment && !sending) {
+  if (showHistory) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-emerald-50 to-teal-50 flex items-center justify-center p-6">
-        <Card className="max-w-md w-full shadow-2xl border-0">
-          <CardHeader className="text-center pb-6">
-            <div className="mx-auto mb-4 w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center">
-              <CheckCircle className="w-12 h-12 text-emerald-600" />
+      <div className="min-h-screen" style={{ backgroundColor: colors.lightGray }}>
+        <div style={{ backgroundColor: colors.black, color: colors.white }} className="shadow-lg">
+          <div className="container mx-auto px-4 py-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Button
+                  variant="ghost"
+                  onClick={handleBackToPanel}
+                  style={{ color: colors.yellow }}
+                  className="hover:bg-white/10"
+                >
+                  <ArrowLeft className="w-5 h-5 mr-2" />
+                  Voltar
+                </Button>
+                <div className="border-l-2 pl-4" style={{ borderColor: colors.grayMetal }}>
+                  <h1 className="text-2xl font-bold">Histórico de Avisos</h1>
+                  <p className="text-sm" style={{ color: colors.grayMetal }}>{building?.name}</p>
+                </div>
+              </div>
             </div>
-            <CardTitle className="text-3xl font-bold text-emerald-600">Enviado!</CardTitle>
-            <CardDescription className="text-lg mt-2">
-              Notificação WhatsApp enviada
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="text-center space-y-6">
-            <div className="bg-slate-50 rounded-xl p-6">
-              <p className="text-sm text-slate-600 mb-2">Apartamento</p>
-              <p className="text-5xl font-bold text-slate-900">{selectedApartment.number}</p>
-            </div>
+          </div>
+        </div>
 
-            <Button
-              onClick={handleBackToPanel}
-              className="w-full h-12 bg-emerald-600 hover:bg-emerald-700 text-white font-medium text-lg"
-              data-testid="back-to-panel-button"
+        <div className="container mx-auto px-4 py-6">
+          <Card style={{ borderColor: colors.yellow, borderWidth: '2px' }}>
+            <CardHeader style={{ backgroundColor: colors.white }}>
+              <div className="flex items-center justify-between">
+                <div>
+                  <CardTitle>Avisos Enviados</CardTitle>
+                  <CardDescription>Últimos {historyDays === 1 ? 'hoje' : `${historyDays} dias`}</CardDescription>
+                </div>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    onClick={() => loadHistory(1)}
+                    style={{
+                      backgroundColor: historyDays === 1 ? colors.yellow : colors.lightGray,
+                      color: historyDays === 1 ? colors.black : colors.grayMetal
+                    }}
+                  >
+                    Hoje
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => loadHistory(7)}
+                    style={{
+                      backgroundColor: historyDays === 7 ? colors.yellow : colors.lightGray,
+                      color: historyDays === 7 ? colors.black : colors.grayMetal
+                    }}
+                  >
+                    7 dias
+                  </Button>
+                  <Button
+                    size="sm"
+                    onClick={() => loadHistory(30)}
+                    style={{
+                      backgroundColor: historyDays === 30 ? colors.yellow : colors.lightGray,
+                      color: historyDays === 30 ? colors.black : colors.grayMetal
+                    }}
+                  >
+                    30 dias
+                  </Button>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="pt-6">
+              {todayNotifications.length === 0 ? (
+                <div className="text-center py-12" style={{ color: colors.grayMetal }}>
+                  <Bell className="w-16 h-16 mx-auto mb-4 opacity-30" />
+                  <p>Nenhum aviso registrado neste período</p>
+                </div>
+              ) : (
+                <div className="space-y-3">
+                  {todayNotifications.map((notif, idx) => (
+                    <div
+                      key={idx}
+                      className="p-4 rounded-lg border-l-4"
+                      style={{
+                        backgroundColor: colors.lightGray,
+                        borderLeftColor: notif.status === 'success' ? colors.yellow : colors.grayMetal
+                      }}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-semibold" style={{ color: colors.black }}>
+                            Apartamento {notif.apartment_number}
+                          </p>
+                          <p className="text-sm" style={{ color: colors.grayMetal }}>
+                            {new Date(notif.timestamp).toLocaleString('pt-BR')}
+                          </p>
+                          <p className="text-xs mt-1" style={{ color: colors.grayMetal }}>
+                            {notif.phones_notified?.length || 0} telefone(s) notificado(s)
+                          </p>
+                        </div>
+                        <Badge
+                          style={{
+                            backgroundColor: notif.status === 'success' ? colors.yellow : colors.grayMetal,
+                            color: colors.black
+                          }}
+                        >
+                          {notif.status === 'success' ? '✓ Enviado' : 'Falhou'}
+                        </Badge>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
+  if (selectedApartment) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4" style={{ backgroundColor: colors.lightGray }}>
+        <Card className="max-w-md w-full" style={{ borderColor: colors.yellow, borderWidth: '3px' }}>
+          <CardContent className="p-8 text-center">
+            <div 
+              className="w-24 h-24 rounded-full mx-auto mb-6 flex items-center justify-center"
+              style={{ backgroundColor: colors.yellow }}
             >
-              <Home className="w-5 h-5 mr-2" />
-              Voltar ao Painel
-            </Button>
+              {sending ? (
+                <div className="animate-spin rounded-full h-12 w-12 border-4 border-t-transparent" style={{ borderColor: colors.black }}></div>
+              ) : (
+                <CheckCircle className="w-12 h-12" style={{ color: colors.black }} />
+              )}
+            </div>
+            <h2 className="text-2xl font-bold mb-2" style={{ color: colors.black }}>
+              {sending ? 'Enviando Aviso...' : 'Aviso Enviado!'}
+            </h2>
+            <p className="mb-6" style={{ color: colors.grayMetal }}>
+              Apartamento {selectedApartment.number}
+            </p>
+            {!sending && (
+              <Button
+                onClick={handleBackToPanel}
+                className="w-full"
+                style={{ backgroundColor: colors.black, color: colors.white }}
+              >
+                <Home className="w-4 h-4 mr-2" />
+                Voltar ao Painel
+              </Button>
+            )}
           </CardContent>
         </Card>
       </div>
     );
   }
 
-  // Tela de histórico
-  if (showHistory) {
-    return (
-      <div className="min-h-screen bg-slate-50">
-        <div className="bg-white border-b shadow-sm">
-          <div className="container mx-auto px-4 py-4">
-            <div className="flex items-center justify-between mb-3">
-              <Button
-                variant="ghost"
-                onClick={handleBackToPanel}
-                className="text-slate-600"
-              >
-                <ArrowLeft className="w-5 h-5 mr-2" />
-                Voltar
-              </Button>
-              <h1 className="text-xl font-semibold text-slate-900">Histórico de Entregas</h1>
-              <div className="w-20"></div>
-            </div>
-            
-            {/* Filtro de período */}
-            <div className="flex gap-2 justify-center">
-              <Button
-                size="sm"
-                variant={historyDays === 1 ? 'default' : 'outline'}
-                onClick={() => loadHistory(1)}
-                data-testid="history-today"
-              >
-                Hoje
-              </Button>
-              <Button
-                size="sm"
-                variant={historyDays === 7 ? 'default' : 'outline'}
-                onClick={() => loadHistory(7)}
-                data-testid="history-7days"
-              >
-                7 dias
-              </Button>
-              <Button
-                size="sm"
-                variant={historyDays === 30 ? 'default' : 'outline'}
-                onClick={() => loadHistory(30)}
-                data-testid="history-30days"
-              >
-                30 dias
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        <div className="container mx-auto px-4 py-6">
-          {todayDeliveries.length === 0 ? (
-            <Card>
-              <CardContent className="text-center py-12">
-                <Package className="w-16 h-16 text-slate-300 mx-auto mb-4" />
-                <p className="text-slate-600">Nenhuma entrega registrada no período</p>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="space-y-3">
-              <div className="bg-emerald-50 p-3 rounded-lg mb-4">
-                <p className="text-sm font-semibold text-emerald-900">
-                  Total: {todayDeliveries.length} entrega(s) nos últimos {historyDays === 1 ? 'hoje' : `${historyDays} dias`}
-                </p>
-              </div>
-              
-              {todayDeliveries.map((delivery) => (
-                <Card key={delivery.id} className="border-l-4 border-l-emerald-600">
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2">
-                          <p className="font-semibold text-lg">Apartamento {delivery.apartment_number}</p>
-                          <Badge variant={delivery.status === 'success' ? 'default' : 'destructive'}>
-                            {delivery.status === 'success' ? 'Enviado' : 'Falhou'}
-                          </Badge>
-                        </div>
-                        <div className="grid grid-cols-2 gap-2 mt-2 text-sm">
-                          <div>
-                            <p className="text-xs text-slate-500">Data/Hora</p>
-                            <p className="font-medium">
-                              {new Date(delivery.timestamp).toLocaleString('pt-BR', {
-                                day: '2-digit',
-                                month: '2-digit',
-                                hour: '2-digit',
-                                minute: '2-digit',
-                              })}
-                            </p>
-                          </div>
-                          <div>
-                            <p className="text-xs text-slate-500">Telefones</p>
-                            <p className="font-medium">{delivery.phones_notified.length} notificado(s)</p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    );
-  }
-
-  // Painel principal - Grid de apartamentos
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="container mx-auto px-4 py-4">
+    <div className="min-h-screen" style={{ backgroundColor: colors.lightGray }}>
+      <div style={{ backgroundColor: colors.black, color: colors.white }} className="shadow-lg">
+        <div className="container mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               <img 
                 src="/logo-chegouaqui.png" 
                 alt="ChegouAqui" 
-                className="h-12 w-auto"
+                className="h-16 w-auto rounded-lg p-2"
+                style={{ backgroundColor: colors.white }}
               />
-              <div className="border-l-2 border-slate-200 pl-4">
-                <h1 className="text-xl font-bold text-slate-900">
-                  {building?.name}
-                </h1>
-                <p className="text-sm text-slate-600">Bem-vindo, {user?.name}</p>
+              <div className="border-l-2 pl-4" style={{ borderColor: colors.yellow }}>
+                <h1 className="text-2xl font-bold">Painel do Porteiro</h1>
+                <p className="text-sm" style={{ color: colors.grayMetal }}>{building?.name}</p>
               </div>
             </div>
             <div className="flex items-center gap-3">
               <Button
-                variant="outline"
+                variant="ghost"
                 onClick={() => loadHistory(1)}
-                className="h-10"
-                data-testid="history-button"
+                style={{ color: colors.yellow }}
+                className="hover:bg-white/10"
+                data-testid="doorman-history-button"
               >
                 <History className="w-5 h-5 mr-2" />
                 Histórico
               </Button>
               <Button
-                variant="outline"
+                variant="ghost"
                 onClick={onLogout}
-                className="h-10 text-red-600 hover:text-red-700 hover:bg-red-50"
-                data-testid="logout-button"
+                style={{ color: colors.grayMetal }}
+                className="hover:bg-white/10"
+                data-testid="doorman-logout-button"
               >
                 <LogOut className="w-5 h-5 mr-2" />
                 Sair
@@ -289,80 +302,80 @@ const DoormanPanel = ({ user, onLogout }) => {
         </div>
       </div>
 
-      {/* Instruções */}
-      <div className="container mx-auto px-4 py-6">
-        <Card className="bg-emerald-50 border-emerald-200">
-          <CardContent className="p-4">
-            <div className="flex items-start gap-3">
-              <Package className="w-6 h-6 text-emerald-600 flex-shrink-0 mt-1" />
-              <div>
-                <h3 className="font-semibold text-emerald-900 mb-1">Registrar Encomenda</h3>
-                <p className="text-sm text-emerald-700">
-                  Clique no botão do apartamento para registrar a chegada de uma encomenda. Uma notificação WhatsApp será enviada automaticamente para todos os moradores cadastrados neste apartamento.
-                </p>
-              </div>
+      <div className="container mx-auto px-4 py-8">
+        <Card className="mb-6" style={{ borderColor: colors.yellow, borderWidth: '2px' }}>
+          <CardHeader style={{ backgroundColor: colors.white }}>
+            <div className="text-center">
+              <Bell className="w-12 h-12 mx-auto mb-3" style={{ color: colors.yellow }} />
+              <CardTitle className="text-3xl" style={{ color: colors.black }}>Notificar Moradores</CardTitle>
+              <CardDescription className="text-base mt-2" style={{ color: colors.grayMetal }}>
+                Clique no apartamento para enviar aviso de encomenda
+              </CardDescription>
             </div>
-          </CardContent>
+          </CardHeader>
         </Card>
-      </div>
 
-      {/* Grid de Apartamentos */}
-      <div className="container mx-auto px-4 pb-8">
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-3">
-          {apartments.map((apartment) => {
-            const hasPhones = apartment.phones && apartment.phones.length > 0;
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+          {apartments.map((apt) => {
+            const hasPhones = apt.phones && apt.phones.length > 0;
             
             return (
               <button
-                key={apartment.id}
-                onClick={() => handleApartmentClick(apartment)}
+                key={apt.id}
+                onClick={() => handleApartmentClick(apt)}
                 disabled={sending}
-                className={`
-                  relative p-3 rounded-lg border-2 shadow-md transition-all duration-200
-                  ${hasPhones 
-                    ? 'bg-white border-emerald-200 hover:bg-emerald-600 hover:border-emerald-600 hover:text-white hover:scale-105 hover:shadow-xl' 
-                    : 'bg-slate-100 border-slate-300 text-slate-400 cursor-not-allowed opacity-60'
-                  }
-                  ${sending ? 'opacity-50' : ''}
-                `}
-                data-testid={`apartment-button-${apartment.number}`}
+                className="group relative p-6 rounded-lg transition-all duration-200 border-2"
+                style={{
+                  backgroundColor: hasPhones ? colors.white : colors.lightGray,
+                  borderColor: hasPhones ? colors.yellow : colors.grayMetal,
+                  cursor: sending ? 'not-allowed' : 'pointer',
+                  opacity: sending ? 0.6 : 1
+                }}
+                data-testid={`apt-button-${apt.number}`}
               >
-                <div className="text-center">
-                  <div className={`text-3xl font-bold mb-1 ${hasPhones ? 'text-slate-900' : 'text-slate-400'}`}>
-                    {apartment.number}
-                  </div>
+                <div className="absolute top-2 right-2">
                   {hasPhones ? (
-                    <div className="text-[10px] leading-tight space-y-0.5">
-                      {apartment.phones.slice(0, 2).map((phone, idx) => (
-                        <div key={idx} className="truncate">
-                          {phone.name ? (
-                            <span className="font-medium">{phone.name}</span>
-                          ) : (
-                            <span className="font-mono text-[9px]">{phone.whatsapp}</span>
-                          )}
-                        </div>
-                      ))}
-                      {apartment.phones.length > 2 && (
-                        <div className="text-[9px] text-slate-500">
-                          +{apartment.phones.length - 2} mais
-                        </div>
-                      )}
-                    </div>
+                    <div 
+                      className="w-2 h-2 rounded-full"
+                      style={{ backgroundColor: colors.techTeal }}
+                    />
                   ) : (
-                    <div className="text-[10px] text-slate-400 italic">
-                      Sem cadastro
-                    </div>
+                    <div 
+                      className="w-2 h-2 rounded-full"
+                      style={{ backgroundColor: colors.grayMetal }}
+                    />
                   )}
                 </div>
-                {!hasPhones && (
-                  <div className="absolute top-1 right-1">
-                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-                  </div>
-                )}
+                
+                <div className="text-center">
+                  <Package 
+                    className="w-8 h-8 mx-auto mb-2" 
+                    style={{ color: hasPhones ? colors.yellow : colors.grayMetal }}
+                  />
+                  <p 
+                    className="text-2xl font-bold mb-1"
+                    style={{ color: hasPhones ? colors.black : colors.grayMetal }}
+                  >
+                    {apt.number}
+                  </p>
+                  <p 
+                    className="text-xs"
+                    style={{ color: colors.grayMetal }}
+                  >
+                    {hasPhones ? `${apt.phones.length} cadastrado(s)` : 'Sem cadastro'}
+                  </p>
+                </div>
               </button>
             );
           })}
         </div>
+
+        {apartments.length === 0 && (
+          <div className="text-center py-12" style={{ color: colors.grayMetal }}>
+            <Package className="w-16 h-16 mx-auto mb-4 opacity-30" />
+            <p>Nenhum apartamento cadastrado</p>
+          </div>
+        )}
       </div>
     </div>
   );
