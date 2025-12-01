@@ -32,7 +32,7 @@ const SuperAdminPanel = ({ user, onLogout }) => {
     admin_email: '',
     admin_password: '',
     num_apartments: 10,
-    plan: 'basic',
+    plan: 'trial',
   });
 
   const [editBuilding, setEditBuilding] = useState({
