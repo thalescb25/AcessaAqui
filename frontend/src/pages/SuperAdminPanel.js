@@ -218,7 +218,7 @@ const SuperAdminPanel = ({ user, onLogout }) => {
               <img 
                 src="/logo-chegouaqui.png" 
                 alt="ChegouAqui" 
-                className="h-14 w-auto bg-white rounded-lg p-1"
+                className="h-20 w-auto bg-white rounded-lg p-2"
               />
               <div>
                 <h1 className="text-2xl font-bold">
