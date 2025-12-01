@@ -134,15 +134,16 @@ const DoormanPanel = ({ user, onLogout }) => {
         <div className="container mx-auto px-4 py-6">
           <Card style={{ borderColor: colors.yellow, borderWidth: '2px' }}>
             <CardHeader style={{ backgroundColor: colors.white }}>
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-3">
                 <div>
-                  <CardTitle>Avisos Enviados</CardTitle>
-                  <CardDescription>Últimos {historyDays === 1 ? 'hoje' : `${historyDays} dias`}</CardDescription>
+                  <CardTitle className="text-lg md:text-xl">Avisos Enviados</CardTitle>
+                  <CardDescription className="text-sm">Últimos {historyDays === 1 ? 'hoje' : `${historyDays} dias`}</CardDescription>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 w-full md:w-auto">
                   <Button
                     size="sm"
                     onClick={() => loadHistory(1)}
+                    className="flex-1 md:flex-none text-xs md:text-sm"
                     style={{
                       backgroundColor: historyDays === 1 ? colors.yellow : colors.lightGray,
                       color: historyDays === 1 ? colors.black : colors.grayMetal
@@ -153,6 +154,7 @@ const DoormanPanel = ({ user, onLogout }) => {
                   <Button
                     size="sm"
                     onClick={() => loadHistory(7)}
+                    className="flex-1 md:flex-none text-xs md:text-sm"
                     style={{
                       backgroundColor: historyDays === 7 ? colors.yellow : colors.lightGray,
                       color: historyDays === 7 ? colors.black : colors.grayMetal
@@ -163,6 +165,7 @@ const DoormanPanel = ({ user, onLogout }) => {
                   <Button
                     size="sm"
                     onClick={() => loadHistory(30)}
+                    className="flex-1 md:flex-none text-xs md:text-sm"
                     style={{
                       backgroundColor: historyDays === 30 ? colors.yellow : colors.lightGray,
                       color: historyDays === 30 ? colors.black : colors.grayMetal
