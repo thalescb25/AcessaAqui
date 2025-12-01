@@ -717,6 +717,87 @@ const SuperAdminPanel = ({ user, onLogout }) => {
         </DialogContent>
       </Dialog>
 
+      {/* Dialog de Edição de Planos */}
+      <Dialog open={showEditPlansDialog} onOpenChange={setShowEditPlansDialog}>
+        <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle>Editar Planos de Assinatura</DialogTitle>
+            <DialogDescription>Configure os preços, quotas de mensagens e limites de apartamentos</DialogDescription>
+          </DialogHeader>
+          {editPlans && (
+            <div className="space-y-6">
+              {['basic', 'standard', 'premium'].map(planKey => {
+                const plan = editPlans[planKey];
+                if (!plan) return null;
+                
+                return (
+                  <Card key={planKey} className="border-2">
+                    <CardHeader>
+                      <CardTitle className="text-lg">{plan.name}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                          <Label>Preço Mensal (R$)</Label>
+                          <Input
+                            type="number"
+                            step="0.01"
+                            value={plan.price}
+                            onChange={(e) => setEditPlans({
+                              ...editPlans,
+                              [planKey]: { ...plan, price: parseFloat(e.target.value) }
+                            })}
+                            data-testid={`plan-${planKey}-price`}
+                          />
+                        </div>
+                        <div>
+                          <Label>Quota de Mensagens</Label>
+                          <Input
+                            type="number"
+                            value={plan.message_quota}
+                            onChange={(e) => setEditPlans({
+                              ...editPlans,
+                              [planKey]: { ...plan, message_quota: parseInt(e.target.value) }
+                            })}
+                            disabled={plan.unlimited_messages}
+                            data-testid={`plan-${planKey}-messages`}
+                          />
+                          {planKey === 'premium' && (
+                            <p className="text-xs text-slate-500 mt-1">Ilimitado ativado</p>
+                          )}
+                        </div>
+                        <div>
+                          <Label>Máximo de Apartamentos</Label>
+                          <Input
+                            type="number"
+                            value={plan.max_apartments >= 999999 ? 300 : plan.max_apartments}
+                            onChange={(e) => setEditPlans({
+                              ...editPlans,
+                              [planKey]: { ...plan, max_apartments: parseInt(e.target.value) }
+                            })}
+                            data-testid={`plan-${planKey}-apartments`}
+                          />
+                          {plan.max_apartments >= 999999 && (
+                            <p className="text-xs text-slate-500 mt-1">Ilimitado (300+)</p>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                );
+              })}
+              <Button 
+                onClick={handleSavePlans} 
+                className="w-full bg-purple-600 hover:bg-purple-700"
+                data-testid="save-plans-button"
+              >
+                Salvar Alterações
+              </Button>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
       {/* Dialog de Confirmação de Exclusão */}
       <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
         <AlertDialogContent>
