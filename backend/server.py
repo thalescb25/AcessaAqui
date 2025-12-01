@@ -616,6 +616,44 @@ async def get_apartments_with_phones(current_user: dict = Depends(get_current_us
     
     return apartments_with_phones
 
+@api_router.put("/admin/apartments/{apartment_id}")
+async def update_apartment(
+    apartment_id: str, 
+    update_data: dict, 
+    current_user: dict = Depends(get_current_user)
+):
+    if current_user["role"] != "building_admin":
+        raise HTTPException(status_code=403, detail="Acesso negado")
+    
+    # Verificar se apartamento pertence ao prédio
+    apartment = await db.apartments.find_one({"id": apartment_id, "building_id": current_user["building_id"]})
+    if not apartment:
+        raise HTTPException(status_code=404, detail="Apartamento não encontrado")
+    
+    # Validar que o número não está vazio
+    new_number = update_data.get("number", "").strip()
+    if not new_number:
+        raise HTTPException(status_code=400, detail="Número do apartamento não pode estar vazio")
+    
+    # Verificar se já existe outro apartamento com este número no mesmo prédio
+    existing = await db.apartments.find_one({
+        "building_id": current_user["building_id"],
+        "number": new_number,
+        "id": {"$ne": apartment_id}
+    })
+    if existing:
+        raise HTTPException(status_code=400, detail=f"Já existe um apartamento com o número {new_number}")
+    
+    # Atualizar apartamento
+    await db.apartments.update_one(
+        {"id": apartment_id},
+        {"$set": {"number": new_number}}
+    )
+    
+    # Retornar apartamento atualizado
+    updated_apartment = await db.apartments.find_one({"id": apartment_id}, {"_id": 0})
+    return updated_apartment
+
 @api_router.post("/admin/apartments/{apartment_id}/phones", response_model=ResidentPhone)
 async def add_resident_phone(apartment_id: str, phone: ResidentPhoneCreate, current_user: dict = Depends(get_current_user)):
     if current_user["role"] != "building_admin":
