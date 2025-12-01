@@ -526,7 +526,7 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
             <TabsTrigger value="apartments">Apartamentos</TabsTrigger>
             <TabsTrigger value="phones">Telefones</TabsTrigger>
             <TabsTrigger value="users">Usuários</TabsTrigger>
-            <TabsTrigger value="message">Mensagem</TabsTrigger>
+            <TabsTrigger value="message">Cadastro</TabsTrigger>
             <TabsTrigger value="history">Histórico</TabsTrigger>
           </TabsList>
 
