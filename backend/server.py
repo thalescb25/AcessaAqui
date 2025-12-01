@@ -783,8 +783,11 @@ async def get_financial_dashboard(current_user: dict = Depends(get_current_user)
     # Buscar todos os prédios ativos
     buildings = await db.buildings.find({"active": True}, {"_id": 0}).to_list(1000)
     
+    # Obter planos atualizados
+    plans = await get_plans()
+    
     # Calcular receita mensal
-    monthly_revenue = sum(PLANS.get(b.get("plan", "basic"), PLANS["basic"])["price"] for b in buildings)
+    monthly_revenue = sum(plans.get(b.get("plan", "basic"), plans["basic"])["price"] for b in buildings)
     
     # Contar assinantes por plano
     plan_distribution = {}
