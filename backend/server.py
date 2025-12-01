@@ -1059,8 +1059,16 @@ async def register_delivery(delivery: DeliveryCreate, current_user: dict = Depen
     if not apartment or apartment["building_id"] != current_user["building_id"]:
         raise HTTPException(status_code=404, detail="Apartamento não encontrado")
     
-    # Verificar quota (exceto para planos ilimitados)
+    # Verificar quota e trial
     building = await db.buildings.find_one({"id": current_user["building_id"]}, {"_id": 0})
+    
+    # Verificar se trial expirou
+    if is_trial_expired(building):
+        raise HTTPException(
+            status_code=403, 
+            detail="Período de trial expirado. Contrate um plano para continuar usando o serviço."
+        )
+    
     plans = await get_plans()
     plan_info = plans.get(building.get("plan", "basic"))
     
