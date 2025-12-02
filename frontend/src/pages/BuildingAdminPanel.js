@@ -23,7 +23,8 @@ const BuildingAdminPanel = ({ user, onLogout }) => {
   const [selectedApartment, setSelectedApartment] = useState(null);
   const [phones, setPhones] = useState([]);
   const [allPhones, setAllPhones] = useState([]);
-  const [customMessage, setCustomMessage] = useState('');
+  const [messageTemplates, setMessageTemplates] = useState([]);
+  const [selectedTemplate, setSelectedTemplate] = useState('template1');
   const [buildingAddress, setBuildingAddress] = useState('');
   const [copied, setCopied] = useState(false);
   
