@@ -1121,11 +1121,16 @@ async def register_delivery(delivery: DeliveryCreate, current_user: dict = Depen
     if not phones:
         raise HTTPException(status_code=400, detail="Nenhum telefone cadastrado para este apartamento")
     
-    # Preparar mensagem
-    if building.get("custom_message"):
-        message = building["custom_message"].replace("[numero]", apartment["number"])
-    else:
-        message = f"ChegouAqui: Uma encomenda para o apartamento {apartment['number']} está pronta para retirada na portaria."
+    # Preparar mensagem usando template pré-aprovado
+    template_id = building.get("message_template", "template1")
+    
+    # Se o prédio ainda usa custom_message (retrocompatibilidade), migrar para template1
+    if building.get("custom_message") and not building.get("message_template"):
+        template_id = "template1"
+    
+    # Buscar template pré-aprovado
+    message_template = APPROVED_MESSAGE_TEMPLATES.get(template_id, APPROVED_MESSAGE_TEMPLATES["template1"])
+    message = message_template.replace("[numero]", apartment["number"])
     
     # Enviar WhatsApp
     phones_notified = []
