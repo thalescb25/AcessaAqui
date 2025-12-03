@@ -355,7 +355,11 @@ const SuperAdmin = () => {
                         <span className="font-semibold text-graphite">{plan.minSuites} - {plan.maxSuites}</span>
                       </div>
                     </div>
-                    <Button variant="outline" className="w-full border-primary text-primary">
+                    <Button 
+                      onClick={() => handleEditPlan(plan)}
+                      variant="outline" 
+                      className="w-full border-primary text-primary hover:bg-blue-50"
+                    >
                       <Edit className="w-4 h-4 mr-2" />
                       Editar Plano
                     </Button>
