@@ -394,16 +394,33 @@ Documento: ${visitor.document || 'Não informado'}
         {/* History Tab */}
         {activeTab === 'history' && (
           <div>
-            <div className="flex items-center justify-between mb-6">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
               <h2 className="text-2xl font-bold text-graphite">Histórico de Visitantes</h2>
-              <select 
-                className="px-4 py-2 border border-neutral-medium rounded-lg text-graphite"
-              >
-                <option value="7">Últimos 7 dias</option>
-                <option value="30">Últimos 30 dias</option>
-                <option value="60">Últimos 60 dias</option>
-                <option value="90">Últimos 90 dias</option>
-              </select>
+              <div className="flex gap-3">
+                <select 
+                  className="px-4 py-2 border border-neutral-medium rounded-lg text-graphite"
+                >
+                  <option value="7">Últimos 7 dias</option>
+                  <option value="30">Últimos 30 dias</option>
+                  <option value="60">Últimos 60 dias</option>
+                  <option value="90">Últimos 90 dias</option>
+                </select>
+                <Button
+                  onClick={() => {
+                    // Simular exportação Excel
+                    const csvContent = visitors.filter(v => v.status !== 'pending')
+                      .map(v => `${v.fullName},${v.hostName},${v.checkInTime},${v.checkOutTime || ''}`).join('\n');
+                    toast({
+                      title: "Exportação Iniciada",
+                      description: "Relatório Excel sendo gerado...",
+                    });
+                  }}
+                  className="bg-green-600 hover:bg-green-700"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Exportar Excel
+                </Button>
+              </div>
             </div>
 
             <div className="space-y-4">
