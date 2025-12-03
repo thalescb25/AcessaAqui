@@ -278,6 +278,21 @@ Documento: ${visitor.document || 'Não informado'}
                     <Input name="fullName" placeholder="Nome do visitante" className="h-12 text-lg" required />
                   </div>
                   <div>
+                    <label className="text-sm font-medium text-graphite mb-2 block">Empresa que Visitará *</label>
+                    <select 
+                      name="companyId" 
+                      className="w-full h-12 text-lg p-3 border border-neutral-medium rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+                      required
+                    >
+                      <option value="">Selecione a empresa</option>
+                      {mockCompanies.map(company => (
+                        <option key={company.id} value={company.id}>
+                          {company.name} - Conjunto {company.suite}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <div>
                     <label className="text-sm font-medium text-graphite mb-2 block">Anfitrião *</label>
                     <Input name="hostName" placeholder="Nome do anfitrião" className="h-12 text-lg" required />
                   </div>
