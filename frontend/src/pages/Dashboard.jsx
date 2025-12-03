@@ -201,25 +201,25 @@ const Dashboard = () => {
             <StatCard
               icon={Users}
               title="Visitantes Hoje"
-              value={mockStats.todayVisitors}
+              value={stats.todayVisitors}
               color="bg-blue-500"
             />
             <StatCard
               icon={UserCheck}
               title="Visitantes Ativos"
-              value={mockStats.activeVisitors}
+              value={stats.activeVisitors}
               color="bg-green-500"
             />
             <StatCard
               icon={TrendingUp}
               title="Total no Mês"
-              value={mockStats.totalVisitorsMonth}
+              value={stats.totalVisitorsMonth}
               color="bg-purple-500"
             />
             <StatCard
               icon={Clock}
               title="Tempo Médio"
-              value={mockStats.averageStayTime}
+              value={stats.averageStayTime}
               color="bg-orange-500"
             />
           </div>
