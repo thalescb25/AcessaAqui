@@ -291,59 +291,88 @@ const BuildingAdmin = () => {
         {activeTab === 'settings' && (
           <div>
             <h2 className="text-2xl font-bold text-graphite mb-6">Configurações do Prédio</h2>
-            <div className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Requisitos de Check-in</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <label className="flex items-center space-x-3 cursor-pointer">
-                    <input type="checkbox" className="w-5 h-5 text-primary" defaultChecked />
-                    <span className="text-graphite">Documento obrigatório</span>
-                  </label>
-                  <label className="flex items-center space-x-3 cursor-pointer">
-                    <input type="checkbox" className="w-5 h-5 text-primary" />
-                    <span className="text-graphite">Selfie obrigatória</span>
-                  </label>
-                </CardContent>
-              </Card>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              const formData = new FormData(e.target);
+              const buildingSettings = {
+                documentRequired: formData.get('documentRequired') === 'on',
+                selfieRequired: formData.get('selfieRequired') === 'on',
+                defaultLanguage: formData.get('defaultLanguage')
+              };
+              
+              localStorage.setItem('buildingSettings', JSON.stringify(buildingSettings));
+              
+              toast({
+                title: "Configurações Salvas",
+                description: "As configurações do prédio foram atualizadas.",
+              });
+            }}>
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Requisitos de Check-in</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <label className="flex items-center space-x-3 cursor-pointer">
+                      <input 
+                        name="documentRequired"
+                        type="checkbox" 
+                        className="w-5 h-5 text-primary" 
+                        defaultChecked 
+                      />
+                      <span className="text-graphite">Documento obrigatório</span>
+                    </label>
+                    <label className="flex items-center space-x-3 cursor-pointer">
+                      <input 
+                        name="selfieRequired"
+                        type="checkbox" 
+                        className="w-5 h-5 text-primary" 
+                      />
+                      <span className="text-graphite">Selfie obrigatória</span>
+                    </label>
+                  </CardContent>
+                </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Idioma Padrão</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <select className="w-full p-3 border border-neutral-medium rounded-lg">
-                    <option value="pt">Português</option>
-                    <option value="en">English</option>
-                  </select>
-                </CardContent>
-              </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Idioma Padrão</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <select 
+                      name="defaultLanguage"
+                      className="w-full p-3 border border-neutral-medium rounded-lg"
+                    >
+                      <option value="pt">Português</option>
+                      <option value="en">English</option>
+                    </select>
+                  </CardContent>
+                </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle>Contato</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-neutral-dark mb-2">
-                    Para suporte, entre em contato:
-                  </p>
-                  <a 
-                    href="mailto:neuraone.ai@gmail.com"
-                    className="text-primary hover:text-blue-600 font-semibold"
-                  >
-                    neuraone.ai@gmail.com
-                  </a>
-                </CardContent>
-              </Card>
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Contato</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-neutral-dark mb-2">
+                      Para suporte, entre em contato:
+                    </p>
+                    <a 
+                      href="mailto:neuraone.ai@gmail.com"
+                      className="text-primary hover:text-blue-600 font-semibold"
+                    >
+                      neuraone.ai@gmail.com
+                    </a>
+                  </CardContent>
+                </Card>
 
-              <div className="flex justify-end">
-                <Button className="bg-primary hover:bg-blue-600">
-                  <SettingsIcon className="w-4 h-4 mr-2" />
-                  Salvar Configurações
-                </Button>
+                <div className="flex justify-end">
+                  <Button type="submit" className="bg-primary hover:bg-blue-600">
+                    <SettingsIcon className="w-4 h-4 mr-2" />
+                    Salvar Configurações
+                  </Button>
+                </div>
               </div>
-            </div>
+            </form>
           </div>
         )}
       </div>
