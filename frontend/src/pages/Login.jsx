@@ -71,7 +71,7 @@ const Login = () => {
         <CardHeader className="text-center space-y-4 pb-8">
           <div className="flex justify-center">
             <img 
-              src="https://customer-assets.emergentagent.com/job_2f57b21b-9406-449a-b554-d3e9cd34f01a/artifacts/tje13zmr_Gemini_Generated_Image_iaxqgniaxqgniaxq.png"
+              src="https://customer-assets.emergentagent.com/job_2f57b21b-9406-449a-b554-d3e9cd34f01a/artifacts/eymay9gh_Gemini_Generated_Image_dn4rd6dn4rd6dn4r.png"
               alt="AcessaAqui Logo"
               className="h-24"
             />
