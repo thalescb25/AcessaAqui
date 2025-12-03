@@ -84,18 +84,23 @@ const Dashboard = () => {
     navigate('/login');
   };
 
-  const filteredVisitors = visitors.filter(visitor => {
-    const matchesSearch = visitor.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         visitor.company.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesFilter = filterStatus === 'all' || visitor.status === filterStatus;
-    return matchesSearch && matchesFilter;
-  });
-
-  const generateQRCode = (visitor) => {
-    toast({
-      title: "QR Code gerado!",
-      description: `Código ${visitor.qrCode} gerado para ${visitor.name}`,
-    });
+  const generateQRCode = async (visitor) => {
+    try {
+      const response = await api.get(`/visitors/${visitor.id}/qrcode`);
+      if (response.data.success) {
+        // Você pode mostrar o QR code em um modal ou baixar
+        toast({
+          title: "QR Code gerado!",
+          description: `Código ${response.data.qrCode} gerado para ${visitor.name}`,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Erro",
+        description: "Não foi possível gerar o QR Code.",
+        variant: "destructive"
+      });
+    }
   };
 
   const formatDate = (dateString) => {
