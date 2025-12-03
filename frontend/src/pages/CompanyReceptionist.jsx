@@ -64,10 +64,10 @@ const CompanyReceptionist = () => {
 
   const handleDeny = (visitor) => {
     const reason = prompt("Motivo da recusa:");
-    if (reason) {
+    if (reason !== null) { // Permitir string vazia também
       const updatedVisitors = visitors.map(v => 
         v.id === visitor.id 
-          ? { ...v, status: 'denied', notes: reason }
+          ? { ...v, status: 'denied', notes: reason || 'Recusado pela recepcionista', updatedAt: new Date().toISOString() }
           : v
       );
       setVisitors(updatedVisitors);
