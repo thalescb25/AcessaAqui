@@ -308,6 +308,47 @@ const VisitorCheckIn = () => {
 
                 <div>
                   <label className="text-sm font-medium text-graphite mb-2 block">
+                    {language === 'pt' ? 'E-mail *' : 'Email *'}
+                  </label>
+                  <Input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    placeholder={language === 'pt' ? 'seu@email.com' : 'your@email.com'}
+                    className="h-12"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-graphite mb-2 block">
+                    {language === 'pt' ? 'Telefone *' : 'Phone *'}
+                  </label>
+                  <Input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    placeholder={language === 'pt' ? '(11) 99999-9999' : '+55 11 99999-9999'}
+                    className="h-12"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-graphite mb-2 block">
+                    {language === 'pt' ? 'Documento de Identificação *' : 'ID Document *'}
+                  </label>
+                  <Input
+                    value={formData.document}
+                    onChange={(e) => setFormData({...formData, document: e.target.value})}
+                    placeholder={language === 'pt' ? 'CPF, RG ou outro documento' : 'CPF, ID or other document'}
+                    className="h-12"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-graphite mb-2 block">
                     {language === 'pt' ? 'Quem você vai visitar? *' : 'Who will you visit? *'}
                   </label>
                   <Input
@@ -340,34 +381,6 @@ const VisitorCheckIn = () => {
                     onChange={(e) => setFormData({...formData, reason: e.target.value})}
                     placeholder={language === 'pt' ? 'Opcional' : 'Optional'}
                     className="h-12"
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium text-graphite mb-2 block">
-                    {language === 'pt' ? 'Telefone *' : 'Phone *'}
-                  </label>
-                  <Input
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    placeholder={language === 'pt' ? '(11) 99999-9999' : '+55 11 99999-9999'}
-                    className="h-12"
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label className="text-sm font-medium text-graphite mb-2 block">
-                    {language === 'pt' ? 'E-mail *' : 'Email *'}
-                  </label>
-                  <Input
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    placeholder={language === 'pt' ? 'seu@email.com' : 'your@email.com'}
-                    className="h-12"
-                    required
                   />
                 </div>
 
