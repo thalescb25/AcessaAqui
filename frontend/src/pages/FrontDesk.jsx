@@ -407,25 +407,38 @@ Documento: ${visitor.document || 'Não informado'}
             </div>
 
             <div className="space-y-4">
-              {visitors.filter(v => v.status !== 'pending').slice(0, visibleCount).map((visitor) => (
+              {visitors.filter(v => v.status !== 'pending').slice(0, visibleCount).map((visitor) => {
+                const company = mockCompanies.find(c => c.id === visitor.companyId);
+                return (
                 <Card key={visitor.id}>
                   <CardContent className="p-6">
                     <div className="flex items-center justify-between">
                       <div className="flex-1">
                         <h3 className="text-lg font-bold text-graphite mb-2">{visitor.fullName}</h3>
                         <div className="grid grid-cols-2 gap-2 text-sm">
-                          <p className="text-neutral-dark">Anfitrião: {visitor.hostName}</p>
+                          {company && (
+                            <p className="text-neutral-dark">
+                              <strong>Empresa Visitada:</strong> {company.name} - Conjunto {company.suite}
+                            </p>
+                          )}
+                          <p className="text-neutral-dark"><strong>Anfitrião:</strong> {visitor.hostName}</p>
                           {visitor.representingCompany && (
-                            <p className="text-neutral-dark">Empresa: {visitor.representingCompany}</p>
+                            <p className="text-neutral-dark"><strong>Representando:</strong> {visitor.representingCompany}</p>
+                          )}
+                          {visitor.reason && (
+                            <p className="text-neutral-dark"><strong>Motivo:</strong> {visitor.reason}</p>
+                          )}
+                          {visitor.companions > 0 && (
+                            <p className="text-neutral-dark"><strong>Acompanhantes:</strong> {visitor.companions}</p>
                           )}
                           {visitor.checkInTime && (
                             <p className="text-neutral-dark">
-                              Entrada: {new Date(visitor.checkInTime).toLocaleString('pt-BR')}
+                              <strong>Entrada:</strong> {new Date(visitor.checkInTime).toLocaleString('pt-BR')}
                             </p>
                           )}
                           {visitor.checkOutTime && (
                             <p className="text-neutral-dark">
-                              Saída: {new Date(visitor.checkOutTime).toLocaleString('pt-BR')}
+                              <strong>Saída:</strong> {new Date(visitor.checkOutTime).toLocaleString('pt-BR')}
                             </p>
                           )}
                         </div>
