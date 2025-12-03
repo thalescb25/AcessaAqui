@@ -95,6 +95,42 @@ const CompanyReceptionist = () => {
     }
   };
 
+  const handleExportToExcel = () => {
+    const allVisitors = [...approvedVisitors, ...deniedVisitors];
+    
+    if (allVisitors.length === 0) {
+      toast({
+        title: "Sem dados para exportar",
+        description: "Não há visitantes no histórico para exportar.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    // Criar CSV
+    const headers = "Nome,Email,Telefone,Anfitrião,Empresa,Motivo,Status,Data Check-in\n";
+    const rows = allVisitors.map(v => {
+      const checkInDate = v.checkInTime ? new Date(v.checkInTime).toLocaleString('pt-BR') : 'Pendente';
+      return `"${v.fullName}","${v.email || ''}","${v.phone || ''}","${v.hostName}","${v.representingCompany || ''}","${v.reason || ''}","${v.status === 'approved' ? 'Aprovado' : 'Recusado'}","${checkInDate}"`;
+    }).join('\n');
+    
+    const csvContent = headers + rows;
+    const blob = new Blob(['\ufeff' + csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', `historico_visitantes_${new Date().toISOString().split('T')[0]}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast({
+      title: "Exportação Concluída",
+      description: `${allVisitors.length} registros exportados com sucesso.`,
+    });
+  };
+
   const pendingVisitors = visitors.filter(v => v.status === 'pending');
   const approvedVisitors = visitors.filter(v => v.status === 'approved');
   const deniedVisitors = visitors.filter(v => v.status === 'denied');
