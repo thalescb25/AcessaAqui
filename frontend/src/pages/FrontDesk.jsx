@@ -134,7 +134,7 @@ const FrontDesk = () => {
             >
               {tab.label}
               {tab.count !== undefined && tab.count > 0 && (
-                <span className=\"ml-2 px-2 py-1 bg-warning text-graphite rounded-full text-sm font-bold\">
+                <span className="ml-2 px-2 py-1 bg-warning text-graphite rounded-full text-sm font-bold">
                   {tab.count}
                 </span>
               )}
