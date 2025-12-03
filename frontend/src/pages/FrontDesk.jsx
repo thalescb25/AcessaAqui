@@ -180,31 +180,27 @@ Documento: ${visitor.document || 'Não informado'}
                       
                       <div className="flex gap-3">
                         <Button 
-                          onClick={() => handleResend(visitor)}
+                          onClick={() => handleViewDetails(visitor)}
                           variant="outline"
                           size="lg"
-                          className="flex-1 border-accent text-accent hover:bg-blue-50 h-14 text-lg"
+                          className="flex-1 border-primary text-primary hover:bg-blue-50 h-14 text-lg"
+                        >
+                          <Users className="w-5 h-5 mr-2" />
+                          Ver Detalhes
+                        </Button>
+                        <Button 
+                          onClick={() => handleResend(visitor)}
+                          size="lg"
+                          className="flex-1 bg-accent hover:bg-blue-600 h-14 text-lg"
                         >
                           <Send className="w-5 h-5 mr-2" />
                           Reenviar Notificação
                         </Button>
-                        <Button 
-                          onClick={() => handleApprove(visitor)}
-                          size="lg"
-                          className="flex-1 bg-green-600 hover:bg-green-700 h-14 text-lg"
-                        >
-                          <CheckCircle className="w-5 h-5 mr-2" />
-                          Aprovar Entrada
-                        </Button>
-                        <Button 
-                          onClick={() => handleDeny(visitor)}
-                          size="lg"
-                          variant="destructive"
-                          className="flex-1 h-14 text-lg"
-                        >
-                          <XCircle className="w-5 h-5 mr-2" />
-                          Recusar
-                        </Button>
+                      </div>
+                      <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                        <p className="text-sm text-yellow-800 text-center">
+                          ⚠️ A aprovação de entrada é responsabilidade da empresa visitada
+                        </p>
                       </div>
                     </CardContent>
                   </Card>
