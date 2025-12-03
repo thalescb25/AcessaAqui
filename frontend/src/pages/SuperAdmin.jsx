@@ -105,11 +105,11 @@ const SuperAdmin = () => {
         {/* Dashboard Financeiro */}
         {activeTab === 'dashboard' && (
           <div className="space-y-6">
-            {/* Key Metrics */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Key Metrics - Simplificado */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <StatCard
                 icon={DollarSign}
-                title="MRR"
+                title="Receita do Mês (MRR)"
                 value={formatCurrency(metrics.mrr)}
                 trend="up"
                 trendValue="+10.5%"
@@ -117,7 +117,7 @@ const SuperAdmin = () => {
               />
               <StatCard
                 icon={TrendingUp}
-                title="ARR"
+                title="Receita Anual Estimada (ARR)"
                 value={formatCurrency(metrics.arr)}
                 trend="up"
                 trendValue="+12.3%"
@@ -125,17 +125,9 @@ const SuperAdmin = () => {
               />
               <StatCard
                 icon={Users}
-                title="Novos Prédios (Mês)"
+                title="Novos Prédios este Mês"
                 value={metrics.newBuildingsThisMonth}
                 color="bg-blue-500"
-              />
-              <StatCard
-                icon={TrendingDown}
-                title="Churn"
-                value={`${metrics.churn}%`}
-                trend="down"
-                trendValue="-0.5%"
-                color="bg-orange-500"
               />
             </div>
 
