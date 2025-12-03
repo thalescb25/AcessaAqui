@@ -76,11 +76,6 @@ const Login = () => {
               className="h-24"
             />
           </div>
-          <div>
-            <CardDescription className="text-base mt-2 text-neutral-dark">
-              Acesso rápido, seguro e digital. Aqui.
-            </CardDescription>
-          </div>
         </CardHeader>
 
         <CardContent>
