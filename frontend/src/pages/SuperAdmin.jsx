@@ -18,8 +18,52 @@ const SuperAdmin = () => {
   const [plans, setPlans] = useState(mockPlans);
   const [metrics, setMetrics] = useState(mockFinancialMetrics);
   const [settings, setSettings] = useState(mockSystemSettings);
+  const [showNewBuildingModal, setShowNewBuildingModal] = useState(false);
+  const [editingBuilding, setEditingBuilding] = useState(null);
+  const [editingPlan, setEditingPlan] = useState(null);
   const navigate = useNavigate();
   const { toast } = useToast();
+
+  const handleNewBuilding = () => {
+    toast({
+      title: "Novo Prédio",
+      description: "Funcionalidade em desenvolvimento. Modal será implementado.",
+    });
+    setShowNewBuildingModal(true);
+  };
+
+  const handleEditBuilding = (building) => {
+    toast({
+      title: "Editar Prédio",
+      description: `Editando ${building.name}`,
+    });
+    setEditingBuilding(building);
+  };
+
+  const handleDeleteBuilding = (building) => {
+    if (window.confirm(`Deseja realmente excluir ${building.name}?`)) {
+      setBuildings(buildings.filter(b => b.id !== building.id));
+      toast({
+        title: "Prédio Excluído",
+        description: `${building.name} foi removido com sucesso.`,
+      });
+    }
+  };
+
+  const handleEditPlan = (plan) => {
+    toast({
+      title: "Editar Plano",
+      description: `Editando plano ${plan.name}`,
+    });
+    setEditingPlan(plan);
+  };
+
+  const handleSaveSettings = () => {
+    toast({
+      title: "Configurações Salvas",
+      description: "As configurações do sistema foram atualizadas com sucesso.",
+    });
+  };
 
   useEffect(() => {
     const userData = localStorage.getItem('user');
