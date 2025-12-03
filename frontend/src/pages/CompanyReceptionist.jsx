@@ -245,19 +245,25 @@ const CompanyReceptionist = () => {
           </div>
 
           <div className="space-y-4">
-            {[...approvedVisitors, ...deniedVisitors].slice(0, visibleCount).map((visitor) => (
+            {[...approvedVisitors, ...deniedVisitors]
+              .sort((a, b) => new Date(b.createdAt || b.checkInTime) - new Date(a.createdAt || a.checkInTime))
+              .slice(0, visibleCount).map((visitor) => (
               <Card key={visitor.id}>
                 <CardContent className="p-6">
                   <div className="flex items-center justify-between">
                     <div className="flex-1">
                       <h3 className="text-lg font-bold text-graphite mb-1">{visitor.fullName}</h3>
-                      <p className="text-sm text-neutral-dark">Anfitrião: {visitor.hostName}</p>
-                      {visitor.checkInTime && (
-                        <p className="text-xs text-neutral-dark mt-1">
-                          <Calendar className="w-3 h-3 inline mr-1" />
-                          {new Date(visitor.checkInTime).toLocaleString('pt-BR')}
-                        </p>
-                      )}
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-1 text-sm text-neutral-dark">
+                        <p>Anfitrião: {visitor.hostName}</p>
+                        {visitor.email && <p>Email: {visitor.email}</p>}
+                        {visitor.phone && <p>Telefone: {visitor.phone}</p>}
+                        {visitor.checkInTime && (
+                          <p className="text-xs mt-1">
+                            <Calendar className="w-3 h-3 inline mr-1" />
+                            {new Date(visitor.checkInTime).toLocaleString('pt-BR')}
+                          </p>
+                        )}
+                      </div>
                     </div>
                     <Badge className={`text-sm px-3 py-1 ${
                       visitor.status === 'approved' 
