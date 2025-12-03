@@ -316,7 +316,7 @@ const Dashboard = () => {
                 </table>
               </div>
 
-              {filteredVisitors.length === 0 && (
+              {visitors.length === 0 && !isLoading && (
                 <div className="text-center py-12">
                   <Users className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                   <p className="text-gray-500 text-lg">Nenhum visitante encontrado</p>
