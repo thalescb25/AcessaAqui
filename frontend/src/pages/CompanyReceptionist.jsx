@@ -201,15 +201,15 @@ const CompanyReceptionist = () => {
         {/* Pending Approvals */}
         {pendingVisitors.length > 0 && (
           <div className="mb-8">
-            <h2 className="text-2xl font-bold text-graphite mb-4">Aprovações Pendentes</h2>
+            <h2 className="text-xl md:text-2xl font-bold text-graphite mb-4">Aprovações Pendentes</h2>
             <div className="space-y-4">
               {pendingVisitors.map((visitor) => (
                 <Card key={visitor.id} className="border-2 border-warning">
-                  <CardContent className="p-6">
-                    <div className="flex items-start justify-between mb-4">
+                  <CardContent className="p-4 md:p-6">
+                    <div className="flex flex-col md:flex-row md:items-start md:justify-between mb-4 gap-3">
                       <div className="flex-1">
-                        <h3 className="text-xl font-bold text-graphite mb-2">{visitor.fullName}</h3>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                        <h3 className="text-lg md:text-xl font-bold text-graphite mb-2">{visitor.fullName}</h3>
+                        <div className="grid grid-cols-1 gap-2 text-sm md:text-base">
                           <p className="text-neutral-dark">
                             <span className="font-semibold">Anfitrião:</span> {visitor.hostName}
                           </p>
@@ -230,15 +230,15 @@ const CompanyReceptionist = () => {
                           )}
                         </div>
                       </div>
-                      <Badge className="bg-warning text-graphite text-sm px-3 py-1">
+                      <Badge className="bg-warning text-graphite text-xs md:text-sm px-3 py-1 self-start">
                         Aguardando
                       </Badge>
                     </div>
                     
-                    <div className="flex gap-3">
+                    <div className="flex flex-col md:flex-row gap-3">
                       <Button 
                         onClick={() => handleApprove(visitor)}
-                        className="flex-1 bg-green-600 hover:bg-green-700 h-12 text-base"
+                        className="flex-1 bg-green-600 hover:bg-green-700 h-12 text-sm md:text-base"
                       >
                         <CheckCircle className="w-5 h-5 mr-2" />
                         Aprovar
@@ -246,7 +246,7 @@ const CompanyReceptionist = () => {
                       <Button 
                         onClick={() => handleDeny(visitor)}
                         variant="destructive"
-                        className="flex-1 h-12 text-base"
+                        className="flex-1 h-12 text-sm md:text-base"
                       >
                         <XCircle className="w-5 h-5 mr-2" />
                         Recusar
