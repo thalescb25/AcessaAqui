@@ -259,6 +259,18 @@ const CompanyReceptionist = () => {
               </Card>
             ))}
           </div>
+          
+          {[...approvedVisitors, ...deniedVisitors].length > visibleCount && (
+            <div className="mt-6 text-center">
+              <Button
+                onClick={() => setVisibleCount(prev => prev + 5)}
+                variant="outline"
+                className="border-primary text-primary hover:bg-blue-50"
+              >
+                Carregar Mais ({[...approvedVisitors, ...deniedVisitors].length - visibleCount} restantes)
+              </Button>
+            </div>
+          )}
         </div>
 
         {/* Contact Support */}
