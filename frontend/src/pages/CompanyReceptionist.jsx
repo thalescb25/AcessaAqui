@@ -14,6 +14,7 @@ const CompanyReceptionist = () => {
   const [user, setUser] = useState(null);
   const [visitors, setVisitors] = useState(mockVisitors);
   const [timeFilter, setTimeFilter] = useState('7');
+  const [visibleCount, setVisibleCount] = useState(5);
   const navigate = useNavigate();
   const { toast } = useToast();
 
