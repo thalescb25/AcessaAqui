@@ -70,12 +70,13 @@ const Login = () => {
       <Card className="w-full max-w-md relative shadow-2xl border-0">
         <CardHeader className="text-center space-y-4 pb-8">
           <div className="flex justify-center">
-            <div className="w-16 h-16 bg-blue-50 rounded-2xl flex items-center justify-center">
-              <Building2 className="w-10 h-10 text-primary" />
-            </div>
+            <img 
+              src="https://customer-assets.emergentagent.com/job_2f57b21b-9406-449a-b554-d3e9cd34f01a/artifacts/tje13zmr_Gemini_Generated_Image_iaxqgniaxqgniaxq.png"
+              alt="AcessaAqui Logo"
+              className="h-24"
+            />
           </div>
           <div>
-            <CardTitle className="text-3xl font-bold text-primary-dark">AcessaAqui</CardTitle>
             <CardDescription className="text-base mt-2 text-neutral-dark">
               Acesso rápido, seguro e digital. Aqui.
             </CardDescription>
