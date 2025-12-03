@@ -4,6 +4,9 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from './components/ui/toaster';
 import Login from './pages/Login';
 import SuperAdmin from './pages/SuperAdmin';
+import BuildingAdmin from './pages/BuildingAdmin';
+import FrontDesk from './pages/FrontDesk';
+import CompanyReceptionist from './pages/CompanyReceptionist';
 
 function App() {
   return (
@@ -16,13 +19,13 @@ function App() {
           {/* Login Route */}
           <Route path="/login" element={<Login />} />
           
-          {/* Super Admin Dashboard */}
+          {/* Role-based Dashboards */}
           <Route path="/super-admin" element={<SuperAdmin />} />
+          <Route path="/building-admin" element={<BuildingAdmin />} />
+          <Route path="/front-desk" element={<FrontDesk />} />
+          <Route path="/company-receptionist" element={<CompanyReceptionist />} />
           
-          {/* TODO: Add other role dashboards */}
-          {/* <Route path="/building-admin" element={<BuildingAdmin />} /> */}
-          {/* <Route path="/front-desk" element={<FrontDesk />} /> */}
-          {/* <Route path="/company-receptionist" element={<CompanyReceptionist />} /> */}
+          {/* TODO: Visitor check-in flow */}
           {/* <Route path="/visitor/:buildingId" element={<VisitorCheckIn />} /> */}
         </Routes>
         <Toaster />
