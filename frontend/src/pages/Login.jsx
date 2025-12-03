@@ -148,6 +148,25 @@ const Login = () => {
               </p>
             </div>
           </div>
+
+          <div className="mt-6 text-center space-y-3">
+            <div>
+              <button
+                onClick={() => navigate('/visitor/1')}
+                className="text-primary hover:text-blue-600 font-semibold text-base transition-colors"
+              >
+                🚶 Testar Jornada do Visitante (QR Code)
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={() => navigate('/')}
+                className="text-gray-600 hover:text-green-600 font-medium text-sm transition-colors"
+              >
+                ← Voltar para o site
+              </button>
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
