@@ -7,12 +7,26 @@ module.exports = {
   ],
   theme: {
   	extend: {
+      fontFamily: {
+        sans: ['Inter', 'sans-serif'],
+      },
   		borderRadius: {
   			lg: 'var(--radius)',
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
   		colors: {
+        // AcessaAqui Color Palette
+        'primary': '#3B82F6',         // Digital Blue
+        'primary-dark': '#1E293B',    // Deep Professional Blue  
+        'secondary': '#F1F5F9',       // Light Gray
+        'accent': '#0EA5E9',          // Success Turquoise
+        'warning': '#FACC15',         // Alert Yellow
+        'neutral-light': '#F1F5F9',
+        'neutral-medium': '#CBD5E1',
+        'neutral-dark': '#475569',
+        'graphite': '#0F172A',
+        
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
@@ -23,21 +37,9 @@ module.exports = {
   				DEFAULT: 'hsl(var(--popover))',
   				foreground: 'hsl(var(--popover-foreground))'
   			},
-  			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
-  			},
-  			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
-  			},
   			muted: {
   				DEFAULT: 'hsl(var(--muted))',
   				foreground: 'hsl(var(--muted-foreground))'
-  			},
-  			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
-  				foreground: 'hsl(var(--accent-foreground))'
   			},
   			destructive: {
   				DEFAULT: 'hsl(var(--destructive))',
