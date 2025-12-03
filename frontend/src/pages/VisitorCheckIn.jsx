@@ -18,10 +18,13 @@ const VisitorCheckIn = () => {
   const [selectedCompany, setSelectedCompany] = useState('');
   const [formData, setFormData] = useState({
     fullName: '',
+    phone: '',
+    email: '',
     hostName: '',
     representingCompany: '',
     reason: '',
     companions: 0,
+    companionsDetails: [],
     document: '',
     documentImage: null,
     selfie: null
