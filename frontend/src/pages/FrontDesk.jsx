@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { mockVisitors } from '../mockData';
+import { mockVisitors, mockCompanies } from '../mockData';
 import Navbar from '../components/Navbar';
 import { 
   Users, UserPlus, Search, Clock, CheckCircle, XCircle, Send, Mail, FileText, Download
