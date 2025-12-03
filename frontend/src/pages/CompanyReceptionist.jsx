@@ -45,6 +45,18 @@ const CompanyReceptionist = () => {
     }
   }, [navigate, toast]);
 
+  // Polling para atualizar lista de visitantes em tempo real
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const storedVisitors = localStorage.getItem('visitors');
+      if (storedVisitors) {
+        setVisitors(JSON.parse(storedVisitors));
+      }
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const handleApprove = (visitor) => {
     const updatedVisitors = visitors.map(v => 
       v.id === visitor.id 
