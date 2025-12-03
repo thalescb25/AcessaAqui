@@ -186,6 +186,7 @@ const BuildingAdmin = () => {
             Upload CSV Empresas
           </Button>
           <Button 
+            onClick={handleDownloadTemplate}
             variant="outline"
             className="border-accent text-accent hover:bg-blue-50 h-20 text-lg"
           >
