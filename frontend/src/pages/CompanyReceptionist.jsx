@@ -146,14 +146,14 @@ const CompanyReceptionist = () => {
         <div className="mb-8">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div>
-              <h1 className="text-3xl font-bold text-graphite mb-2">
+              <h1 className="text-2xl md:text-3xl font-bold text-graphite mb-2">
                 Painel de Controle de Acessos - Empresa {mockCompanies.find(c => c.id === user?.companyId)?.name || 'Tech Solutions Ltda'}
               </h1>
-              <p className="text-neutral-dark">Aprovação de visitantes em tempo real</p>
+              <p className="text-sm md:text-base text-neutral-dark">Aprovação de visitantes em tempo real</p>
             </div>
             <Button
               onClick={handleExportToExcel}
-              className="bg-green-600 hover:bg-green-700"
+              className="bg-green-600 hover:bg-green-700 w-full md:w-auto"
             >
               <Download className="w-4 h-4 mr-2" />
               Exportar Histórico
