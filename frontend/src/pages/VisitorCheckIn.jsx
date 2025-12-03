@@ -34,9 +34,10 @@ const VisitorCheckIn = () => {
 
   const t = translations[language];
 
-  // Simulate document and selfie requirements from building settings
-  const documentRequired = true; // from building settings
-  const selfieRequired = false; // from building settings
+  // Get document and selfie requirements from building settings
+  const buildingSettings = JSON.parse(localStorage.getItem('buildingSettings') || '{"documentRequired": false, "selfieRequired": false}');
+  const documentRequired = buildingSettings.documentRequired || false;
+  const selfieRequired = buildingSettings.selfieRequired || false;
 
   const handleLanguageSelect = (lang) => {
     setLanguage(lang);
