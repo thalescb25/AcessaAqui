@@ -1,0 +1,298 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { mockCompanies, mockUsers, mockVisitors } from '../mockData';
+import Navbar from '../components/Navbar';
+import { 
+  Building2, Plus, Upload, Download, Users, Search, Edit, Trash2,
+  FileText, Settings as SettingsIcon, QrCode
+} from 'lucide-react';
+import { Button } from '../components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Input } from '../components/ui/input';
+import { useToast } from '../hooks/use-toast';
+
+const BuildingAdmin = () => {
+  const [user, setUser] = useState(null);
+  const [activeTab, setActiveTab] = useState('companies');
+  const [companies, setCompanies] = useState(mockCompanies);
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    if (!userData) {
+      navigate('/login');
+    } else {
+      const parsedUser = JSON.parse(userData);
+      if (parsedUser.role !== 'building_admin') {
+        navigate('/login');
+        toast({
+          title: "Acesso negado",
+          description: "Você não tem permissão para acessar esta página.",
+          variant: "destructive"
+        });
+      } else {
+        setUser(parsedUser);
+      }
+    }
+  }, [navigate, toast]);
+
+  const handleNewCompany = () => {
+    toast({
+      title: "Nova Empresa",
+      description: "Funcionalidade em desenvolvimento.",
+    });
+  };
+
+  const handleEditCompany = (company) => {
+    toast({
+      title: "Editar Empresa",
+      description: `Editando ${company.name}`,
+    });
+  };
+
+  const handleDeleteCompany = (company) => {
+    if (window.confirm(`Deseja realmente excluir ${company.name}?`)) {
+      setCompanies(companies.filter(c => c.id !== company.id));
+      toast({
+        title: "Empresa Excluída",
+        description: `${company.name} foi removida com sucesso.`,
+      });
+    }
+  };
+
+  const handleDownloadQR = () => {
+    toast({
+      title: "QR Code OnePage",
+      description: "Download iniciado. Funcionalidade em desenvolvimento.",
+    });
+  };
+
+  const handleUploadCSV = () => {
+    toast({
+      title: "Upload CSV",
+      description: "Funcionalidade de importação em massa em desenvolvimento.",
+    });
+  };
+
+  const filteredCompanies = companies.filter(company =>
+    company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    company.suite.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (!user) return null;
+
+  return (
+    <div className="min-h-screen bg-secondary">
+      <Navbar user={user} />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-graphite mb-2">Administração do Prédio</h1>
+          <p className="text-neutral-dark">Gestão de empresas, recepcionistas e configurações</p>
+        </div>
+
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <Button 
+            onClick={handleDownloadQR}
+            className="bg-primary hover:bg-blue-600 h-20 text-lg"
+          >
+            <QrCode className="w-6 h-6 mr-3" />
+            Baixar OnePage QR Code
+          </Button>
+          <Button 
+            onClick={handleUploadCSV}
+            variant="outline"
+            className="border-primary text-primary hover:bg-blue-50 h-20 text-lg"
+          >
+            <Upload className="w-6 h-6 mr-3" />
+            Upload CSV Empresas
+          </Button>
+          <Button 
+            variant="outline"
+            className="border-accent text-accent hover:bg-blue-50 h-20 text-lg"
+          >
+            <Download className="w-6 h-6 mr-3" />
+            Download Template CSV
+          </Button>
+        </div>
+
+        {/* Tabs */}
+        <div className="flex space-x-2 mb-6 overflow-x-auto">
+          {[
+            { id: 'companies', label: 'Empresas' },
+            { id: 'visitors', label: 'Histórico de Visitantes' },
+            { id: 'settings', label: 'Configurações' }
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-6 py-3 rounded-lg font-semibold whitespace-nowrap transition-all ${
+                activeTab === tab.id
+                  ? 'bg-primary text-white shadow-lg'
+                  : 'bg-white text-neutral-dark hover:bg-neutral-light'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Companies Tab */}
+        {activeTab === 'companies' && (
+          <div>
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+              <h2 className="text-2xl font-bold text-graphite">Empresas Cadastradas</h2>
+              <div className="flex gap-3 w-full md:w-auto">
+                <div className="relative flex-1 md:w-64">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-dark" />
+                  <Input
+                    type="text"
+                    placeholder="Buscar empresa..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+                <Button 
+                  onClick={handleNewCompany}
+                  className="bg-primary hover:bg-blue-600"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Nova Empresa
+                </Button>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 gap-4">
+              {filteredCompanies.map((company) => (
+                <Card key={company.id} className="hover:shadow-lg transition-all">
+                  <CardContent className="p-6">
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center space-x-3 mb-2">
+                          <Building2 className="w-6 h-6 text-primary" />
+                          <h3 className="text-lg font-bold text-graphite">{company.name}</h3>
+                          <span className="px-3 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700">
+                            Ativo
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                          <div>
+                            <p className="text-xs text-neutral-dark">Conjunto</p>
+                            <p className="text-sm font-semibold text-graphite">{company.suite}</p>
+                          </div>
+                          <div>
+                            <p className="text-xs text-neutral-dark">Recepcionistas</p>
+                            <p className="text-sm font-semibold text-graphite">{company.receptionists.length}</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex space-x-2 ml-4">
+                        <Button 
+                          onClick={() => handleEditCompany(company)}
+                          variant="outline" 
+                          size="sm" 
+                          className="border-primary text-primary hover:bg-blue-50"
+                        >
+                          <Edit className="w-4 h-4" />
+                        </Button>
+                        <Button 
+                          onClick={() => handleDeleteCompany(company)}
+                          variant="outline" 
+                          size="sm" 
+                          className="border-red-200 text-red-600 hover:bg-red-50"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Visitors History Tab */}
+        {activeTab === 'visitors' && (
+          <div>
+            <h2 className="text-2xl font-bold text-graphite mb-6">Histórico de Visitantes</h2>
+            <Card>
+              <CardContent className="p-6">
+                <p className="text-neutral-dark text-center py-8">
+                  Histórico de visitantes (somente leitura) - Em desenvolvimento
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+        )}
+
+        {/* Settings Tab */}
+        {activeTab === 'settings' && (
+          <div>
+            <h2 className="text-2xl font-bold text-graphite mb-6">Configurações do Prédio</h2>
+            <div className="space-y-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Requisitos de Check-in</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <label className="flex items-center space-x-3 cursor-pointer">
+                    <input type="checkbox" className="w-5 h-5 text-primary" defaultChecked />
+                    <span className="text-graphite">Documento obrigatório</span>
+                  </label>
+                  <label className="flex items-center space-x-3 cursor-pointer">
+                    <input type="checkbox" className="w-5 h-5 text-primary" />
+                    <span className="text-graphite">Selfie obrigatória</span>
+                  </label>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Idioma Padrão</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <select className="w-full p-3 border border-neutral-medium rounded-lg">
+                    <option value="pt">Português</option>
+                    <option value="en">English</option>
+                  </select>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Contato</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-neutral-dark mb-2">
+                    Para suporte, entre em contato:
+                  </p>
+                  <a 
+                    href="mailto:neuraone.ai@gmail.com"
+                    className="text-primary hover:text-blue-600 font-semibold"
+                  >
+                    neuraone.ai@gmail.com
+                  </a>
+                </CardContent>
+              </Card>
+
+              <div className="flex justify-end">
+                <Button className="bg-primary hover:bg-blue-600">
+                  <SettingsIcon className="w-4 h-4 mr-2" />
+                  Salvar Configurações
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default BuildingAdmin;
