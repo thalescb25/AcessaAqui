@@ -38,37 +38,24 @@ const FrontDesk = () => {
     }
   }, [navigate, toast]);
 
-  const handleApprove = (visitor) => {
-    setVisitors(visitors.map(v => 
-      v.id === visitor.id 
-        ? { ...v, status: 'approved', checkInTime: new Date().toISOString() }
-        : v
-    ));
-    toast({
-      title: "Acesso Aprovado",
-      description: `${visitor.fullName} pode entrar no prédio.`,
-    });
-  };
-
-  const handleDeny = (visitor) => {
-    const reason = prompt("Motivo da recusa (opcional):");
-    setVisitors(visitors.map(v => 
-      v.id === visitor.id 
-        ? { ...v, status: 'denied', notes: reason || '' }
-        : v
-    ));
-    toast({
-      title: "Acesso Negado",
-      description: `Entrada de ${visitor.fullName} foi recusada.`,
-      variant: "destructive"
-    });
-  };
-
   const handleResend = (visitor) => {
     toast({
       title: "Notificação Reenviada",
       description: `Nova notificação enviada para a empresa.`,
     });
+  };
+
+  const handleViewDetails = (visitor) => {
+    const details = `
+Nome: ${visitor.fullName}
+Visitando: ${visitor.hostName}
+Empresa: ${visitor.representingCompany || 'Não informado'}
+Motivo: ${visitor.reason || 'Não informado'}
+Acompanhantes: ${visitor.companions}
+Documento: ${visitor.document || 'Não informado'}
+    `.trim();
+    
+    alert(details);
   };
 
   const handleManualCheckIn = () => {
