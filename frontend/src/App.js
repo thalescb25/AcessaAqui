@@ -7,6 +7,7 @@ import SuperAdmin from './pages/SuperAdmin';
 import BuildingAdmin from './pages/BuildingAdmin';
 import FrontDesk from './pages/FrontDesk';
 import CompanyReceptionist from './pages/CompanyReceptionist';
+import VisitorCheckIn from './pages/VisitorCheckIn';
 
 function App() {
   return (
@@ -25,8 +26,8 @@ function App() {
           <Route path="/front-desk" element={<FrontDesk />} />
           <Route path="/company-receptionist" element={<CompanyReceptionist />} />
           
-          {/* TODO: Visitor check-in flow */}
-          {/* <Route path="/visitor/:buildingId" element={<VisitorCheckIn />} /> */}
+          {/* Visitor check-in flow (no login required) */}
+          <Route path="/visitor/:buildingId" element={<VisitorCheckIn />} />
         </Routes>
         <Toaster />
       </BrowserRouter>
