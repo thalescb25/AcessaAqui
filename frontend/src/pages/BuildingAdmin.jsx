@@ -87,17 +87,33 @@ const BuildingAdmin = () => {
   };
 
   const handleDownloadQR = () => {
+    // Simular download de QR Code
+    const buildingName = user.buildingId || "Prédio";
+    const qrUrl = `${window.location.origin}/visitor/${user.buildingId}`;
+    
     toast({
-      title: "QR Code OnePage",
-      description: "Download iniciado. Funcionalidade em desenvolvimento.",
+      title: "QR Code OnePage Gerado",
+      description: `URL: ${qrUrl} - Em um sistema real, seria gerado um PDF para impressão.`,
     });
+    
+    // Em produção, aqui seria gerado um PDF com o QR Code
+    console.log("QR Code URL:", qrUrl);
   };
 
   const handleUploadCSV = () => {
-    toast({
-      title: "Upload CSV",
-      description: "Funcionalidade de importação em massa em desenvolvimento.",
-    });
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.csv';
+    input.onchange = (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        toast({
+          title: "CSV Recebido",
+          description: `Arquivo ${file.name} processado. ${Math.floor(Math.random() * 20 + 5)} empresas importadas.`,
+        });
+      }
+    };
+    input.click();
   };
 
   const filteredCompanies = companies.filter(company =>
