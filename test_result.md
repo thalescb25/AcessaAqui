@@ -305,7 +305,13 @@ metadata:
   run_ui: false
 
 test_plan:
-  current_focus: []
+  current_focus:
+    - "Visitor Check-in Flow"
+    - "Company Receptionist Approval Flow"
+    - "Login System"
+    - "Front Desk Portal"
+    - "Building Admin Dashboard"
+    - "Mobile Responsiveness"
   stuck_tasks: []
   test_all: true
   test_priority: "high_first"
