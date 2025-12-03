@@ -95,8 +95,26 @@ const CompanyReceptionist = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-3xl font-bold text-graphite mb-2">Recepção da Empresa</h1>
-          <p className="text-neutral-dark">Aprovação de visitantes em tempo real</p>
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+              <h1 className="text-3xl font-bold text-graphite mb-2">
+                Painel de Controle de Acessos - Empresa {mockCompanies.find(c => c.id === user?.companyId)?.name || 'Tech Solutions Ltda'}
+              </h1>
+              <p className="text-neutral-dark">Aprovação de visitantes em tempo real</p>
+            </div>
+            <Button
+              onClick={() => {
+                toast({
+                  title: "Download Iniciado",
+                  description: "Histórico sendo exportado...",
+                });
+              }}
+              className="bg-green-600 hover:bg-green-700"
+            >
+              <Download className="w-4 h-4 mr-2" />
+              Exportar Histórico
+            </Button>
+          </div>
         </div>
 
         {/* Stats Cards */}
