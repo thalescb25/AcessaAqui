@@ -332,17 +332,101 @@ const VisitorCheckIn = () => {
 
                 <div>
                   <label className="text-sm font-medium text-graphite mb-2 block">
+                    {language === 'pt' ? 'Telefone *' : 'Phone *'}
+                  </label>
+                  <Input
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
+                    placeholder={language === 'pt' ? '(11) 99999-9999' : '+55 11 99999-9999'}
+                    className="h-12"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-graphite mb-2 block">
+                    {language === 'pt' ? 'E-mail *' : 'Email *'}
+                  </label>
+                  <Input
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    placeholder={language === 'pt' ? 'seu@email.com' : 'your@email.com'}
+                    className="h-12"
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="text-sm font-medium text-graphite mb-2 block">
                     {language === 'pt' ? 'Número de acompanhantes' : 'Number of companions'}
                   </label>
                   <Input
                     type="number"
                     min="0"
+                    max="10"
                     value={formData.companions}
-                    onChange={(e) => setFormData({...formData, companions: parseInt(e.target.value) || 0})}
+                    onChange={(e) => {
+                      const count = parseInt(e.target.value) || 0;
+                      const newCompanions = Array(count).fill(null).map((_, i) => 
+                        formData.companionsDetails[i] || { name: '', document: '' }
+                      );
+                      setFormData({
+                        ...formData, 
+                        companions: count,
+                        companionsDetails: newCompanions
+                      });
+                    }}
                     className="h-12"
                   />
                 </div>
               </div>
+
+              {/* Campos dinâmicos para acompanhantes */}
+              {formData.companions > 0 && (
+                <div className="space-y-4 border-t pt-4">
+                  <h3 className="text-lg font-semibold text-graphite">
+                    {language === 'pt' ? 'Dados dos Acompanhantes' : 'Companions Information'}
+                  </h3>
+                  {Array(formData.companions).fill(null).map((_, index) => (
+                    <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 bg-secondary rounded-lg">
+                      <div>
+                        <label className="text-sm font-medium text-graphite mb-2 block">
+                          {language === 'pt' ? `Nome do Acompanhante ${index + 1} *` : `Companion ${index + 1} Name *`}
+                        </label>
+                        <Input
+                          value={formData.companionsDetails[index]?.name || ''}
+                          onChange={(e) => {
+                            const newDetails = [...formData.companionsDetails];
+                            newDetails[index] = { ...newDetails[index], name: e.target.value };
+                            setFormData({...formData, companionsDetails: newDetails});
+                          }}
+                          placeholder={language === 'pt' ? 'Nome completo' : 'Full name'}
+                          className="h-12"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-graphite mb-2 block">
+                          {language === 'pt' ? 'Documento *' : 'Document *'}
+                        </label>
+                        <Input
+                          value={formData.companionsDetails[index]?.document || ''}
+                          onChange={(e) => {
+                            const newDetails = [...formData.companionsDetails];
+                            newDetails[index] = { ...newDetails[index], document: e.target.value };
+                            setFormData({...formData, companionsDetails: newDetails});
+                          }}
+                          placeholder={language === 'pt' ? 'CPF ou RG' : 'ID Number'}
+                          className="h-12"
+                          required
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
 
               <Button
                 type="submit"
