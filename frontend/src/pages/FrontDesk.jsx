@@ -478,7 +478,8 @@ Documento: ${visitor.document || 'Não informado'}
                     </div>
                   </CardContent>
                 </Card>
-              )}))}
+              );
+              })}
               
               {visitors.filter(v => v.status !== 'pending').length === 0 && (
                 <Card>
