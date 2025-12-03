@@ -1,0 +1,354 @@
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { mockVisitors } from '../mockData';
+import Navbar from '../components/Navbar';
+import { 
+  Users, UserPlus, Search, Clock, CheckCircle, XCircle, Send, Mail
+} from 'lucide-react';
+import { Button } from '../components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Input } from '../components/ui/input';
+import { Badge } from '../components/ui/badge';
+import { useToast } from '../hooks/use-toast';
+
+const FrontDesk = () => {
+  const [user, setUser] = useState(null);
+  const [activeTab, setActiveTab] = useState('queue');
+  const [visitors, setVisitors] = useState(mockVisitors);
+  const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  useEffect(() => {
+    const userData = localStorage.getItem('user');
+    if (!userData) {
+      navigate('/login');
+    } else {
+      const parsedUser = JSON.parse(userData);
+      if (parsedUser.role !== 'front_desk') {
+        navigate('/login');
+        toast({
+          title: "Acesso negado",
+          description: "Você não tem permissão para acessar esta página.",
+          variant: "destructive"
+        });
+      } else {
+        setUser(parsedUser);
+      }
+    }
+  }, [navigate, toast]);
+
+  const handleApprove = (visitor) => {
+    setVisitors(visitors.map(v => 
+      v.id === visitor.id 
+        ? { ...v, status: 'approved', checkInTime: new Date().toISOString() }
+        : v
+    ));
+    toast({
+      title: "Acesso Aprovado",
+      description: `${visitor.fullName} pode entrar no prédio.`,
+    });
+  };
+
+  const handleDeny = (visitor) => {
+    const reason = prompt("Motivo da recusa (opcional):");
+    setVisitors(visitors.map(v => 
+      v.id === visitor.id 
+        ? { ...v, status: 'denied', notes: reason || '' }
+        : v
+    ));
+    toast({
+      title: "Acesso Negado",
+      description: `Entrada de ${visitor.fullName} foi recusada.`,
+      variant: "destructive"
+    });
+  };
+
+  const handleResend = (visitor) => {
+    toast({
+      title: "Notificação Reenviada",
+      description: `Nova notificação enviada para a empresa.`,
+    });
+  };
+
+  const handleManualCheckIn = () => {
+    toast({
+      title: "Check-in Manual",
+      description: "Funcionalidade em desenvolvimento.",
+    });
+  };
+
+  const pendingVisitors = visitors.filter(v => v.status === 'pending');
+  const filteredVisitors = visitors.filter(v =>
+    v.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    v.hostName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  if (!user) return null;
+
+  return (
+    <div className="min-h-screen bg-secondary">
+      <Navbar user={user} />
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Header */}
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-graphite mb-2">Portaria</h1>
+          <p className="text-xl text-neutral-dark">Interface simplificada para controle de acesso</p>
+        </div>
+
+        {/* Alert for pending visitors */}
+        {pendingVisitors.length > 0 && (
+          <Card className="mb-6 border-l-4 border-l-warning bg-yellow-50">
+            <CardContent className="p-6">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center space-x-3">
+                  <Clock className="w-8 h-8 text-warning" />
+                  <div>
+                    <p className="text-lg font-bold text-graphite">
+                      {pendingVisitors.length} visitante{pendingVisitors.length !== 1 ? 's' : ''} aguardando
+                    </p>
+                    <p className="text-sm text-neutral-dark">Aguardando aprovação da empresa</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Tabs */}
+        <div className="flex space-x-2 mb-6 overflow-x-auto">
+          {[
+            { id: 'queue', label: 'Fila em Tempo Real', count: pendingVisitors.length },
+            { id: 'manual', label: 'Check-in Manual' },
+            { id: 'search', label: 'Buscar Visitante' }
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id)}
+              className={`px-6 py-4 rounded-lg font-semibold text-lg whitespace-nowrap transition-all ${
+                activeTab === tab.id
+                  ? 'bg-primary text-white shadow-lg'
+                  : 'bg-white text-neutral-dark hover:bg-neutral-light'
+              }`}
+            >
+              {tab.label}
+              {tab.count !== undefined && tab.count > 0 && (
+                <span className=\"ml-2 px-2 py-1 bg-warning text-graphite rounded-full text-sm font-bold\">
+                  {tab.count}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+
+        {/* Queue Tab */}
+        {activeTab === 'queue' && (
+          <div>
+            {pendingVisitors.length === 0 ? (
+              <Card>
+                <CardContent className="p-12 text-center">
+                  <Users className="w-16 h-16 text-neutral-medium mx-auto mb-4" />
+                  <p className="text-xl text-neutral-dark">Nenhum visitante na fila no momento</p>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 gap-6">
+                {pendingVisitors.map((visitor) => (
+                  <Card key={visitor.id} className="border-2 border-warning">
+                    <CardContent className="p-8">
+                      <div className="flex items-start justify-between mb-6">
+                        <div className="flex-1">
+                          <h3 className="text-2xl font-bold text-graphite mb-2">{visitor.fullName}</h3>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-lg">
+                            <div>
+                              <span className="text-neutral-dark">Visitando: </span>
+                              <span className="font-semibold text-graphite">{visitor.hostName}</span>
+                            </div>
+                            {visitor.representingCompany && (
+                              <div>
+                                <span className="text-neutral-dark">Empresa: </span>
+                                <span className="font-semibold text-graphite">{visitor.representingCompany}</span>
+                              </div>
+                            )}
+                            {visitor.reason && (
+                              <div>
+                                <span className="text-neutral-dark">Motivo: </span>
+                                <span className="font-semibold text-graphite">{visitor.reason}</span>
+                              </div>
+                            )}
+                            {visitor.companions > 0 && (
+                              <div>
+                                <span className="text-neutral-dark">Acompanhantes: </span>
+                                <span className="font-semibold text-graphite">{visitor.companions}</span>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                        <Badge className="bg-warning text-graphite text-base px-4 py-2">
+                          <Clock className="w-4 h-4 mr-2" />
+                          Aguardando
+                        </Badge>
+                      </div>
+                      
+                      <div className="flex gap-3">
+                        <Button 
+                          onClick={() => handleResend(visitor)}
+                          variant="outline"
+                          size="lg"
+                          className="flex-1 border-accent text-accent hover:bg-blue-50 h-14 text-lg"
+                        >
+                          <Send className="w-5 h-5 mr-2" />
+                          Reenviar Notificação
+                        </Button>
+                        <Button 
+                          onClick={() => handleApprove(visitor)}
+                          size="lg"
+                          className="flex-1 bg-green-600 hover:bg-green-700 h-14 text-lg"
+                        >
+                          <CheckCircle className="w-5 h-5 mr-2" />
+                          Aprovar Entrada
+                        </Button>
+                        <Button 
+                          onClick={() => handleDeny(visitor)}
+                          size="lg"
+                          variant="destructive"
+                          className="flex-1 h-14 text-lg"
+                        >
+                          <XCircle className="w-5 h-5 mr-2" />
+                          Recusar
+                        </Button>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Manual Check-in Tab */}
+        {activeTab === 'manual' && (
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-2xl">Check-in Manual</CardTitle>
+              <p className="text-neutral-dark">Para visitantes sem smartphone ou idosos</p>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                  <label className="text-sm font-medium text-graphite mb-2 block">Nome Completo *</label>
+                  <Input placeholder="Nome do visitante" className="h-12 text-lg" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-graphite mb-2 block">Empresa Visitada *</label>
+                  <Input placeholder="Nome da empresa" className="h-12 text-lg" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-graphite mb-2 block">Anfitrião *</label>
+                  <Input placeholder="Nome do anfitrião" className="h-12 text-lg" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-graphite mb-2 block">Empresa Representando</label>
+                  <Input placeholder="Opcional" className="h-12 text-lg" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-graphite mb-2 block">Motivo</label>
+                  <Input placeholder="Opcional" className="h-12 text-lg" />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-graphite mb-2 block">Acompanhantes</label>
+                  <Input type="number" placeholder="0" defaultValue="0" className="h-12 text-lg" />
+                </div>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-graphite mb-2 block">Observações</label>
+                <textarea 
+                  rows={3}
+                  className="w-full p-3 border border-neutral-medium rounded-lg text-lg"
+                  placeholder="Anotações adicionais..."
+                />
+              </div>
+              <Button 
+                onClick={handleManualCheckIn}
+                size="lg"
+                className="w-full bg-primary hover:bg-blue-600 h-14 text-lg"
+              >
+                <UserPlus className="w-5 h-5 mr-2" />
+                Registrar Check-in
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Search Tab */}
+        {activeTab === 'search' && (
+          <div>
+            <Card className="mb-6">
+              <CardContent className="p-6">
+                <div className="relative">
+                  <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-neutral-dark" />
+                  <Input
+                    type="text"
+                    placeholder="Buscar por nome do visitante ou anfitrião..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-14 h-16 text-xl"
+                  />
+                </div>
+              </CardContent>
+            </Card>
+
+            {searchTerm && (
+              <div className="space-y-4">
+                {filteredVisitors.map((visitor) => (
+                  <Card key={visitor.id}>
+                    <CardContent className="p-6">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <h3 className="text-xl font-bold text-graphite mb-2">{visitor.fullName}</h3>
+                          <p className="text-neutral-dark">Anfitrião: {visitor.hostName}</p>
+                          <p className="text-sm text-neutral-dark mt-1">
+                            Check-in: {visitor.checkInTime ? new Date(visitor.checkInTime).toLocaleString('pt-BR') : 'Pendente'}
+                          </p>
+                        </div>
+                        <Badge className={
+                          visitor.status === 'approved' ? 'bg-green-100 text-green-700' :
+                          visitor.status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                          'bg-red-100 text-red-700'
+                        }>
+                          {visitor.status === 'approved' ? 'Aprovado' :
+                           visitor.status === 'pending' ? 'Pendente' : 'Negado'}
+                        </Badge>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Contact Support */}
+        <Card className="mt-8">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <Mail className="w-6 h-6 text-primary" />
+                <span className="text-graphite">Precisa de ajuda?</span>
+              </div>
+              <a 
+                href="mailto:neuraone.ai@gmail.com"
+                className="text-primary hover:text-blue-600 font-semibold"
+              >
+                neuraone.ai@gmail.com
+              </a>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+};
+
+export default FrontDesk;
