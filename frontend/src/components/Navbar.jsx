@@ -29,13 +29,11 @@ const Navbar = ({ user, onLogout }) => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3 group">
-            <div className="relative">
-              <Building2 className="w-8 h-8 text-primary transition-transform group-hover:scale-110" />
-            </div>
-            <div className="flex flex-col">
-              <span className="text-xl font-bold text-primary-dark">AcessaAqui</span>
-              <span className="text-xs text-primary font-medium">Acesso rápido, seguro e digital</span>
-            </div>
+            <img 
+              src="https://customer-assets.emergentagent.com/job_2f57b21b-9406-449a-b554-d3e9cd34f01a/artifacts/7h3cj76v_Gemini_Generated_Image_yd13ljyd13ljyd13.png"
+              alt="AcessaAqui Logo"
+              className="h-12 transition-transform group-hover:scale-105"
+            />
           </Link>
 
           {/* User Info & Actions - Desktop */}
