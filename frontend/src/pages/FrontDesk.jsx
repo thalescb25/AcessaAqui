@@ -144,8 +144,8 @@ Documento: ${visitor.document || 'Não informado'}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-graphite mb-2">Portaria</h1>
-          <p className="text-xl text-neutral-dark">Interface simplificada para controle de acesso</p>
+          <h1 className="text-2xl md:text-4xl font-bold text-graphite mb-2">Portaria</h1>
+          <p className="text-base md:text-xl text-neutral-dark">Interface simplificada para controle de acesso</p>
         </div>
 
         {/* Alert for pending visitors */}
