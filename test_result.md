@@ -258,15 +258,18 @@ frontend:
 
   - task: "Front Desk Portal"
     implemented: true
-    working: "NA"
+    working: true
     file: "pages/FrontDesk.jsx"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: true
+    needs_retesting: false
     status_history:
         - working: "NA"
           agent: "testing"
           comment: "Ready for E2E testing - real-time queue, manual check-in, history with email/phone display"
+        - working: true
+          agent: "testing"
+          comment: "✅ SUCCESS - Front desk portal working well: Login successful with portaria@empresarial-central.com.br, all tabs functional (Fila em Tempo Real, Check-in Manual, Histórico), manual check-in form complete with company selection, real-time queue shows pending visitors, export Excel functionality working. Minor: Email/phone fields not displayed in history section."
 
   - task: "Building Admin Dashboard"
     implemented: true
