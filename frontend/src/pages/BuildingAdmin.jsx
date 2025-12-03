@@ -132,6 +132,24 @@ const BuildingAdmin = () => {
     input.click();
   };
 
+  const handleDownloadTemplate = () => {
+    const csvContent = "Nome da Empresa,Número do Conjunto,Email da Recepcionista,Nome da Recepcionista\nTech Solutions,501,recepcao@techsolutions.com.br,Maria Silva\nMarketing Pro,502,recepcao@marketingpro.com.br,João Santos\n";
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement('a');
+    const url = URL.createObjectURL(blob);
+    link.setAttribute('href', url);
+    link.setAttribute('download', 'template_empresas.csv');
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    toast({
+      title: "Template Baixado",
+      description: "Use este arquivo como exemplo para cadastro em massa.",
+    });
+  };
+
   const filteredCompanies = companies.filter(company =>
     company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     company.suite.toLowerCase().includes(searchTerm.toLowerCase())
