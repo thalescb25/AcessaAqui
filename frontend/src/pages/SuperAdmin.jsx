@@ -250,7 +250,10 @@ const SuperAdmin = () => {
           <div>
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold text-graphite">Prédios Cadastrados</h2>
-              <Button className="bg-primary hover:bg-blue-600">
+              <Button 
+                onClick={handleNewBuilding}
+                className="bg-primary hover:bg-blue-600"
+              >
                 <Plus className="w-4 h-4 mr-2" />
                 Novo Prédio
               </Button>
