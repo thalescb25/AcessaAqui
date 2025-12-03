@@ -16,6 +16,7 @@ const FrontDesk = () => {
   const [activeTab, setActiveTab] = useState('queue');
   const [visitors, setVisitors] = useState(mockVisitors);
   const [searchTerm, setSearchTerm] = useState('');
+  const [visibleCount, setVisibleCount] = useState(5);
   const navigate = useNavigate();
   const { toast } = useToast();
 
