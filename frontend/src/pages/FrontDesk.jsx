@@ -80,10 +80,40 @@ Documento: ${visitor.document || 'Não informado'}
     alert(details);
   };
 
-  const handleManualCheckIn = () => {
+  const handleManualCheckIn = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    
+    const newVisitor = {
+      id: `v${Date.now()}`,
+      buildingId: user.buildingId,
+      companyId: '1', // Primeira empresa por padrão
+      fullName: formData.get('fullName'),
+      hostName: formData.get('hostName'),
+      representingCompany: formData.get('representingCompany') || '',
+      reason: formData.get('reason') || '',
+      companions: parseInt(formData.get('companions')) || 0,
+      document: '',
+      documentImage: null,
+      selfie: null,
+      status: 'approved', // Check-in manual já aprovado
+      checkInTime: new Date().toISOString(),
+      checkOutTime: null,
+      notes: formData.get('notes') || 'Check-in manual realizado pela portaria',
+      createdAt: new Date().toISOString(),
+      language: 'pt'
+    };
+    
+    const updatedVisitors = [...visitors, newVisitor];
+    setVisitors(updatedVisitors);
+    localStorage.setItem('visitors', JSON.stringify(updatedVisitors));
+    
+    form.reset();
+    
     toast({
-      title: "Check-in Manual",
-      description: "Funcionalidade em desenvolvimento.",
+      title: "Check-in Manual Realizado",
+      description: `${newVisitor.fullName} foi registrado com sucesso.`,
     });
   };
 
