@@ -424,7 +424,9 @@ Documento: ${visitor.document || 'Não informado'}
             </div>
 
             <div className="space-y-4">
-              {visitors.filter(v => v.status !== 'pending').slice(0, visibleCount).map((visitor) => {
+              {visitors.filter(v => v.status !== 'pending')
+                .sort((a, b) => new Date(b.createdAt || b.checkInTime) - new Date(a.createdAt || a.checkInTime))
+                .slice(0, visibleCount).map((visitor) => {
                 const company = mockCompanies.find(c => c.id === visitor.companyId);
                 return (
                 <Card key={visitor.id}>
@@ -439,6 +441,12 @@ Documento: ${visitor.document || 'Não informado'}
                             </p>
                           )}
                           <p className="text-neutral-dark"><strong>Anfitrião:</strong> {visitor.hostName}</p>
+                          {visitor.email && (
+                            <p className="text-neutral-dark"><strong>Email:</strong> {visitor.email}</p>
+                          )}
+                          {visitor.phone && (
+                            <p className="text-neutral-dark"><strong>Telefone:</strong> {visitor.phone}</p>
+                          )}
                           {visitor.representingCompany && (
                             <p className="text-neutral-dark"><strong>Representando:</strong> {visitor.representingCompany}</p>
                           )}
