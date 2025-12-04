@@ -42,22 +42,31 @@ const BuildingAdmin = () => {
   }, [navigate, toast]);
 
   const handleNewCompany = () => {
-    const name = prompt("Nome da empresa:");
-    const suite = prompt("Número do conjunto:");
-    
-    if (name && suite) {
+    setShowNewCompanyModal(true);
+  };
+
+  const confirmNewCompany = () => {
+    if (newCompanyData.name && newCompanyData.suite) {
       const newCompany = {
         id: String(companies.length + 1),
         buildingId: user.buildingId,
-        name,
-        suite,
+        name: newCompanyData.name,
+        suite: newCompanyData.suite,
         status: 'active',
         receptionists: []
       };
       setCompanies([...companies, newCompany]);
       toast({
         title: "Empresa Criada",
-        description: `${name} foi adicionada com sucesso.`,
+        description: `${newCompanyData.name} foi adicionada com sucesso.`,
+      });
+      setShowNewCompanyModal(false);
+      setNewCompanyData({ name: '', suite: '' });
+    } else {
+      toast({
+        title: "Erro",
+        description: "Preencha todos os campos obrigatórios.",
+        variant: "destructive"
       });
     }
   };
