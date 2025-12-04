@@ -78,24 +78,33 @@ const CompanyReceptionist = () => {
   };
 
   const handleDeny = (visitor) => {
-    const reason = prompt("Motivo da recusa:");
-    if (reason !== null) { // Permitir string vazia também
-      const updatedVisitors = visitors.map(v => 
-        v.id === visitor.id 
-          ? { ...v, status: 'denied', notes: reason || 'Recusado pela recepcionista', updatedAt: new Date().toISOString() }
-          : v
-      );
-      setVisitors(updatedVisitors);
-      
-      // Salvar no localStorage para sincronizar com portaria
-      localStorage.setItem('visitors', JSON.stringify(updatedVisitors));
-      
-      toast({
-        title: "Visitante Recusado",
-        description: `Entrada de ${visitor.fullName} foi recusada. A portaria foi notificada.`,
-        variant: "destructive"
-      });
-    }
+    setSelectedVisitor(visitor);
+    setRejectModalOpen(true);
+  };
+
+  const confirmDeny = () => {
+    if (!selectedVisitor) return;
+    
+    const updatedVisitors = visitors.map(v => 
+      v.id === selectedVisitor.id 
+        ? { ...v, status: 'denied', notes: rejectReason || 'Recusado pela recepcionista', updatedAt: new Date().toISOString() }
+        : v
+    );
+    setVisitors(updatedVisitors);
+    
+    // Salvar no localStorage para sincronizar com portaria
+    localStorage.setItem('visitors', JSON.stringify(updatedVisitors));
+    
+    toast({
+      title: "Visitante Recusado",
+      description: `Entrada de ${selectedVisitor.fullName} foi recusada. A portaria foi notificada.`,
+      variant: "destructive"
+    });
+    
+    // Reset modal
+    setRejectModalOpen(false);
+    setSelectedVisitor(null);
+    setRejectReason('');
   };
 
   const handleExportToExcel = () => {
