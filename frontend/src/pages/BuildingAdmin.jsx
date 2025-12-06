@@ -472,7 +472,7 @@ const BuildingAdmin = () => {
                 </Card>
 
                 <Button type="submit" size="lg" className="bg-primary hover:bg-blue-600">
-                  <Settings className="w-4 h-4 mr-2" />
+                  <SettingsIcon className="w-4 h-4 mr-2" />
                   Salvar Cadastro
                 </Button>
               </div>
