@@ -230,20 +230,40 @@ Documento: ${visitor.document || 'Não informado'}
               </Card>
             ) : (
               <div className="grid grid-cols-1 gap-6">
-                {pendingVisitors.map((visitor) => (
+                {pendingVisitors.map((visitor) => {
+                  const company = mockCompanies.find(c => c.id === visitor.companyId);
+                  return (
                   <Card key={visitor.id} className="border-2 border-warning">
                     <CardContent className="p-8">
                       <div className="flex items-start justify-between mb-6">
                         <div className="flex-1">
-                          <h3 className="text-2xl font-bold text-graphite mb-2">{visitor.fullName}</h3>
+                          <h3 className="text-2xl font-bold text-graphite mb-2">
+                            {visitor.fullName}
+                            {visitor.serviceProvider && (
+                              <span className="ml-3 text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
+                                Prestador de Serviço
+                              </span>
+                            )}
+                          </h3>
                           <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-lg">
                             <div>
                               <span className="text-neutral-dark">Visitando: </span>
                               <span className="font-semibold text-graphite">{visitor.hostName}</span>
                             </div>
-                            {visitor.representingCompany && (
+                            {company && (
                               <div>
                                 <span className="text-neutral-dark">Empresa: </span>
+                                <span className="font-semibold text-graphite">{company.name}</span>
+                                {company.phone && (
+                                  <div className="text-primary text-base mt-1">
+                                    📞 {company.phone}
+                                  </div>
+                                )}
+                              </div>
+                            )}
+                            {visitor.representingCompany && (
+                              <div>
+                                <span className="text-neutral-dark">Representa: </span>
                                 <span className="font-semibold text-graphite">{visitor.representingCompany}</span>
                               </div>
                             )}
