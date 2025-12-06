@@ -93,6 +93,8 @@ export const mockCompanies = [
     buildingId: '1',
     name: 'Tech Solutions Ltda',
     suite: '501',
+    phone: '(11) 3333-4444',
+    cnpj: '12.345.678/0001-90',
     status: 'active',
     receptionists: ['rec1', 'rec2']
   },
@@ -101,6 +103,8 @@ export const mockCompanies = [
     buildingId: '1',
     name: 'Marketing Pro',
     suite: '502',
+    phone: '(11) 3333-5555',
+    cnpj: '98.765.432/0001-10',
     status: 'active',
     receptionists: ['rec3']
   },
@@ -109,6 +113,8 @@ export const mockCompanies = [
     buildingId: '1',
     name: 'Consultoria ABC',
     suite: '503',
+    phone: '(11) 3333-6666',
+    cnpj: '11.222.333/0001-44',
     status: 'active',
     receptionists: ['rec4']
   }
