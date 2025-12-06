@@ -24,22 +24,30 @@ export const generateQROnePage = async (buildingName, buildingId, buildingAddres
     }
   });
 
-  // Modern gradient header
-  pdf.setFillColor(30, 64, 175); // #1E40AF
-  pdf.rect(0, 0, pageWidth, 70, 'F');
+  // Modern gradient header with two-tone blue
+  pdf.setFillColor(30, 64, 175); // Dark blue base
+  pdf.rect(0, 0, pageWidth, 80, 'F');
   
-  pdf.setFillColor(59, 130, 246); // #3B82F6
-  pdf.rect(0, 0, pageWidth, 50, 'F');
+  pdf.setFillColor(59, 130, 246); // Lighter blue overlay
+  pdf.rect(0, 0, pageWidth, 60, 'F');
 
-  // Logo with modern styling
-  pdf.setTextColor(255, 255, 255);
-  pdf.setFontSize(40);
+  // Company logo area (top left)
+  pdf.setFillColor(255, 255, 255);
+  pdf.roundedRect(15, 15, 30, 30, 3, 3, 'F');
+  pdf.setTextColor(59, 130, 246);
+  pdf.setFontSize(24);
   pdf.setFont('helvetica', 'bold');
-  pdf.text('🏢 AcessaAqui', pageWidth / 2, 28, { align: 'center' });
+  pdf.text('🏢', 22, 38);
+
+  // AcessaAqui branding
+  pdf.setTextColor(255, 255, 255);
+  pdf.setFontSize(36);
+  pdf.setFont('helvetica', 'bold');
+  pdf.text('AcessaAqui', pageWidth / 2, 32, { align: 'center' });
   
-  pdf.setFontSize(12);
+  pdf.setFontSize(11);
   pdf.setFont('helvetica', 'normal');
-  pdf.text('Acesso rápido, seguro e digital.', pageWidth / 2, 40, { align: 'center' });
+  pdf.text('Acesso rápido, seguro e digital.', pageWidth / 2, 42, { align: 'center' });
 
   // Título
   pdf.setTextColor(15, 23, 42); // #0F172A
