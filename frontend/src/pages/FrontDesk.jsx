@@ -292,28 +292,21 @@ Documento: ${visitor.document || 'Não informado'}
                           onClick={() => handleViewDetails(visitor)}
                           variant="outline"
                           size="lg"
-                          className="flex-1 border-primary text-primary hover:bg-blue-50 h-14 text-lg"
+                          className="w-full border-primary text-primary hover:bg-blue-50 h-14 text-lg"
                         >
                           <Users className="w-5 h-5 mr-2" />
                           Ver Detalhes
                         </Button>
-                        <Button 
-                          onClick={() => handleResend(visitor)}
-                          size="lg"
-                          className="flex-1 bg-accent hover:bg-blue-600 h-14 text-lg"
-                        >
-                          <Send className="w-5 h-5 mr-2" />
-                          Reenviar Notificação
-                        </Button>
                       </div>
-                      <div className="mt-3 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                        <p className="text-sm text-yellow-800 text-center">
-                          ⚠️ A aprovação de entrada é responsabilidade da empresa visitada
+                      <div className="mt-3 p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                        <p className="text-sm text-blue-800 text-center">
+                          ℹ️ Aguardando aprovação da empresa. Em caso de urgência, ligue para o telefone acima.
                         </p>
                       </div>
                     </CardContent>
                   </Card>
-                ))}
+                );
+                })}
               </div>
             )}
           </div>
