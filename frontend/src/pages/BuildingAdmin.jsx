@@ -676,9 +676,11 @@ const BuildingAdmin = () => {
 
         {/* New Company Modal */}
         {showNewCompanyModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={() => setShowNewCompanyModal(false)}>
-            <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
-              <h3 className="text-xl font-bold text-graphite mb-4">Nova Empresa</h3>
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={() => setShowNewCompanyModal(false)}>
+            <div className="bg-white rounded-lg p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+              <h3 className="text-xl font-bold text-graphite mb-4">
+                {editingCompany ? 'Editar Empresa' : 'Nova Empresa'}
+              </h3>
               <div className="space-y-4">
                 <div>
                   <label className="text-sm font-medium text-graphite mb-2 block">Nome da Empresa *</label>
@@ -689,12 +691,30 @@ const BuildingAdmin = () => {
                     autoFocus
                   />
                 </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <label className="text-sm font-medium text-graphite mb-2 block">Número do Conjunto *</label>
+                    <Input
+                      value={newCompanyData.suite}
+                      onChange={(e) => setNewCompanyData({...newCompanyData, suite: e.target.value})}
+                      placeholder="Ex: 501"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium text-graphite mb-2 block">Telefone</label>
+                    <Input
+                      value={newCompanyData.phone}
+                      onChange={(e) => setNewCompanyData({...newCompanyData, phone: e.target.value})}
+                      placeholder="(11) 3333-4444"
+                    />
+                  </div>
+                </div>
                 <div>
-                  <label className="text-sm font-medium text-graphite mb-2 block">Número do Conjunto *</label>
+                  <label className="text-sm font-medium text-graphite mb-2 block">CNPJ</label>
                   <Input
-                    value={newCompanyData.suite}
-                    onChange={(e) => setNewCompanyData({...newCompanyData, suite: e.target.value})}
-                    placeholder="Ex: 501"
+                    value={newCompanyData.cnpj}
+                    onChange={(e) => setNewCompanyData({...newCompanyData, cnpj: e.target.value})}
+                    placeholder="00.000.000/0000-00"
                   />
                 </div>
               </div>
@@ -702,7 +722,8 @@ const BuildingAdmin = () => {
                 <Button
                   onClick={() => {
                     setShowNewCompanyModal(false);
-                    setNewCompanyData({ name: '', suite: '' });
+                    setEditingCompany(null);
+                    setNewCompanyData({ name: '', suite: '', phone: '', cnpj: '' });
                   }}
                   variant="outline"
                   className="flex-1"
