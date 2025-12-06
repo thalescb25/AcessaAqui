@@ -336,27 +336,27 @@ const BuildingAdmin = () => {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
                         <label className="text-sm font-medium text-graphite mb-2 block">Nome do Prédio *</label>
-                        <Input name="buildingName" defaultValue={buildingData.name} required />
+                        <Input name="buildingName" defaultValue={buildingData?.name || ''} required />
                       </div>
                       <div>
                         <label className="text-sm font-medium text-graphite mb-2 block">CNPJ</label>
-                        <Input name="cnpj" defaultValue={buildingData.cnpj} placeholder="00.000.000/0000-00" />
+                        <Input name="cnpj" defaultValue={buildingData?.cnpj || ''} placeholder="00.000.000/0000-00" />
                       </div>
                       <div className="md:col-span-2">
                         <label className="text-sm font-medium text-graphite mb-2 block">Endereço Completo *</label>
-                        <Input name="address" defaultValue={buildingData.address} required />
+                        <Input name="address" defaultValue={buildingData?.address || ''} required />
                       </div>
                       <div>
                         <label className="text-sm font-medium text-graphite mb-2 block">Cidade *</label>
-                        <Input name="city" defaultValue={buildingData.city} required />
+                        <Input name="city" defaultValue={buildingData?.city || ''} required />
                       </div>
                       <div>
                         <label className="text-sm font-medium text-graphite mb-2 block">Estado *</label>
-                        <Input name="state" defaultValue={buildingData.state} required />
+                        <Input name="state" defaultValue={buildingData?.state || ''} required />
                       </div>
                       <div>
                         <label className="text-sm font-medium text-graphite mb-2 block">Telefone</label>
-                        <Input name="phone" defaultValue={buildingData.phone} placeholder="(11) 3000-1000" />
+                        <Input name="phone" defaultValue={buildingData?.phone || ''} placeholder="(11) 3000-1000" />
                       </div>
                     </div>
                   </CardContent>
