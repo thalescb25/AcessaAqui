@@ -26,6 +26,7 @@ const VisitorCheckIn = () => {
     companions: 0,
     companionsDetails: [],
     document: '',
+    serviceProvider: false,
     documentImage: null,
     selfie: null
   });
