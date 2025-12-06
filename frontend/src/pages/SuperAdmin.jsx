@@ -57,49 +57,43 @@ const SuperAdmin = () => {
   }, [settings]);
 
   const handleNewBuilding = () => {
-    const name = prompt("Nome do Prédio:");
-    const address = prompt("Endereço:");
-    const city = prompt("Cidade:");
-    const state = prompt("Estado (sigla):");
-    const plan = prompt("Plano (start/business/corporate):");
-    const maxSuites = parseInt(prompt("Número máximo de conjuntos:"));
-    const adminEmail = prompt("E-mail do administrador:");
-    
-    if (name && address && city && state && plan && maxSuites && adminEmail) {
-      const planPrices = { start: 149, business: 249, corporate: 399 };
-      const newBuilding = {
-        id: String(buildings.length + 1),
-        name,
-        address,
-        city,
-        state,
-        plan,
-        maxSuites,
-        currentSuites: 0,
-        status: 'active',
-        documentRequired: true,
-        selfieRequired: false,
-        defaultLanguage: 'pt',
-        monthlyRevenue: planPrices[plan] || 0,
-        adminEmail,
-        createdAt: new Date().toISOString()
-      };
-      
-      setBuildings([...buildings, newBuilding]);
-      
-      // Atualizar métricas
-      setMetrics({
-        ...metrics,
-        totalBuildings: metrics.totalBuildings + 1,
-        newBuildingsThisMonth: metrics.newBuildingsThisMonth + 1,
-        mrr: metrics.mrr + (planPrices[plan] || 0)
-      });
-      
+    setShowNewBuildingModal(true);
+    setBuildingFormData({
+      name: '', address: '', city: '', state: '', plan: 'start', 
+      maxSuites: 20, adminEmail: '', phone: '', cnpj: ''
+    });
+  };
+  
+  const confirmNewBuilding = () => {
+    if (!buildingFormData.name || !buildingFormData.address || !buildingFormData.adminEmail) {
       toast({
-        title: "Prédio Criado",
-        description: `${name} foi adicionado com sucesso ao plano ${plan}.`,
+        title: "Campos obrigatórios",
+        description: "Preencha todos os campos obrigatórios.",
+        variant: "destructive"
       });
+      return;
     }
+    
+    const planPrices = { start: 149, business: 249, corporate: 399 };
+    const newBuilding = {
+      id: `b${Date.now()}`,
+      ...buildingFormData,
+      currentSuites: 0,
+      status: 'active',
+      documentRequired: true,
+      selfieRequired: false,
+      defaultLanguage: 'pt',
+      monthlyRevenue: planPrices[buildingFormData.plan] || 0,
+      createdAt: new Date().toISOString()
+    };
+    
+    setBuildings([...buildings, newBuilding]);
+    setShowNewBuildingModal(false);
+    
+    toast({
+      title: "Prédio Criado",
+      description: `${buildingFormData.name} foi adicionado com sucesso.`,
+    });
   };
 
   const handleEditBuilding = (building) => {
