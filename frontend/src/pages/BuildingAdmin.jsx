@@ -146,6 +146,39 @@ const BuildingAdmin = () => {
     });
     setCompanyToDelete(null);
   };
+  
+  const handleCreateReceptionist = () => {
+    if (!newReceptionistData.name || !newReceptionistData.email || !newReceptionistData.password || !newReceptionistData.companyId) {
+      toast({
+        title: "Campos obrigatórios",
+        description: "Preencha todos os campos.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    const newUser = {
+      id: `u${Date.now()}`,
+      name: newReceptionistData.name,
+      email: newReceptionistData.email,
+      password: newReceptionistData.password,
+      role: 'company_receptionist',
+      companyId: newReceptionistData.companyId,
+      buildingId: user.buildingId
+    };
+    
+    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+    storedUsers.push(newUser);
+    localStorage.setItem('users', JSON.stringify(storedUsers));
+    
+    setShowReceptionistModal(false);
+    setNewReceptionistData({ name: '', email: '', password: '', companyId: '' });
+    
+    toast({
+      title: "Recepcionista Criado",
+      description: `${newReceptionistData.name} foi adicionado como recepcionista.`,
+    });
+  };
 
   const handleDownloadQR = async () => {
     try {
