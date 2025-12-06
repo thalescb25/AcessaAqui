@@ -112,6 +112,39 @@ const CompanyReceptionist = () => {
     setRejectReason('');
   };
 
+  const handleCreateUser = () => {
+    if (!newUserData.name || !newUserData.email || !newUserData.password) {
+      toast({
+        title: "Campos obrigatórios",
+        description: "Preencha todos os campos.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    const newUser = {
+      id: `u${Date.now()}`,
+      name: newUserData.name,
+      email: newUserData.email,
+      password: newUserData.password,
+      role: 'company_receptionist',
+      companyId: user.companyId,
+      buildingId: user.buildingId
+    };
+    
+    const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+    storedUsers.push(newUser);
+    localStorage.setItem('users', JSON.stringify(storedUsers));
+    
+    setShowUserModal(false);
+    setNewUserData({ name: '', email: '', password: '' });
+    
+    toast({
+      title: "Usuário Criado",
+      description: `${newUserData.name} foi adicionado como recepcionista.`,
+    });
+  };
+
   const handleExportToExcel = () => {
     const allVisitors = [...approvedVisitors, ...deniedVisitors];
     
