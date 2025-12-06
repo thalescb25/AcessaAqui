@@ -287,29 +287,14 @@ const BuildingAdmin = () => {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="mb-8">
           <Button 
             onClick={handleDownloadQR}
-            className="bg-primary hover:bg-blue-600 h-20 text-lg"
+            size="lg"
+            className="bg-primary hover:bg-blue-600"
           >
-            <QrCode className="w-6 h-6 mr-3" />
+            <QrCode className="w-5 h-5 mr-2" />
             Baixar OnePage QR Code
-          </Button>
-          <Button 
-            onClick={handleUploadCSV}
-            variant="outline"
-            className="border-primary text-primary hover:bg-blue-50 h-20 text-lg"
-          >
-            <Upload className="w-6 h-6 mr-3" />
-            Upload CSV Empresas
-          </Button>
-          <Button 
-            onClick={handleDownloadTemplate}
-            variant="outline"
-            className="border-accent text-accent hover:bg-blue-50 h-20 text-lg"
-          >
-            <Download className="w-6 h-6 mr-3" />
-            Download Template CSV
           </Button>
         </div>
 
