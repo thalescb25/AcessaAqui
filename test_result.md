@@ -264,11 +264,11 @@ frontend:
 
   - task: "Front Desk Portal"
     implemented: true
-    working: true
+    working: false
     file: "pages/FrontDesk.jsx"
-    stuck_count: 0
+    stuck_count: 1
     priority: "medium"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
         - working: "NA"
           agent: "testing"
@@ -276,6 +276,9 @@ frontend:
         - working: true
           agent: "testing"
           comment: "✅ SUCCESS - Front desk portal working well: Login successful with portaria@empresarial-central.com.br, all tabs functional (Fila em Tempo Real, Check-in Manual, Histórico), manual check-in form complete with company selection, real-time queue shows pending visitors, export Excel functionality working. Minor: Email/phone fields not displayed in history section."
+        - working: false
+          agent: "testing"
+          comment: "❌ CRITICAL ERROR - JavaScript ReferenceError: 'mockBuildings is not defined' causing component crash in FrontDesk. Login successful but dashboard shows error boundary message. Manual check-in form partially accessible but functionality blocked by JavaScript error. Real-time queue and history tabs affected. Requires immediate debugging of mockBuildings variable definition."
 
   - task: "Building Admin Dashboard"
     implemented: true
