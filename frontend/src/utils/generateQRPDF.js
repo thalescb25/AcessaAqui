@@ -80,17 +80,21 @@ export const generateQROnePage = async (buildingName, buildingId, buildingAddres
     yPos += 12;
   });
 
-  // QR Code centralizado
-  const qrSize = 120;
+  // QR Code centralizado com design moderno
+  const qrSize = 130;
   const qrX = (pageWidth - qrSize) / 2;
-  const qrY = 170;
+  const qrY = 165;
+  
+  // Background box com sombra
+  pdf.setFillColor(248, 250, 252); // #F8FAFC
+  pdf.roundedRect(qrX - 10, qrY - 10, qrSize + 20, qrSize + 20, 5, 5, 'F');
   
   pdf.addImage(qrDataUrl, 'PNG', qrX, qrY, qrSize, qrSize);
 
-  // Box ao redor do QR Code
-  pdf.setDrawColor(203, 213, 225); // #CBD5E1
-  pdf.setLineWidth(1);
-  pdf.rect(qrX - 5, qrY - 5, qrSize + 10, qrSize + 10);
+  // Borda moderna ao redor do QR Code
+  pdf.setDrawColor(59, 130, 246); // #3B82F6
+  pdf.setLineWidth(2);
+  pdf.roundedRect(qrX - 8, qrY - 8, qrSize + 16, qrSize + 16, 5, 5);
 
   // Footer
   pdf.setFontSize(10);
