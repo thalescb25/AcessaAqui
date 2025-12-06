@@ -338,10 +338,10 @@ async def get_stats(current_user: dict = Depends(get_current_user)):
         )
 
 
-# ============= NEWSLETTER ROUTES =============
+# ============= NEWSLETTER ROUTES ============= (DEPRECATED)
 
-@api_router.post("/newsletter/subscribe")
-async def subscribe_newsletter(data: NewsletterSubscribe):
+# @api_router.post("/newsletter/subscribe")
+# async def subscribe_newsletter(data: NewsletterSubscribe):
     try:
         # Check if already subscribed
         existing = await db.newsletter.find_one({"email": data.email})
