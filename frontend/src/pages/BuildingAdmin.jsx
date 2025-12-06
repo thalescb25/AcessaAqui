@@ -267,6 +267,34 @@ const BuildingAdmin = () => {
     });
   };
 
+  const handleSaveBuilding = (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    
+    const updatedBuilding = {
+      ...buildingData,
+      name: formData.get('buildingName'),
+      address: formData.get('address'),
+      city: formData.get('city'),
+      state: formData.get('state'),
+      phone: formData.get('phone'),
+      cnpj: formData.get('cnpj'),
+      sindicoName: formData.get('sindicoName'),
+      sindicoEmail: formData.get('sindicoEmail'),
+      sindicoPhone: formData.get('sindicoPhone'),
+      documentRequired: formData.get('documentRequired') === 'on',
+      selfieRequired: formData.get('selfieRequired') === 'on',
+      defaultLanguage: formData.get('defaultLanguage')
+    };
+    
+    setBuildingData(updatedBuilding);
+    
+    toast({
+      title: "Configurações Salvas",
+      description: "As configurações do prédio foram salvas com sucesso.",
+    });
+  };
+
   const filteredCompanies = companies.filter(company =>
     company.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
     company.suite.toLowerCase().includes(searchTerm.toLowerCase())
