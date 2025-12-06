@@ -153,12 +153,10 @@ const SuperAdmin = () => {
   };
 
   const handleSaveSettings = () => {
-    // Salvar no localStorage ou enviar para API
-    localStorage.setItem('systemSettings', JSON.stringify(settings));
-    
+    localStorage.setItem('settings', JSON.stringify(settings));
     toast({
       title: "Configurações Salvas",
-      description: "As configurações do sistema foram atualizadas com sucesso.",
+      description: "As configurações do sistema foram salvas com sucesso.",
     });
   };
 
