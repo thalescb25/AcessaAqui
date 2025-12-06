@@ -134,22 +134,22 @@ const SuperAdmin = () => {
   };
 
   const handleEditPlan = (plan) => {
-    const newPrice = parseFloat(prompt("Preço mensal:", plan.monthlyPrice));
-    const active = window.confirm(`Plano ${plan.name} está ativo?`);
-    const description = prompt("Descrição:", plan.description);
+    setEditingPlan(plan);
+    setShowPlansModal(true);
+  };
+  
+  const confirmEditPlan = () => {
+    setPlans(plans.map(p =>
+      p.id === editingPlan.id ? editingPlan : p
+    ));
     
-    if (newPrice && description) {
-      setPlans(plans.map(p =>
-        p.id === plan.id
-          ? { ...p, monthlyPrice: newPrice, active, description }
-          : p
-      ));
-      
-      toast({
-        title: "Plano Atualizado",
-        description: `Plano ${plan.name} foi atualizado com sucesso.`,
-      });
-    }
+    setShowPlansModal(false);
+    setEditingPlan(null);
+    
+    toast({
+      title: "Plano Atualizado",
+      description: `${editingPlan.name} foi atualizado com sucesso.`,
+    });
   };
 
   const handleSaveSettings = () => {
