@@ -411,6 +411,26 @@ const VisitorCheckIn = () => {
                 </div>
               </div>
 
+              {/* Checkbox Prestador de Serviço */}
+              <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div className="flex items-center space-x-3">
+                  <input
+                    type="checkbox"
+                    checked={formData.serviceProvider}
+                    onChange={(e) => setFormData({...formData, serviceProvider: e.target.checked})}
+                    className="w-5 h-5 text-primary"
+                  />
+                  <label className="text-base font-medium text-graphite">
+                    {language === 'pt' ? 'Sou Prestador de Serviço' : 'I am a Service Provider'}
+                  </label>
+                </div>
+                <p className="text-sm text-neutral-dark mt-2 ml-8">
+                  {language === 'pt' 
+                    ? 'Marque esta opção se você é um prestador de serviço (manutenção, entrega, etc.)'
+                    : 'Check this option if you are a service provider (maintenance, delivery, etc.)'}
+                </p>
+              </div>
+
               {/* Campos dinâmicos para acompanhantes */}
               {formData.companions > 0 && (
                 <div className="space-y-4 border-t pt-4">
