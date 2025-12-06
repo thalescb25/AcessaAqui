@@ -532,22 +532,35 @@ const BuildingAdmin = () => {
                           </div>
                         </div>
                       </div>
-                      <div className="flex space-x-2 ml-4">
+                      <div className="flex flex-col space-y-2 ml-4">
+                        <div className="flex space-x-2">
+                          <Button 
+                            onClick={() => handleEditCompany(company)}
+                            variant="outline" 
+                            size="sm" 
+                            className="border-primary text-primary hover:bg-blue-50"
+                          >
+                            <Edit className="w-4 h-4" />
+                          </Button>
+                          <Button 
+                            onClick={() => handleDeleteCompany(company)}
+                            variant="outline" 
+                            size="sm" 
+                            className="border-red-200 text-red-600 hover:bg-red-50"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </Button>
+                        </div>
                         <Button 
-                          onClick={() => handleEditCompany(company)}
-                          variant="outline" 
+                          onClick={() => {
+                            setNewReceptionistData({...newReceptionistData, companyId: company.id});
+                            setShowReceptionistModal(true);
+                          }}
                           size="sm" 
-                          className="border-primary text-primary hover:bg-blue-50"
+                          className="bg-green-600 hover:bg-green-700 text-xs"
                         >
-                          <Edit className="w-4 h-4" />
-                        </Button>
-                        <Button 
-                          onClick={() => handleDeleteCompany(company)}
-                          variant="outline" 
-                          size="sm" 
-                          className="border-red-200 text-red-600 hover:bg-red-50"
-                        >
-                          <Trash2 className="w-4 h-4" />
+                          <Plus className="w-3 h-3 mr-1" />
+                          Recepcionista
                         </Button>
                       </div>
                     </div>
