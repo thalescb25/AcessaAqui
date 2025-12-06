@@ -335,6 +335,114 @@ const BuildingAdmin = () => {
           ))}
         </div>
 
+        {/* Cadastro Tab */}
+        {activeTab === 'cadastro' && (
+          <div>
+            <h2 className="text-2xl font-bold text-graphite mb-6">Dados do Prédio</h2>
+            <form onSubmit={handleSaveBuilding}>
+              <div className="space-y-6">
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Informações Gerais</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm font-medium text-graphite mb-2 block">Nome do Prédio *</label>
+                        <Input name="buildingName" defaultValue={buildingData.name} required />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-graphite mb-2 block">CNPJ</label>
+                        <Input name="cnpj" defaultValue={buildingData.cnpj} placeholder="00.000.000/0000-00" />
+                      </div>
+                      <div className="md:col-span-2">
+                        <label className="text-sm font-medium text-graphite mb-2 block">Endereço Completo *</label>
+                        <Input name="address" defaultValue={buildingData.address} required />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-graphite mb-2 block">Cidade *</label>
+                        <Input name="city" defaultValue={buildingData.city} required />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-graphite mb-2 block">Estado *</label>
+                        <Input name="state" defaultValue={buildingData.state} required />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-graphite mb-2 block">Telefone</label>
+                        <Input name="phone" defaultValue={buildingData.phone} placeholder="(11) 3000-1000" />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Dados do Síndico</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <label className="text-sm font-medium text-graphite mb-2 block">Nome do Síndico</label>
+                        <Input name="sindicoName" defaultValue={buildingData.sindicoName} />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-graphite mb-2 block">E-mail do Síndico</label>
+                        <Input type="email" name="sindicoEmail" defaultValue={buildingData.sindicoEmail} />
+                      </div>
+                      <div>
+                        <label className="text-sm font-medium text-graphite mb-2 block">Telefone do Síndico</label>
+                        <Input name="sindicoPhone" defaultValue={buildingData.sindicoPhone} />
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card>
+                  <CardHeader>
+                    <CardTitle>Configurações de Visitantes</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        name="documentRequired"
+                        defaultChecked={buildingData.documentRequired}
+                        className="w-4 h-4 text-primary"
+                      />
+                      <label className="text-sm text-graphite">Documento obrigatório</label>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="checkbox"
+                        name="selfieRequired"
+                        defaultChecked={buildingData.selfieRequired}
+                        className="w-4 h-4 text-primary"
+                      />
+                      <label className="text-sm text-graphite">Selfie obrigatória</label>
+                    </div>
+                    <div>
+                      <label className="text-sm font-medium text-graphite mb-2 block">Idioma Padrão</label>
+                      <select
+                        name="defaultLanguage"
+                        defaultValue={buildingData.defaultLanguage}
+                        className="w-full p-2 border border-neutral-medium rounded-lg"
+                      >
+                        <option value="pt">Português</option>
+                        <option value="en">English</option>
+                      </select>
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Button type="submit" size="lg" className="bg-primary hover:bg-blue-600">
+                  <Settings className="w-4 h-4 mr-2" />
+                  Salvar Cadastro
+                </Button>
+              </div>
+            </form>
+          </div>
+        )}
+
         {/* Companies Tab */}
         {activeTab === 'companies' && (
           <div>
