@@ -321,8 +321,8 @@ Documento: ${visitor.document || 'Não informado'}
                     <Input name="phone" type="tel" placeholder="(11) 99999-9999" className="h-12 text-lg" />
                   </div>
                   <div>
-                    <label className="text-sm font-medium text-graphite mb-2 block">Documento</label>
-                    <Input name="document" placeholder="CPF, RG ou outro" className="h-12 text-lg" />
+                    <label className="text-sm font-medium text-graphite mb-2 block">Documento *</label>
+                    <Input name="document" placeholder="CPF, RG ou outro" className="h-12 text-lg" required />
                   </div>
                   <div>
                     <label className="text-sm font-medium text-graphite mb-2 block">Empresa que Visitará *</label>
