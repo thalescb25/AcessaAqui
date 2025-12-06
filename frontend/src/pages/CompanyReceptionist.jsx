@@ -247,10 +247,10 @@ const CompanyReceptionist = () => {
                       </Badge>
                     </div>
                     
-                    <div className="flex flex-col md:flex-row gap-3">
+                    <div className="flex flex-col md:flex-row gap-2">
                       <Button 
                         onClick={() => handleApprove(visitor)}
-                        className="flex-1 bg-green-600 hover:bg-green-700 h-12 text-sm md:text-base"
+                        className="flex-1 bg-green-600 hover:bg-green-700 h-10 text-xs md:text-sm"
                       >
                         <CheckCircle className="w-5 h-5 mr-2" />
                         Aprovar
