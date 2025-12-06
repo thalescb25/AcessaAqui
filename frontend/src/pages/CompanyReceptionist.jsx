@@ -18,6 +18,9 @@ const CompanyReceptionist = () => {
   const [rejectModalOpen, setRejectModalOpen] = useState(false);
   const [selectedVisitor, setSelectedVisitor] = useState(null);
   const [rejectReason, setRejectReason] = useState('');
+  const [activeTab, setActiveTab] = useState('approvals');
+  const [showUserModal, setShowUserModal] = useState(false);
+  const [newUserData, setNewUserData] = useState({ name: '', email: '', password: '' });
   const navigate = useNavigate();
   const { toast } = useToast();
 
