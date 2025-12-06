@@ -448,7 +448,7 @@ const BuildingAdmin = () => {
           <div>
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
               <h2 className="text-2xl font-bold text-graphite">Empresas Cadastradas</h2>
-              <div className="flex gap-3 w-full md:w-auto">
+              <div className="flex flex-wrap gap-3 w-full md:w-auto">
                 <div className="relative flex-1 md:w-64">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-neutral-dark" />
                   <Input
@@ -465,6 +465,22 @@ const BuildingAdmin = () => {
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Nova Empresa
+                </Button>
+                <Button 
+                  onClick={handleUploadCSV}
+                  variant="outline"
+                  className="border-primary text-primary"
+                >
+                  <Upload className="w-4 h-4 mr-2" />
+                  Upload CSV
+                </Button>
+                <Button 
+                  onClick={handleDownloadTemplate}
+                  variant="outline"
+                  className="border-accent text-accent"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  Template CSV
                 </Button>
               </div>
             </div>
