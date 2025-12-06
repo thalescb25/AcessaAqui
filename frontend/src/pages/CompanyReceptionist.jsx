@@ -461,6 +461,65 @@ const CompanyReceptionist = () => {
           </CardContent>
         </Card>
 
+        {/* New User Modal */}
+        {showUserModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={() => setShowUserModal(false)}>
+            <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+              <h3 className="text-xl font-bold text-graphite mb-4">Novo Usuário Recepcionista</h3>
+              <div className="space-y-4">
+                <div>
+                  <label className="text-sm font-medium text-graphite mb-2 block">Nome Completo *</label>
+                  <Input
+                    value={newUserData.name}
+                    onChange={(e) => setNewUserData({...newUserData, name: e.target.value})}
+                    placeholder="João Silva"
+                    autoFocus
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-graphite mb-2 block">E-mail *</label>
+                  <Input
+                    type="email"
+                    value={newUserData.email}
+                    onChange={(e) => setNewUserData({...newUserData, email: e.target.value})}
+                    placeholder="joao@empresa.com"
+                  />
+                </div>
+                <div>
+                  <label className="text-sm font-medium text-graphite mb-2 block">Senha Inicial *</label>
+                  <Input
+                    type="password"
+                    value={newUserData.password}
+                    onChange={(e) => setNewUserData({...newUserData, password: e.target.value})}
+                    placeholder="Senha temporária"
+                  />
+                </div>
+                <p className="text-xs text-neutral-dark">
+                  O usuário poderá fazer login com estas credenciais e terá acesso de recepcionista.
+                </p>
+              </div>
+              <div className="flex gap-3 mt-6">
+                <Button
+                  onClick={() => {
+                    setShowUserModal(false);
+                    setNewUserData({ name: '', email: '', password: '' });
+                  }}
+                  variant="outline"
+                  className="flex-1"
+                >
+                  Cancelar
+                </Button>
+                <Button
+                  onClick={handleCreateUser}
+                  className="flex-1 bg-primary hover:bg-blue-600"
+                >
+                  Criar Usuário
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Reject Modal */}
         {rejectModalOpen && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={() => setRejectModalOpen(false)}>
