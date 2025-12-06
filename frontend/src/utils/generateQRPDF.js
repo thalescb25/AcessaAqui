@@ -25,29 +25,34 @@ export const generateQROnePage = async (buildingName, buildingId, buildingAddres
   });
 
   // Modern gradient header with two-tone blue
-  pdf.setFillColor(30, 64, 175); // Dark blue base
-  pdf.rect(0, 0, pageWidth, 80, 'F');
-  
-  pdf.setFillColor(59, 130, 246); // Lighter blue overlay
-  pdf.rect(0, 0, pageWidth, 60, 'F');
+  pdf.setFillColor(37, 99, 235); // Primary blue
+  pdf.rect(0, 0, pageWidth, 70, 'F');
 
-  // Company logo area (top left)
+  // Logo box (white background with building icon)
   pdf.setFillColor(255, 255, 255);
-  pdf.roundedRect(15, 15, 30, 30, 3, 3, 'F');
-  pdf.setTextColor(59, 130, 246);
-  pdf.setFontSize(24);
-  pdf.setFont('helvetica', 'bold');
-  pdf.text('🏢', 22, 38);
+  pdf.roundedRect(20, 15, 35, 35, 5, 5, 'F');
+  
+  // Building icon simulation
+  pdf.setFillColor(37, 99, 235);
+  pdf.rect(27, 22, 8, 20, 'F');
+  pdf.rect(37, 22, 8, 20, 'F');
+  pdf.setFillColor(255, 255, 255);
+  for (let i = 0; i < 3; i++) {
+    pdf.rect(28, 24 + (i * 5), 2, 3, 'F');
+    pdf.rect(31, 24 + (i * 5), 2, 3, 'F');
+    pdf.rect(38, 24 + (i * 5), 2, 3, 'F');
+    pdf.rect(41, 24 + (i * 5), 2, 3, 'F');
+  }
 
   // AcessaAqui branding
   pdf.setTextColor(255, 255, 255);
-  pdf.setFontSize(36);
+  pdf.setFontSize(40);
   pdf.setFont('helvetica', 'bold');
-  pdf.text('AcessaAqui', pageWidth / 2, 32, { align: 'center' });
+  pdf.text('AcessaAqui', pageWidth / 2, 38, { align: 'center' });
   
-  pdf.setFontSize(11);
+  pdf.setFontSize(12);
   pdf.setFont('helvetica', 'normal');
-  pdf.text('Acesso rápido, seguro e digital.', pageWidth / 2, 42, { align: 'center' });
+  pdf.text('Acesso rápido, seguro e digital', pageWidth / 2, 50, { align: 'center' });
 
   // Título
   pdf.setTextColor(15, 23, 42); // #0F172A
