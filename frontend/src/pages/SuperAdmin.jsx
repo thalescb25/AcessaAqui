@@ -551,6 +551,216 @@ const SuperAdmin = () => {
           </div>
         )}
       </div>
+
+      {/* Modal Novo/Editar Prédio */}
+      {showNewBuildingModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={() => setShowNewBuildingModal(false)}>
+          <div className="bg-white rounded-lg p-6 max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-2xl font-bold text-graphite mb-6">
+              {editingBuilding ? 'Editar Prédio' : 'Novo Prédio'}
+            </h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="md:col-span-2">
+                <label className="text-sm font-medium text-graphite mb-2 block">Nome do Prédio *</label>
+                <Input
+                  value={buildingFormData.name}
+                  onChange={(e) => setBuildingFormData({...buildingFormData, name: e.target.value})}
+                  placeholder="Ex: Edifício Empresarial Central"
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="text-sm font-medium text-graphite mb-2 block">Endereço *</label>
+                <Input
+                  value={buildingFormData.address}
+                  onChange={(e) => setBuildingFormData({...buildingFormData, address: e.target.value})}
+                  placeholder="Ex: Av. Paulista, 1000"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-graphite mb-2 block">Cidade *</label>
+                <Input
+                  value={buildingFormData.city}
+                  onChange={(e) => setBuildingFormData({...buildingFormData, city: e.target.value})}
+                  placeholder="São Paulo"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-graphite mb-2 block">Estado *</label>
+                <Input
+                  value={buildingFormData.state}
+                  onChange={(e) => setBuildingFormData({...buildingFormData, state: e.target.value})}
+                  placeholder="SP"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-graphite mb-2 block">Telefone</label>
+                <Input
+                  value={buildingFormData.phone}
+                  onChange={(e) => setBuildingFormData({...buildingFormData, phone: e.target.value})}
+                  placeholder="(11) 3000-1000"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-graphite mb-2 block">CNPJ</label>
+                <Input
+                  value={buildingFormData.cnpj}
+                  onChange={(e) => setBuildingFormData({...buildingFormData, cnpj: e.target.value})}
+                  placeholder="00.111.222/0001-33"
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-graphite mb-2 block">Plano *</label>
+                <select
+                  value={buildingFormData.plan}
+                  onChange={(e) => setBuildingFormData({...buildingFormData, plan: e.target.value})}
+                  className="w-full p-2 border border-neutral-medium rounded-lg"
+                >
+                  <option value="start">Start - R$ 149/mês</option>
+                  <option value="business">Business - R$ 249/mês</option>
+                  <option value="corporate">Corporate - R$ 399/mês</option>
+                </select>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-graphite mb-2 block">Máximo de Conjuntos *</label>
+                <Input
+                  type="number"
+                  value={buildingFormData.maxSuites}
+                  onChange={(e) => setBuildingFormData({...buildingFormData, maxSuites: parseInt(e.target.value)})}
+                />
+              </div>
+              <div className="md:col-span-2">
+                <label className="text-sm font-medium text-graphite mb-2 block">E-mail do Administrador *</label>
+                <Input
+                  type="email"
+                  value={buildingFormData.adminEmail}
+                  onChange={(e) => setBuildingFormData({...buildingFormData, adminEmail: e.target.value})}
+                  placeholder="admin@predio.com.br"
+                />
+              </div>
+            </div>
+            <div className="flex gap-3 mt-6">
+              <Button
+                onClick={() => {
+                  setShowNewBuildingModal(false);
+                  setEditingBuilding(null);
+                }}
+                variant="outline"
+                className="flex-1"
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={editingBuilding ? confirmEditBuilding : confirmNewBuilding}
+                className="flex-1 bg-primary hover:bg-blue-600"
+              >
+                {editingBuilding ? 'Salvar Alterações' : 'Criar Prédio'}
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Deletar Prédio */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" onClick={() => setShowDeleteModal(false)}>
+          <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-xl font-bold text-graphite mb-4">Confirmar Exclusão</h3>
+            <p className="text-neutral-dark mb-6">
+              Deseja realmente excluir <strong>{buildingToDelete?.name}</strong>? Esta ação não pode ser desfeita.
+            </p>
+            <div className="flex gap-3">
+              <Button
+                onClick={() => {
+                  setShowDeleteModal(false);
+                  setBuildingToDelete(null);
+                }}
+                variant="outline"
+                className="flex-1"
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={confirmDelete}
+                variant="destructive"
+                className="flex-1"
+              >
+                Confirmar Exclusão
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Modal Editar Planos */}
+      {showPlansModal && editingPlan && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4" onClick={() => setShowPlansModal(false)}>
+          <div className="bg-white rounded-lg p-6 max-w-lg w-full" onClick={(e) => e.stopPropagation()}>
+            <h3 className="text-2xl font-bold text-graphite mb-6">Editar Plano: {editingPlan.name}</h3>
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-graphite mb-2 block">Preço Mensal (R$)</label>
+                <Input
+                  type="number"
+                  value={editingPlan.monthlyPrice}
+                  onChange={(e) => setEditingPlan({...editingPlan, monthlyPrice: parseFloat(e.target.value)})}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-graphite mb-2 block">Mínimo de Conjuntos</label>
+                <Input
+                  type="number"
+                  value={editingPlan.minSuites}
+                  onChange={(e) => setEditingPlan({...editingPlan, minSuites: parseInt(e.target.value)})}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-graphite mb-2 block">Máximo de Conjuntos</label>
+                <Input
+                  type="number"
+                  value={editingPlan.maxSuites}
+                  onChange={(e) => setEditingPlan({...editingPlan, maxSuites: parseInt(e.target.value)})}
+                />
+              </div>
+              <div>
+                <label className="text-sm font-medium text-graphite mb-2 block">Descrição</label>
+                <textarea
+                  value={editingPlan.description}
+                  onChange={(e) => setEditingPlan({...editingPlan, description: e.target.value})}
+                  rows={3}
+                  className="w-full p-3 border border-neutral-medium rounded-lg"
+                />
+              </div>
+              <div className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={editingPlan.active}
+                  onChange={(e) => setEditingPlan({...editingPlan, active: e.target.checked})}
+                  className="w-4 h-4"
+                />
+                <label className="text-sm font-medium text-graphite">Plano Ativo</label>
+              </div>
+            </div>
+            <div className="flex gap-3 mt-6">
+              <Button
+                onClick={() => {
+                  setShowPlansModal(false);
+                  setEditingPlan(null);
+                }}
+                variant="outline"
+                className="flex-1"
+              >
+                Cancelar
+              </Button>
+              <Button
+                onClick={confirmEditPlan}
+                className="flex-1 bg-primary hover:bg-blue-600"
+              >
+                Salvar Alterações
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
