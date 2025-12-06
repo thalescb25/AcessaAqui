@@ -316,6 +316,7 @@ const BuildingAdmin = () => {
         {/* Tabs */}
         <div className="flex space-x-2 mb-6 overflow-x-auto">
           {[
+            { id: 'cadastro', label: 'Cadastro do Prédio' },
             { id: 'companies', label: 'Empresas' },
             { id: 'visitors', label: 'Histórico de Visitantes' },
             { id: 'settings', label: 'Configurações' }
