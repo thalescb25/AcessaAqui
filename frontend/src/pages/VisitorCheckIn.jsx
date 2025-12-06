@@ -124,6 +124,12 @@ const VisitorCheckIn = () => {
     const updatedVisitors = [...currentVisitors, visitor];
     localStorage.setItem('visitors', JSON.stringify(updatedVisitors));
     
+    // Dispatch storage event para sincronização cross-tab
+    window.dispatchEvent(new StorageEvent('storage', {
+      key: 'visitors',
+      newValue: JSON.stringify(updatedVisitors)
+    }));
+    
     setSubmittedVisitor(visitor);
     setStep('waiting');
     
