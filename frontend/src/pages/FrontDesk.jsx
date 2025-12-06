@@ -125,6 +125,7 @@ Documento: ${visitor.document || 'Não informado'}
       reason: formData.get('reason') || '',
       companions: companionsCount,
       companionsDetails: manualCompanionsDetails,
+      serviceProvider: formData.get('serviceProvider') === 'on',
       documentImage: null,
       selfie: null,
       status: 'pending', // Aguarda aprovação da recepcionista
